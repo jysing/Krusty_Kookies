@@ -3,6 +3,7 @@
 
 
 6. 
+
 # RelationsModel
 
 customers(**customer_name**, address, ~~country~~)
@@ -21,6 +22,7 @@ ingredients(ingridient_name, delta_quantity, date, ~~unit~~)
 
 
 TODO:
+
 1. A section with your names, program/year, and email-addresses
 
 2. A section with an introduction (what the project is about, etc.).
