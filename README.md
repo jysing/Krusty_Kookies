@@ -8,7 +8,7 @@
 
 customers(**customer_name**, address, ~~country~~)
 
-orders(**order_id**, *customer_name*, *cookie_name*, delivery_date)
+orders(**order_id**, *customer_name*, delivery_date)
 
 orderItems(*order_id*, *cookie_name*, nbrPallet)
 
