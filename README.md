@@ -8,15 +8,17 @@
 
 customers(**customer_name**, address, ~~country~~)
 
-orders(**order_id**, *customer_name*, *cookie_name*, nbr_of_pallets, delivery_date, ~~cost~~)
+orders(**order_id**, *customer_name*, *cookie_name*, delivery_date)
 
-pallets(**nbr**, *cookie_name*, date, location, *order_id*, is_blocked)
+orderItems(*order_id*, *cookie_name*, nbrPallet)
 
-cookies(**cookie_name**, is_blocked)
+pallets(**pallet_id**, *cookie_name*, *order_id*, production_date, location, is_blocked)
 
-recipes(*cookie_name*, ingredient_name, quantity, ~~unit~~)
+cookies(**cookie_name**)
 
-ingredients(ingridient_name, delta_quantity, date, ~~unit~~)
+recipeItems(*cookie_name*, *ingredient_name*, amount)
+
+ingredients(**ingridient_name**, amount, unit, refill_date)
 
 
 
