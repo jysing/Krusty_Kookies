@@ -1,10 +1,11 @@
 PRAGMA foreign_keys=OFF;
 DROP TABLE IF EXISTS Customer;
 DROP TABLE IF EXISTS Order;
+DROP TABLE IF EXISTS OrderItems;
 DROP TABLE IF EXISTS Pallet;
 DROP TABLE IF EXISTS Cookie;
+DROP TABLE IF EXISTS RecipeItems;
 DROP TABLE IF EXISTS Ingredient;
-DROP TABLE IF EXISTS Recipee_component;
 PRAGMA foreign_keys=ON;
 
 -- Create the tables.
@@ -39,7 +40,7 @@ CREATE TABLE Cookie (
 	cookie_name varchar(40) PRIMARY KEY
 );
 
-CREATE TABLE Recipe (
+CREATE TABLE RecipeItems (
 	cookie_name varchar(40) REFERENCES Cookie(cookie_name),
 	ingredient_name varchar(40) REFERENCES Ingredient(ingredient_name),
 	amount real NOT NULL
@@ -97,7 +98,7 @@ VALUES
 ("Vanilla sugar", 0, "g");
 
 INSERT
-INTO Recipe (cookie_name, ingredient_name, amount)
+INTO RecipeItems (cookie_name, ingredient_name, amount)
 VALUES
 ("Nut ring", "Flour", 450),
 ("Nut ring", "Butter", 450),
