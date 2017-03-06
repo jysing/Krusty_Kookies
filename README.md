@@ -42,61 +42,61 @@ E/R-diagram:
 
 # 7. **SQL statements to create all tables, views, stored procedures, and other database elements.**
 ```SQL
-	PRAGMA foreign_keys=OFF;
-    DROP TABLE IF EXISTS Customer;
-    DROP TABLE IF EXISTS Orders;
-    DROP TABLE IF EXISTS OrderItems;
-    DROP TABLE IF EXISTS Pallet;
-    DROP TABLE IF EXISTS Cookie;
-    DROP TABLE IF EXISTS RecipeItems;
-    DROP TABLE IF EXISTS Ingredient;
-    PRAGMA foreign_keys=ON;
-    
-    -- Create the tables.
-    CREATE TABLE Customer (
-    	customer_name varchar(40) PRIMARY KEY,
-    	address varchar(40) NOT NULL,
-    	country varchar(40) NOT NULL
-    );
-    
-    CREATE TABLE Orders (
-    	order_id integer PRIMARY KEY,
-    	customer_name varchar(40) REFERENCES Customer(customer_name),
-    	delivery_date date NOT NULL
-    );
-    
-    CREATE TABLE OrderItems (
-    	order_id int REFERENCES Order(order_id),
-    	cookie_name varchar(40) REFERENCES Cookie(cookie_name),
-    	nbrPallet integer
-    );
-    
-    CREATE TABLE Pallet (
-    	pallet_id int PRIMARY KEY,
-    	cookie_name varchar(40) REFERENCES Cookie(cookie_name),
-    	order_id integer REFERENCES Order(order_id),
-    	production_date date NOT NULL,
-    	location varchar(40) NOT NULL,
-    	is_blocked int
-    );
-    
-    CREATE TABLE Cookie (
-    	cookie_name varchar(40) PRIMARY KEY
-    );
-    
-    CREATE TABLE RecipeItems (
-    	cookie_name varchar(40) REFERENCES Cookie(cookie_name),
-    	ingredient_name varchar(40) REFERENCES Ingredient(ingredient_name),
-    	amount real NOT NULL
-    );
-    
-    CREATE TABLE Ingredient (
-    	ingredient_name varchar(40) PRIMARY KEY,
-    	amount real NOT NULL,
-    	unit varchar(2) NOT NULL,
-    	refill_date date
-    ); 
-   ```
+PRAGMA foreign_keys=OFF;
+DROP TABLE IF EXISTS Customer;
+DROP TABLE IF EXISTS Order;
+DROP TABLE IF EXISTS OrderItems;
+DROP TABLE IF EXISTS Pallet;
+DROP TABLE IF EXISTS Cookie;
+DROP TABLE IF EXISTS RecipeItems;
+DROP TABLE IF EXISTS Ingredient;
+PRAGMA foreign_keys=ON;
+
+-- Create the tables.
+CREATE TABLE Customer (
+	customer_name varchar(40) PRIMARY KEY,
+	address varchar(40) NOT NULL,
+	country varchar(40) NOT NULL
+);
+
+CREATE TABLE Order (
+	order_id integer PRIMARY KEY,
+	customer_name varchar(40) REFERENCES Customer(customer_name),
+	delivery_date date NOT NULL
+);
+
+CREATE TABLE OrderItems (
+	order_id int REFERENCES Order(order_id),
+	cookie_name varchar(40) REFERENCES Cookie(cookie_name),
+	nbrPallet integer
+);
+
+CREATE TABLE Pallet (
+	pallet_id int PRIMARY KEY,
+	cookie_name varchar(40) REFERENCES Cookie(cookie_name),
+	order_id integer REFERENCES Order(order_id),
+	production_date date NOT NULL,
+	location varchar(40) NOT NULL,
+	is_blocked int
+);
+
+CREATE TABLE Cookie (
+	cookie_name varchar(40) PRIMARY KEY
+);
+
+CREATE TABLE RecipeItems (
+	cookie_name varchar(40) REFERENCES Cookie(cookie_name),
+	ingredient_name varchar(40) REFERENCES Ingredient(ingredient_name),
+	amount real NOT NULL
+);
+
+CREATE TABLE Ingredient (
+	ingredient_name varchar(40) PRIMARY KEY,
+	amount real NOT NULL,
+	unit varchar(2) NOT NULL,
+	refill_date date
+);
+```
 
 # 8. **A user’s manual (not necessary if everything in the program is self-explanatory).**
 
