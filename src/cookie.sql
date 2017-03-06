@@ -1,6 +1,6 @@
 PRAGMA foreign_keys=OFF;
 DROP TABLE IF EXISTS Customer;
-DROP TABLE IF EXISTS Order;
+DROP TABLE IF EXISTS Order_Bill;
 DROP TABLE IF EXISTS OrderItems;
 DROP TABLE IF EXISTS Pallet;
 DROP TABLE IF EXISTS Cookie;
@@ -15,14 +15,14 @@ CREATE TABLE Customer (
 	country varchar(40) NOT NULL
 );
 
-CREATE TABLE Order (
+CREATE TABLE Order_Bill (
 	order_id integer PRIMARY KEY,
 	customer_name varchar(40) REFERENCES Customer(customer_name),
 	delivery_date date NOT NULL
 );
 
 CREATE TABLE OrderItems (
-	order_id int REFERENCES Order(order_id),
+	order_id int REFERENCES Order_Bill(order_id),
 	cookie_name varchar(40) REFERENCES Cookie(cookie_name),
 	nbrPallet integer
 );
@@ -30,7 +30,7 @@ CREATE TABLE OrderItems (
 CREATE TABLE Pallet (
 	pallet_id int PRIMARY KEY,
 	cookie_name varchar(40) REFERENCES Cookie(cookie_name),
-	order_id integer REFERENCES Order(order_id),
+	order_id integer REFERENCES Order_Bill(order_id),
 	production_date date NOT NULL,
 	location varchar(40) NOT NULL,
 	is_blocked int
@@ -108,7 +108,7 @@ VALUES
 ("Nut cookie", "Ground, roasted nuts", 625),
 ("Nut cookie", "Bread crumbs", 125),
 ("Nut cookie", "Sugar", 375),
-("Nut cookie", "Egg whites", 3,5),
+("Nut cookie", "Egg whites", 3.5),
 ("Nut cookie", "Chocolate", 50),
 ("Amneris", "Marzipan", 750),
 ("Amneris", "Butter", 250),
