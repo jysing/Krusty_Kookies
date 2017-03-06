@@ -2,9 +2,31 @@
 
 
 
-6. 
+1. A section with your names, program/year, and email-addresses
+..* Henrik Fryklund, E13, kem12hfr@student.lu.se
+..* Kewin Erichsen, E11, 
+..* Joakim Ysing
 
-# RelationsModel
+2. A section with an introduction (what the project is about, etc.).
+
+3. A section with notes about requirements that you fulfill or don’t fulfill.
+
+4. An outline of your system (which database manager you use, which programs you have written, how the programs communicate with the database, etc.).
+
+5. An E/R diagram (using UML-notation) which describes your system.
+Inline-style: 
+![alt text](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "Logo Title Text 1")
+
+
+6. Relations. Indicate primary keys, possibly secondary keys, and foreign keys. You must show that the relations are normalized according to your chosen normal form (if a relation "obviously" is in BCNF you may say so, provided that you justify your statement). If a relation is in a lower normal form than BCNF, you must justify this choice.
+
+# Relations Model
+
+**Primary Key - Bold**
+
+*Foreign Key - Italic*
+
+~~Extra feature- Stroked~~
 
 customers(**customer_name**, address, ~~country~~)
 
@@ -21,22 +43,61 @@ recipeItems(*cookie_name*, *ingredient_name*, amount)
 ingredients(**ingridient_name**, amount, unit, refill_date)
 
 
+7. SQL statements to create all tables, views, stored procedures, and other database elements.
+´´´SQL
+PRAGMA foreign_keys=OFF;
+DROP TABLE IF EXISTS Customer;
+DROP TABLE IF EXISTS Orders;
+DROP TABLE IF EXISTS OrderItems;
+DROP TABLE IF EXISTS Pallet;
+DROP TABLE IF EXISTS Cookie;
+DROP TABLE IF EXISTS RecipeItems;
+DROP TABLE IF EXISTS Ingredient;
+PRAGMA foreign_keys=ON;
 
+-- Create the tables.
+CREATE TABLE Customer (
+	customer_name varchar(40) PRIMARY KEY,
+	address varchar(40) NOT NULL,
+	country varchar(40) NOT NULL
+);
 
-TODO:
+CREATE TABLE Orders (
+	order_id integer PRIMARY KEY,
+	customer_name varchar(40) REFERENCES Customer(customer_name),
+	delivery_date date NOT NULL
+);
 
-1. A section with your names, program/year, and email-addresses
+CREATE TABLE OrderItems (
+	order_id int REFERENCES Order(order_id),
+	cookie_name varchar(40) REFERENCES Cookie(cookie_name),
+	nbrPallet integer
+);
 
-2. A section with an introduction (what the project is about, etc.).
+CREATE TABLE Pallet (
+	pallet_id int PRIMARY KEY,
+	cookie_name varchar(40) REFERENCES Cookie(cookie_name),
+	order_id integer REFERENCES Order(order_id),
+	production_date date NOT NULL,
+	location varchar(40) NOT NULL,
+	is_blocked int
+);
 
-3. A section with notes about requirements that you fulfill or don’t fulfill.
+CREATE TABLE Cookie (
+	cookie_name varchar(40) PRIMARY KEY
+);
 
-4. An outline of your system (which database manager you use, which programs you have written, how the programs communicate with the database, etc.).
+CREATE TABLE RecipeItems (
+	cookie_name varchar(40) REFERENCES Cookie(cookie_name),
+	ingredient_name varchar(40) REFERENCES Ingredient(ingredient_name),
+	amount real NOT NULL
+);
 
-5. An E/R diagram (using UML-notation) which describes your system.
-
-6. Relations. Indicate primary keys, possibly secondary keys, and foreign keys. You must show that the relations are normalized according to your chosen normal form (if a relation "obviously" is in BCNF you may say so, provided that you justify your statement). If a relation is in a lower normal form than BCNF, you must justify this choice.
-
-7. SQL statements to create all tables, views, stored procedures, and other database elements. (Don’t include statements to create the initial contents of the database.)
-
+CREATE TABLE Ingredient (
+	ingredient_name varchar(40) PRIMARY KEY,
+	amount real NOT NULL,
+	unit varchar(2) NOT NULL,
+	refill_date date
+);
+´´´
 8. A user’s manual (not necessary if everything in the program is self-explanatory).
