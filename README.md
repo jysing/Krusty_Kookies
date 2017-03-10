@@ -1,7 +1,7 @@
 # Krusty_Kookies
 
 # 1. **A section with your names, program/year, and email-addresses**
-- Kewin Erichsen, E11, XXXYYXXX@student.lu.se
+- Kewin Erichsen, E11, rys10ker@student.lu.se
 - Henrik Fryklund, E13, kem12hfr@student.lu.se
 - Joakim Ysing, DX, XXXYYXXX@student.lu.se
 
