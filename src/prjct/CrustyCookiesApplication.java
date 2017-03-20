@@ -1,6 +1,6 @@
-package prjct;
+package src.prjct;
 
-import app.Database;
+import src.app.Database;
 
 /**
  * CrustyCookiesApplication is the main class for the Crusty Cookies
@@ -16,5 +16,6 @@ public class CrustyCookiesApplication {
 	 */
 	public static void main(String[] args) {
 		Database db = new Database();
-	}
+		System.out.println("make run works");
+	 }
 }

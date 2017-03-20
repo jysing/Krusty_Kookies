@@ -12,11 +12,11 @@ PRAGMA foreign_keys=ON;
 CREATE TABLE Customer (
 	customer_name varchar(40) PRIMARY KEY,
 	address varchar(40) NOT NULL,
-	country varchar(40) NOT NULL
+	country varchar(40) NOT NULL DEFAULT 'Sweden'
 );
 
 CREATE TABLE Order_Bill (
-	order_id integer PRIMARY KEY,
+	order_id INTEGER PRIMARY KEY,
 	customer_name varchar(40) REFERENCES Customer(customer_name),
 	delivery_date date NOT NULL
 );
@@ -28,7 +28,7 @@ CREATE TABLE OrderItems (
 );
 
 CREATE TABLE Pallet (
-	pallet_id int PRIMARY KEY,
+	pallet_id INTEGER PRIMARY KEY NOT NULL,
 	cookie_name varchar(40) REFERENCES Cookie(cookie_name),
 	order_id integer REFERENCES Order_Bill(order_id),
 	production_date date NOT NULL,

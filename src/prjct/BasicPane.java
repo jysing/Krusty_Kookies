@@ -1,6 +1,6 @@
-package prjct;
+package src.prjct;
 
-import app.Database;
+import src.app.Database;
 
 import javax.swing.*;
 import javax.swing.border.*;
@@ -9,9 +9,9 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class BasicPane extends JPanel {
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	/**
 	 * The database object.
 	 */

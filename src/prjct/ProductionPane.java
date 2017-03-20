@@ -1,6 +1,6 @@
-package prjct;
+package src.prjct;
 
-import app.Database;
+import src.app.Database;
 
 import javax.swing.*;
 import javax.swing.event.*;
@@ -14,8 +14,8 @@ import java.awt.event.*;
 import java.io.*;
 
 public class ProductionPane extends BasicPane {
-	
+
 	public ProductionPane() {
-		super(db);
+		super(new Database());
 	}
 }
