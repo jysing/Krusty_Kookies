@@ -12,10 +12,11 @@ public class CrustyCookiesApplication {
 	/**
 	 * Execute using:
 	 *
-	 * java -cp ".;sqlite-jdbc.jar" tblseat/TableSeatingHelper
+	 * java -cp ".;sqlite-jdbc.jar" src/prjct/CrustyCookiesApplication
 	 */
 	public static void main(String[] args) {
 		Database db = new Database();
-		System.out.println("make run works");
+		db.openConnection("src/Krusty.db");
+		if (db.isConnected()) System.out.println("make run works");
 	 }
 }
