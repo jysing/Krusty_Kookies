@@ -81,7 +81,7 @@ public class ProductionPane extends BasicPane {
 		specPalletListModel = new DefaultListModel<String>();
 
 		specPalletList = new JList<String>(specPalletListModel);
-		specPalletList.setSelectionModel(ListSelectionModel.SINGLE_SELECTION);
+		specPalletList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
 		return panel;
 	}
