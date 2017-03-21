@@ -18,5 +18,6 @@ public class CrustyCookiesApplication {
 		Database db = new Database();
 		db.openConnection("src/Krusty.db");
 		if (db.isConnected()) System.out.println("make run works");
+		new CrustyGUI(db);
 	 }
 }

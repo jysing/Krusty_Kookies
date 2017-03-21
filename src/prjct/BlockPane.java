@@ -13,9 +13,9 @@ import java.awt.event.*;
 
 import java.io.*;
 
-public class ProductionPane extends BasicPane {
+public class BlockPane extends BasicPane {
 
-	public ProductionPane(Database db) {
+	public BlockPane(Database db) {
 		super(new Database());
 	}
 }
