@@ -3,7 +3,7 @@
 # 1. **A section with your names, program/year, and email-addresses**
 - Kewin Erichsen, E11, rys10ker@student.lu.se
 - Henrik Fryklund, E13, kem12hfr@student.lu.se
-- Joakim Ysing, DX, XXXYYXXX@student.lu.se
+- Joakim Ysing, D12, lan11jys@student.lu.se
 
 # 2. **A section with an introduction (what the project is about, etc.).**
 Lorem Ipsum
