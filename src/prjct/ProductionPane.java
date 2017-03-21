@@ -10,19 +10,40 @@ import javax.swing.filechooser.*;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.*;
 
 import java.io.*;
 
 public class ProductionPane extends BasicPane {
+
+	/**
+     * The list model for the specific pallet list.
+     */
+    private DefaultListModel<String> specPalletListModel;
+
+    /**
+     * The specific pallet list.
+     */
+    private JList<String> specPalletList;
+
+    /**
+     * The list model for the all pallets list.
+     */
+    private DefaultListModel<String> allPalletListModel;
+
+    /**
+     * The all pallets list.
+     */
+    private JList<String> allPalletList;
 
 	public ProductionPane(Database db) {
 		super(new Database());
 	}
 
 	/**
-	 * Create the left top panel. Contains tools for determining the number
-	 * of tables to be used in the seating.
-	 *
+	 * Create the left top panel. Contains tools for producing pallets containing
+	 * various cookies.
+	 * 
 	 * @return the left top panel.
 	 */
 	public JComponent createLeftTopPanel() {
@@ -50,24 +71,50 @@ public class ProductionPane extends BasicPane {
 	}
 
 	/**
-	 * Create the left middle panel.
+	 * Create the center middle panel.
 	 *
-	 * @return the left middle panel.
+	 * @return the center middle panel.
 	 */
-	public JComponent createLeftMiddlePanel() {
+	public JComponent createMiddlePanel() {
 		JPanel panel = new JPanel();
+
+		specPalletListModel = new DefaultListModel<String>();
+
+		specPalletList = new JList<String>(specPalletListModel);
+		specPalletList.setSelectionModel(ListSelectionModel.SINGLE_SELECTION);
 
 		return panel;
 	}
 
 	/**
-	 * Create the left bottom panel.
-	 *
-	 * @return the left bottom panel.
+	 * A class that listens for clicks in the specific pallet list.
 	 */
-	public JComponent createLeftBottomPanel() {
-		JPanel panel = new JPanel();
+	class SpecPalletSelectionListener implements ListSelectionListener {
+		/**
+         * Called when the user selects a pallet in the specific pallet list. Fetches
+         * pallet information from the database and displays them in the info box.
+         * 
+         * @param e
+         *            The selected list item.
+         */
+		public void valueChanged(ListSelectionEvent e) {
+			// implement.
+		}
+	}
 
-		return panel;
+	/**
+	 * A class that listens for clicks in the all pallets list.
+	 */
+	class AllPalletSelectionListener implements ListSelectionListener {
+		/**
+         * Called when the user selects a pallet in the all pallet list. Fetches
+         * pallet information from the database and displays them in the info box.
+         * 
+         * @param e
+         *            The selected list item.
+         */
+		public void valueChanged(ListSelectionEvent e) {
+			// implement.
+		}
 	}
 }
