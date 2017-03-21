@@ -82,7 +82,19 @@ public class ProductionPane extends BasicPane {
 
 		specPalletList = new JList<String>(specPalletListModel);
 		specPalletList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		specPalletList.addListSelectionListener(new SpecPalletSelectionListener());
+		JScrollPane p1 = new JScrollPane(specPalletList);
 
+		allPalletListModel = new DefaultListModel<String>();
+
+		allPalletList = new JList<String>(allPalletListModel);
+		allPalletList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		allPalletList.addListSelectionListener(new AllPalletSelectionListener());
+		JScrollPane p2 = new JScrollPane(allPalletList);
+
+		panel.setLayout(new GridLayout(1, 2));
+		panel.add(p1);
+		panel.add(p2);
 		return panel;
 	}
 
@@ -114,6 +126,21 @@ public class ProductionPane extends BasicPane {
          *            The selected list item.
          */
 		public void valueChanged(ListSelectionEvent e) {
+			// implement.
+		}
+	}
+
+	/**
+     * A class that listens for button clicks.
+     */
+	class ProduceHandler implements ActionListener {
+		/**
+         * Called when the user clicks the Produce button.
+         * 
+         * @param e
+         *            The event object (not used).
+         */
+		public void actionPerformed(ActionEvent e) {
 			// implement.
 		}
 	}
