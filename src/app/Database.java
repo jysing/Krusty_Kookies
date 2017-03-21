@@ -60,22 +60,94 @@ public class Database {
 		return conn != null;
 	}
 
-	/* --- READ/WRITE --- */
+	/**
+	 *	List of all existing orders
+	 *
+	 *
+	 */
+	public void updateOrder_bills(String from_date, String to_date) {
 
-	public void clearDatabase() {
-		/* --- insert code to clear database file --- */
+	} 
+
+	/**
+	 *	
+	 *
+	 *
+	 */
+	public void loading_order(String costumer_ID, String date)
+
+	/**
+	 * 	List of all existing pallets in frezzer
+	 *
+	 *
+	 */
+	public void updateFrezzer() {
+
 	}
 
-	public boolean hasGuestList() {
-		return false;
+	public void updateDelivered(String from_date, String to_date) {
+
 	}
 
-	public boolean insertGuestList(LinkedList<String[]> guests) {
-		clearDatabase();
+	/**
+	 * Villka pallets som levererats till kund 	
+	 * samt datum för leveranserna
+	 *
+	 */
+	public void deliveredPallets(String costumer) {
 
-		/* --- code to insert new data to database --- */
-
-		return true;
 	}
 
+	/**
+	 *	Produce pallets
+	 *
+	 *
+	 */
+	public void producePallets(String cookie_name, int nbr_pallets) {
+
+	}
+
+	/**
+	 * Blockera 	
+	 *
+	 *
+	 */
+	public void blockCookieType(String name, String from_date, String to_date) {
+
+	}
+
+	/**
+	 * Lista över blockerade cookies	
+	 *
+	 *
+	 */
+	public void blockedCookieType() {
+
+	}
+
+	/**
+	 * Lista över blockerade pallets	
+	 * 
+	 *
+	 */
+	public void blockedPallets() {
+
+	}
+
+	/**
+	 *	Eventuellt ta in pallet_ID array
+	 *
+	 *
+	 */
+	public void exportLoadingOrder() {
+
+	}
+
+	public void trackPallet(int palletID) {
+
+	}
+
+	public void trackPallets(String from_date, String to_date) {
+
+	}
 }
