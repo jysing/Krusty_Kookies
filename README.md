@@ -44,7 +44,7 @@ E/R-diagram:
 ```SQL
 PRAGMA foreign_keys=OFF;
 DROP TABLE IF EXISTS Customer;
-DROP TABLE IF EXISTS Order;
+DROP TABLE IF EXISTS Order_Bill;
 DROP TABLE IF EXISTS OrderItems;
 DROP TABLE IF EXISTS Pallet;
 DROP TABLE IF EXISTS Cookie;
@@ -56,25 +56,25 @@ PRAGMA foreign_keys=ON;
 CREATE TABLE Customer (
 	customer_name varchar(40) PRIMARY KEY,
 	address varchar(40) NOT NULL,
-	country varchar(40) NOT NULL
+	country varchar(40) NOT NULL DEFAULT 'Sweden'
 );
 
-CREATE TABLE Order (
-	order_id integer PRIMARY KEY,
+CREATE TABLE Order_Bill (
+	order_id INTEGER PRIMARY KEY,
 	customer_name varchar(40) REFERENCES Customer(customer_name),
 	delivery_date date NOT NULL
 );
 
 CREATE TABLE OrderItems (
-	order_id int REFERENCES Order(order_id),
+	order_id int REFERENCES Order_Bill(order_id),
 	cookie_name varchar(40) REFERENCES Cookie(cookie_name),
 	nbrPallet integer
 );
 
 CREATE TABLE Pallet (
-	pallet_id INTEGER PRIMARY KEY,
+	pallet_id INTEGER PRIMARY KEY NOT NULL,
 	cookie_name varchar(40) REFERENCES Cookie(cookie_name),
-	order_id integer REFERENCES Order(order_id),
+	order_id integer REFERENCES Order_Bill(order_id),
 	production_date date NOT NULL,
 	location varchar(40) NOT NULL,
 	is_blocked int
