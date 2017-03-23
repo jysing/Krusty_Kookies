@@ -37,7 +37,7 @@ public class ProductionPane extends BasicPane {
     private JList<String> allPalletList;
 
 	public ProductionPane(Database db) {
-		super(new Database());
+		super(db);
 	}
 
 	/**
@@ -127,7 +127,7 @@ public class ProductionPane extends BasicPane {
          *            The selected list item.
          */
 		public void valueChanged(ListSelectionEvent e) {
-			// implement.
+			//implement
 		}
 	}
 
