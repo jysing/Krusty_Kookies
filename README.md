@@ -72,7 +72,7 @@ CREATE TABLE OrderItems (
 );
 
 CREATE TABLE Pallet (
-	pallet_id int PRIMARY KEY,
+	pallet_id INTEGER PRIMARY KEY,
 	cookie_name varchar(40) REFERENCES Cookie(cookie_name),
 	order_id integer REFERENCES Order(order_id),
 	production_date date NOT NULL,
