@@ -36,6 +36,16 @@ public class ProductionPane extends BasicPane {
      */
     private JList<String> allPalletList;
 
+	/**
+	 * Spinner for number of crates to be produced
+	 */
+	private JSpinner nbrOfPallets;
+
+	/**
+	 * Drop down menu containing all cookie types
+	 */
+	private JComboBox dropDown;
+
 	public ProductionPane(Database db) {
 		super(db);
 	}
@@ -51,9 +61,9 @@ public class ProductionPane extends BasicPane {
 		Box mainBox = new Box(BoxLayout.Y_AXIS);
 		Box box = new Box(BoxLayout.X_AXIS);
 		
-		JComboBox dropDown = new JComboBox();
-		JSpinner nbrOfPallets = customSpinner(new SpinnerNumberModel(1,1,500,1), 50, 25);
-		JButton produce = customButton("Produce",null, 100, 25);
+		dropDown = new JComboBox();
+		nbrOfPallets = customSpinner(new SpinnerNumberModel(1,1,500,1), 50, 25);
+		JButton produce = customButton("Produce",new ProducePalletListener(), 100, 25);
 
 		box.add(nbrOfPallets);
 		box.add(Box.createHorizontalStrut(200));
@@ -68,6 +78,20 @@ public class ProductionPane extends BasicPane {
 		panel.setBorder(new LineBorder(Color.BLACK));
 
 		return panel;
+	}
+
+	/**
+	 * Called when user switches to production pane
+	 */
+	public void entryActions() {
+		updateCookieList();
+	}
+
+	private void updateCookieList(){
+		dropDown.removeAllItems();
+		for(String s: db.getCookieNames()){
+			dropDown.addItem(s);
+		}
 	}
 
 	/**
@@ -96,6 +120,19 @@ public class ProductionPane extends BasicPane {
 		panel.add(p1);
 		panel.add(p2);
 		return panel;
+	}
+
+
+	class ProducePalletListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			int number = (Integer) nbrOfPallets.getValue();
+			String cookie = (String) dropDown.getSelectedItem();
+			if(number > 0 && cookie != null){
+				db.producePallets(cookie, number);
+			}
+		}
 	}
 
 	/**

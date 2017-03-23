@@ -88,6 +88,23 @@ public class Database {
 		return rs;
 	}
 
+	public String[] getCookieNames(){
+		ArrayList<String> cookies = new ArrayList<String>();
+		String query = "SELECT cookie_name " +
+				"FROM Cookie";
+		try {
+			ResultSet rs = sendGetQuery(query);
+			while(rs.next()){
+				cookies.add(rs.getString("cookie_name"));
+			}
+		} catch (SQLException ex){
+			System.err.println("SQL error: " + ex.getMessage());
+			cookies = null;
+		}
+
+		return cookies.toArray(new String[cookies.size()]);
+	}
+
 
 	/**
 	 * List of all existing orders.
@@ -193,6 +210,37 @@ public class Database {
 	 * @param nbr_pallets Number of pallets to be produced of a cookie type
 	 */
 	public void producePallets(String cookie_name, int nbr_pallets) {
+		/*
+		SELECT ingredient_name, amount
+		FROM Cookie INNER JOIN RecipeItems ON cookie_name
+		WHERE Cookie.cookie_name = cookie_name AND RecipeItems.cookie_name = cookie.name
+
+		Då fås info om ingredienser och mängd. Sätt in i query nedan
+
+		Update the ingredient
+
+		UPDATE Ingredient
+           set amount = CASE
+                WHEN ingredient_name = 'Butter' THEN amount - 54*(SELECT amount from RecipeItems WHERE cookie_name = 'Berliner' AND ingredient_name = 'Butter')
+                WHEN ingredient_name = 'Eggs' THEN amount - 54*(SELECT amount from RecipeItems WHERE cookie_name = 'Berliner' AND ingredient_name = 'Eggs')
+                ELSE amount END
+         */
+		 /*
+
+         Efter uppdatering av inventariet är det dags att skapa Pallets'
+         INSERT INTO Pallet (cookie_name, order_id, production_date, location, is_blocked)
+    		VALUES ('cookie_name', NULL ,'2017-02-12', 'Freezer', NULL);
+		 */
+
+		String query = "INSERT stuff";
+		int result = -1;
+		try{
+			result = sendPutQuery(query);
+
+		}catch(SQLException ex){
+			System.err.println(ex.getMessage());
+			result = -1;
+		}
 
 	}
 

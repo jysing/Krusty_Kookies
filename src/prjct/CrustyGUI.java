@@ -95,7 +95,7 @@ public class CrustyGUI {
 		 */
 		public void stateChanged (ChangeEvent e) {
 			BasicPane selectedPane = (BasicPane) tabbedPane.getSelectedComponent();
-			//selectedPane.entryActions();
+			selectedPane.entryActions();
 		}
 	}
 
