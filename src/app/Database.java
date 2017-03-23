@@ -60,16 +60,86 @@ public class Database {
 		return conn != null;
 	}
 
+
+	/**
+	 * For INSERT, UPDATE, DELETE
+	 *
+	 * @param query to be executed
+	 * @return either (1) the row count for SQL Data Manipulation Language (DML) statements or
+	 * 				  (2) 0 for SQL statements that return nothing
+	 * @throws SQLException
+	 */
+	private int sendPutQuery(String query) throws SQLException{
+		Statement stmt = conn.createStatement();
+		return stmt.executeUpdate(query);
+	}
+
+	/**
+	 * For SELECT
+	 *
+	 * @param query to be executed
+	 * @return Resultset containing result from SQL query
+	 * @throws SQLException
+	 */
+	private ResultSet sendGetQuery(String query) throws SQLException {
+		ResultSet rs = null;
+		Statement stmt = conn.createStatement();
+		rs = stmt.executeQuery(query);
+		return rs;
+	}
+
+
 	/**
 	 * List of all existing orders.
+	 * TODO: Test
 	 *
 	 * @param from_date start date of interval
 	 * @param to_date end date of interval
 	 * @return list of Order_Bill
 	 */
 	public String[] updateOrder_bills(String from_date, String to_date) {
-		return null;
+		ArrayList<String> bills = new ArrayList<String>();
+		String query = "SELECT order_id " +
+						"FROM Order_Bill " +
+						"WHERE delivery_date BETWEEN " + from_date + " AND " + to_date;
+		try {
+			ResultSet rs = sendGetQuery(query);
+			while(rs.next()){
+				bills.add(rs.getString("order_id")); //Alternativt konvertera till int
+				System.out.println("Order_Bill: " + rs.getString("date"));
+			}
+		} catch (SQLException ex){
+				System.err.println("SQL error: " + ex.getMessage());
+				bills = null;
+			}
+
+		return bills.toArray(new String[bills.size()]);
+
 	}
+
+	/**
+	 * Retrieves information about a order.
+	 * TODO: Change so it returns an object. Add information about pallets.
+	 * @param order_id
+	 * @return Information about order_id
+	 */
+	public String[] loading_order(int order_id){
+		ArrayList<String> order = new ArrayList<String>();
+		String query = "SELECT * " +
+				"FROM Order_Bill INNER JOIN OrderItems ON Order_Bill.order_id = OrderItems.order_id " +
+				"WHERE order_id = " + order_id;
+		try{
+			ResultSet rs = sendGetQuery(query);
+			while(rs.next()){
+				order.add(rs.getString("customer_name"));
+			}
+		}catch(SQLException ex){
+			System.err.println(ex.getMessage());
+			order = null;
+		}
+		return order.toArray((new String[order.size()]));
+	}
+
 
 	/**
 	 * Retrieves information about a Customers orders

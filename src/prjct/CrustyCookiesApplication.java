@@ -11,7 +11,7 @@ public class CrustyCookiesApplication {
 
 	/**
 	 * Execute using:
-	 *
+	 * javac serc/ * /*.java
 	 * java -cp ".;sqlite-jdbc.jar" src/prjct/CrustyCookiesApplication
 	 */
 	public static void main(String[] args) {

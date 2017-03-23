@@ -111,6 +111,7 @@ public class ProductionPane extends BasicPane {
          */
 		public void valueChanged(ListSelectionEvent e) {
 			// implement.
+			System.out.println("YOLLO");
 		}
 	}
 
