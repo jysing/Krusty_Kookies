@@ -176,8 +176,21 @@ public class Database {
 	 *
 	 * @return list of pallets in freezer
 	 */
-	public String[] updateFrezzer() {
-		return null;
+	public String[] updateFreezer() {
+		ArrayList<String> pallets = new ArrayList<String>();
+		String query = "SELECT pallet_id " +
+				"FROM Pallet " +
+				"WHERE is_blocked = 0 AND location = 'Freezer'";
+		try{
+			ResultSet rs = sendGetQuery(query);
+			while(rs.next()){
+				pallets.add(rs.getString("pallet_id"));
+			}
+		}catch(SQLException ex){
+			System.err.println(ex.getMessage());
+			pallets = null;
+		}
+		return pallets.toArray((new String[pallets.size()]));
 	}
 
 	/**
@@ -231,17 +244,20 @@ public class Database {
          INSERT INTO Pallet (cookie_name, order_id, production_date, location, is_blocked)
     		VALUES ('cookie_name', NULL ,'2017-02-12', 'Freezer', NULL);
 		 */
+		for (int i = 0; i < nbr_pallets; i++) {
+			String query = "INSERT INTO Pallet (cookie_name, production_date, location) " +
+					"VALUES ('" + cookie_name + "', date() , 'Freezer');";
+			int result;
+			try{
+				result = sendPutQuery(query);
 
-		String query = "INSERT stuff";
-		int result = -1;
-		try{
-			result = sendPutQuery(query);
+			}catch(SQLException ex){
+				System.err.println(ex.getMessage());
+				result = -1;
+			}
+			System.out.println(result);
 
-		}catch(SQLException ex){
-			System.err.println(ex.getMessage());
-			result = -1;
 		}
-
 	}
 
 	/**
@@ -302,4 +318,10 @@ public class Database {
 	public String[] trackPallets(String from_date, String to_date) {
 		return null;
 	}
+
+	/**
+	 *
+	 * @return
+	 */
+
 }

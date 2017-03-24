@@ -63,7 +63,7 @@ public class ProductionPane extends BasicPane {
 		
 		dropDown = new JComboBox();
 		nbrOfPallets = customSpinner(new SpinnerNumberModel(1,1,500,1), 50, 25);
-		JButton produce = customButton("Produce",new ProducePalletListener(), 100, 25);
+		JButton produce = customButton("Produce",new ProduceHandler(), 100, 25);
 
 		box.add(nbrOfPallets);
 		box.add(Box.createHorizontalStrut(200));
@@ -80,19 +80,6 @@ public class ProductionPane extends BasicPane {
 		return panel;
 	}
 
-	/**
-	 * Called when user switches to production pane
-	 */
-	public void entryActions() {
-		updateCookieList();
-	}
-
-	private void updateCookieList(){
-		dropDown.removeAllItems();
-		for(String s: db.getCookieNames()){
-			dropDown.addItem(s);
-		}
-	}
 
 	/**
 	 * Create the center middle panel.
@@ -122,8 +109,32 @@ public class ProductionPane extends BasicPane {
 		return panel;
 	}
 
+	/**
+	 * Called when user switches to production pane
+	 */
+	public void entryActions() {
+		updateCookieList();
+		updateAllPalletList();
+	}
 
-	class ProducePalletListener implements ActionListener {
+	private void updateAllPalletList() {
+        allPalletListModel.removeAllElements();
+		for (String s: db.updateFreezer()){
+            allPalletListModel.addElement(s);
+		}
+	}
+
+	private void updateCookieList(){
+		dropDown.removeAllItems();
+		for(String s: db.getCookieNames()){
+			dropDown.addItem(s);
+		}
+	}
+
+	/**
+	 * A class that listens for clicks on the produce-button.
+	 */
+	class ProduceHandler implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -168,18 +179,4 @@ public class ProductionPane extends BasicPane {
 		}
 	}
 
-	/**
-     * A class that listens for button clicks.
-     */
-	class ProduceHandler implements ActionListener {
-		/**
-         * Called when the user clicks the Produce button.
-         * 
-         * @param e
-         *            The event object (not used).
-         */
-		public void actionPerformed(ActionEvent e) {
-			// implement.
-		}
-	}
 }
