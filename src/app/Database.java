@@ -287,7 +287,20 @@ public class Database {
 	 * @return list of blocked pallets
 	 */
 	public String[] blockedPallets() {
-		return null;
+		ArrayList<String> pallets = new ArrayList<String>();
+		String query = "SELECT pallet_id " + 
+			"FROM PALLET " + 
+			"WHERE is_blocked = 1";
+		try{
+			ResultSet rs = sendGetQuery(query);
+			while(rs.next()){
+				pallets.add(rs.getString("pallet_id"));
+			}
+		}catch(SQLException ex){
+			System.err.println(ex.getMessage());
+			pallets = null;
+		}
+		return pallets.toArray((new String[pallets.size()]));
 	}
 
 	/**
