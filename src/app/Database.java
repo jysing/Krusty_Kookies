@@ -316,7 +316,20 @@ public class Database {
 	 * @return list of pallets
 	 */
 	public String[] trackPallets(String from_date, String to_date) {
-		return null;
+		ArrayList<String> pallets = new ArrayList<String>();
+		String query = "SELECT * " + 
+			"FROM PALLET " + 
+			"WHERE production_date BETWEEN " + from_date + " AND " + to_date;
+		try{
+			ResultSet rs = sendGetQuery(query);
+			while(rs.next()){
+				pallets.add(rs.getString("pallet_id"));
+			}
+		}catch(SQLException ex){
+			System.err.println(ex.getMessage());
+			pallets = null;
+		}
+		return pallets.toArray((new String[pallets.size()]));
 	}
 
 	/**
