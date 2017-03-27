@@ -2,6 +2,7 @@ package src.app;
 
 import java.sql.*;
 import java.util.*;
+import java.text.*;
 
 /**
  * Database is a class that specifies the interface to the xxx
@@ -305,7 +306,21 @@ public class Database {
 	 * @return information about pallet
 	 */
 	public String trackPallet(int palletID) {
-		return null;
+		StringBuilder pallet = new StringBuilder();
+		String query = "SELECT production_date, cookie_name " + 
+			"FROM PALLET " + 
+			"WHERE pallet_id = " + palletID;
+		try{
+			ResultSet rs = sendGetQuery(query);
+			pallet.append("Cookie: " + rs.getString("cookie_name"));
+			java.util.Date date = rs.getDate("production_date");
+			DateFormat df = new SimpleDateFormat("yyyy/MM/dd");
+			pallet.append(", Produced: " + df.format(date));
+		}catch(SQLException ex){
+			System.err.println(ex.getMessage());
+			pallet = null;
+		}
+		return pallet.toString();
 	}
 
 	/**
