@@ -1,18 +1,14 @@
 package src.prjct;
 
 import src.app.Database;
+import src.app.Pallet;
 
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.border.*;
-import javax.swing.JComponent.*;
-import javax.swing.filechooser.*;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
-
-import java.io.*;
 
 public class ProductionPane extends BasicPane {
 
@@ -46,6 +42,41 @@ public class ProductionPane extends BasicPane {
 	 */
 	private JComboBox dropDown;
 
+	/**
+	 * The text fields where the pallet data is shown
+	 */
+	private JTextField[] fields;
+
+	/**
+	 * The number of the pallet attribute 0 field
+	 */
+	private static final int PALLET_ATTR_0 = 0;
+
+	/**
+	 * The number of the pallet attribute 1 field
+	 */
+	private static final int PALLET_ATTR_1 = 1;
+
+	/**
+	 * The number of the pallet attribute 2 field
+	 */
+	private static final int PALLET_ATTR_2 = 2;
+
+	/**
+	 * The number of the pallet attribute 3 field
+	 */
+	private static final int PALLET_ATTR_3 = 3;
+
+	/**
+	 * The total number of fields
+	 */
+	private static final int NBR_FIELDS = 4;
+
+
+	/**
+	 *
+	 * @param db
+	 */
 	public ProductionPane(Database db) {
 		super(db);
 	}
@@ -80,6 +111,48 @@ public class ProductionPane extends BasicPane {
 		return panel;
 	}
 
+	/**
+	 * Create the left bottom panel.
+	 *
+	 * @return An empty panel.
+	 */
+	public JComponent createLeftBottomPanel() {
+		JPanel panel = new JPanel();
+
+		String[] texts = new String[NBR_FIELDS];
+		texts[PALLET_ATTR_0] = "Attr 0";
+		texts[PALLET_ATTR_1] = "Attr 1";
+		texts[PALLET_ATTR_2] = "Attr 2";
+		texts[PALLET_ATTR_3] = "Attr 3";
+
+		fields = new JTextField[NBR_FIELDS];
+		for (int i = 0; i < fields.length; i++) {
+			fields[i] = new JTextField(20);
+			fields[i].setEditable(false);
+		}
+
+		JPanel left = new JPanel();
+		left.setLayout(new GridLayout(texts.length, 1));
+		for (int i = 0; i < texts.length; i++) {
+			JLabel label = new JLabel(texts[i] + "\n		", JLabel.RIGHT);
+			panel.add(label);
+		}
+
+		JPanel right = new JPanel();
+		right.setLayout(new GridLayout(fields.length, 1));
+		for (int i = 0; i < fields.length; i++) {
+			right.add(fields[i]);
+		}
+		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+		panel.add(left);
+		panel.add(right);
+
+		JPanel p = new JPanel();
+		p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
+		p.add(panel);
+
+		return p;
+	}
 
 	/**
 	 * Create the center middle panel.
@@ -115,6 +188,13 @@ public class ProductionPane extends BasicPane {
 	public void entryActions() {
 		updateCookieList();
 		updateAllPalletList();
+		clearFields();
+	}
+
+	private void clearFields(){
+		for (int i = 0; i < fields.length; i++){
+			fields[i].setText("");
+		}
 	}
 
 	private void updateAllPalletList() {
@@ -175,7 +255,20 @@ public class ProductionPane extends BasicPane {
          *            The selected list item.
          */
 		public void valueChanged(ListSelectionEvent e) {
-			//implement
+			if (allPalletList.isSelectionEmpty()){
+				return;
+			}
+			String pallet_id = allPalletList.getSelectedValue();
+			Pallet p;
+			p = db.trackPalletObject(pallet_id);
+			if(e.getValueIsAdjusting()){
+				System.out.println("Laddar in film");
+				fields[PALLET_ATTR_0].setText(p.cookie_name);
+				fields[PALLET_ATTR_1].setText(p.location);
+				fields[PALLET_ATTR_2].setText(p.production_date);
+				fields[PALLET_ATTR_3].setText(Integer.toString(p.order_id));
+			}
+			System.out.println("Hämtar film");
 		}
 	}
 

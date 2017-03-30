@@ -181,7 +181,7 @@ public class Database {
 		ArrayList<String> pallets = new ArrayList<String>();
 		String query = "SELECT pallet_id " +
 				"FROM Pallet " +
-				"WHERE is_blocked = 0 AND location = 'Freezer'";
+				"WHERE is_blocked IS NOT 1 AND location = 'Freezer'";
 		try{
 			ResultSet rs = sendGetQuery(query);
 			while(rs.next()){
@@ -320,7 +320,7 @@ public class Database {
 	 */
 	public String trackPallet(int palletID) {
 		StringBuilder pallet = new StringBuilder();
-		String query = "SELECT production_date, cookie_name " + 
+		String query = "SELECT * " +
 			"FROM PALLET " + 
 			"WHERE pallet_id = " + palletID;
 		try{
@@ -335,6 +335,24 @@ public class Database {
 		}
 		return pallet.toString();
 	}
+
+    /**
+     * Tracks a pallet and resturns a Pallet Object
+     */
+    public Pallet trackPalletObject(String pallet_id){
+        Pallet p;
+        String query = "SELECT * " +
+                "FROM PALLET " +
+                "WHERE pallet_id = " + pallet_id;
+        try{
+            ResultSet rs = sendGetQuery(query);
+            p = new Pallet(rs);
+        }catch(SQLException ex){
+            System.err.println(ex.getMessage());
+            p = null;
+        }
+        return p;
+    }
 
 	/**
 	 * Returns a list of pallets that were produced in a time interval.
@@ -360,9 +378,6 @@ public class Database {
 		return pallets.toArray((new String[pallets.size()]));
 	}
 
-	/**
-	 *
-	 * @return
-	 */
+
 
 }
