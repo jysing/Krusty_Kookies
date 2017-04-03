@@ -268,8 +268,22 @@ public class Database {
 	 * @param from_date start date of interval
 	 * @param to_date end date of interval
 	 */
-	public void blockCookieType(String cookie_name, String from_date, String to_date) {
-
+	public boolean blockCookieType(String cookie_name, String from_date, String to_date) {
+		ArrayList<String> pallets = new ArrayList<String>();
+		String query = "UPDATE Pallet " +
+    		"set is_blocked = CASE " + 
+    		"WHEN cookie_name = '" + cookie_name + "' " + 
+    		"AND location IS NOT 'Delivered' " + 
+    		"AND production_date BETWEEN '" + from_date + "' AND '" + to_date + "' " + 
+    		"THEN 1 " +
+    		"ELSE is_blocked END";
+		try{
+			int nbrUpdatedLines = sendPutQuery(query);
+			if (nbrUpdatedLines > 0) return true;
+		}catch(SQLException ex){
+			System.err.println(ex.getMessage());
+		}
+		return false;
 	}
 
 	/**
