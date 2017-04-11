@@ -95,10 +95,12 @@ public class ProductionPane extends BasicPane {
 		dropDown = new JComboBox();
 		nbrOfPallets = customSpinner(new SpinnerNumberModel(1,1,500,1), 50, 25);
 		JButton produce = customButton("Produce",new ProduceHandler(), 100, 25);
+		JButton deliver = customButton("Deliver",new ProduceHandler(), 100, 25);
 
 		box.add(nbrOfPallets);
 		box.add(Box.createHorizontalStrut(200));
 		box.add(produce);
+		box.add(deliver);
 
 		mainBox.add(Box.createVerticalStrut(50));
 		mainBox.add(dropDown);
@@ -223,6 +225,17 @@ public class ProductionPane extends BasicPane {
 			if(number > 0 && cookie != null){
 				db.producePallets(cookie, number);
 			}
+		}
+	}
+
+	/**
+	 * A class that listens for clicks on the deliver-button.
+	 */
+	class DeliverHandler implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			
 		}
 	}
 
