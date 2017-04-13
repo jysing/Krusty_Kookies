@@ -90,6 +90,14 @@ public class BlockPane extends BasicPane {
 	}
 
 	public JComponent createLeftTopPanel() {
+		JLabel labelHeader = customLabel("<html><center>Block pallets</center></html>",
+			JLabel.CENTER, Component.CENTER_ALIGNMENT,
+			Font.BOLD, 18);
+		JLabel labelInfo = customLabel("<html><center>Choose cookie type and the date interval during which<br>" +
+			"the cookies were produced that you would like to block.</center></html>",
+			JLabel.CENTER, Component.CENTER_ALIGNMENT,
+			0, 12);
+
 		spinnerFrom = new JSpinner(new SpinnerDateModel());
 		spinnerTo = new JSpinner(new SpinnerDateModel());
 
@@ -114,6 +122,9 @@ public class BlockPane extends BasicPane {
 		box.add(block);
 
 		mainBox.add(Box.createVerticalStrut(50));
+		mainBox.add(labelHeader);
+		mainBox.add(labelInfo);
+		mainBox.add(Box.createVerticalStrut(10));
 		mainBox.add(dropDown);
 		mainBox.add(Box.createVerticalStrut(10));
 		mainBox.add(box);

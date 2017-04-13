@@ -105,6 +105,13 @@ public class SearchPane extends BasicPane {
 	}
 
 	public JComponent createLeftTopPanel() {
+		JLabel labelHeader = customLabel("<html><center>Search by date</center></html>",
+			JLabel.CENTER, Component.CENTER_ALIGNMENT,
+			Font.BOLD, 18);
+		JLabel labelInfo = customLabel("<html><center>Search pallets by production date and cookie type.</center></html>",
+			JLabel.CENTER, Component.CENTER_ALIGNMENT,
+			0, 12);
+
 		JPanel panel = new JPanel();
 
 		spinnerFrom = new JSpinner(new SpinnerDateModel());
@@ -130,6 +137,9 @@ public class SearchPane extends BasicPane {
 
 
 		mainBox.add(Box.createVerticalStrut(50));
+		mainBox.add(labelHeader);
+		mainBox.add(labelInfo);
+		mainBox.add(Box.createVerticalStrut(10));
 		mainBox.add(box);
 		mainBox.add(Box.createVerticalStrut(10));
 		mainBox.add(search);
@@ -143,6 +153,13 @@ public class SearchPane extends BasicPane {
 	}
 
 	public JComponent createLeftMiddlePanel() {
+		JLabel labelHeader = customLabel("<html><center>Search by ID</center></html>",
+			JLabel.CENTER, Component.CENTER_ALIGNMENT,
+			Font.BOLD, 18);
+		JLabel labelInfo = customLabel("<html><center>Search pallet by its' pallet ID.</center></html>",
+			JLabel.CENTER, Component.CENTER_ALIGNMENT,
+			0, 12);
+
 		JPanel panel = new JPanel();
 		Box mainBox = new Box(BoxLayout.Y_AXIS);
 		Box box = new Box(BoxLayout.X_AXIS);
@@ -163,7 +180,10 @@ public class SearchPane extends BasicPane {
 		box.add(Box.createHorizontalStrut(5));
 		box.add(searchText);
 
-		mainBox.add(Box.createVerticalStrut(50));
+		mainBox.add(Box.createVerticalStrut(20));
+		mainBox.add(labelHeader);
+		mainBox.add(labelInfo);
+		mainBox.add(Box.createVerticalStrut(10));
 		mainBox.add(box);
 		mainBox.add(Box.createVerticalStrut(10));
 		mainBox.add(search);
