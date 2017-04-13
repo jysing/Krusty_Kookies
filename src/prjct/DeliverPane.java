@@ -323,8 +323,12 @@ public class DeliverPane extends BasicPane {
 	private void orderItemsList(){
 		orderBillsListModel.removeAllElements();
 		for (String s: db.getOrderItems()) {
-			String order = s.split(":")[0].trim();
-			if(!db.connectedToPallet(order)) orderBillsListModel.addElement(s);
+			String order_id = s.split(":")[0].trim();
+			String cookie_name = s.split(":")[1].trim();
+			if(db.connectedToPallet(order_id, cookie_name)){
+				orderBillsListModel.addElement(s);
+			}
+
 		}
 	}
 
@@ -446,7 +450,7 @@ public class DeliverPane extends BasicPane {
 			}
 			while(filePath == null);
 
-			loadedItemList(); //rensar listan
+			entryActions(); //rensar listan
 
 		}
 	}
