@@ -244,14 +244,12 @@ public class SearchPane extends BasicPane {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			System.out.println("Search by date interval");
-
 			String from = new SimpleDateFormat("yyyy-MM-dd").format(spinnerFrom.getValue());
 			String to = new SimpleDateFormat("yyyy-MM-dd").format(spinnerTo.getValue());
-			System.out.println(from + " : " + to);
-			String[] skit = db.getPallets(from, to, "Berliner");
+			String cookie_name = (String) dropDown.getSelectedItem();
+			String[] result = db.getPallets(from, to, cookie_name);
 			palletListModel.removeAllElements();
-			for(String s: skit){
+			for(String s: result){
 				palletListModel.addElement(s);
 			}
 
@@ -285,7 +283,7 @@ public class SearchPane extends BasicPane {
 			if(e.getValueIsAdjusting()){
 			String pallet_id = palletList.getSelectedValue();
 			pallet_id = pallet_id.split(" : ")[0];
-			System.out.println(pallet_id);
+			System.out.println("Search for this and get info" + pallet_id);
 			/*Pallet p;
 			p = db.trackPalletObject(pallet_id);
 
