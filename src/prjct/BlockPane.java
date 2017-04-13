@@ -23,6 +23,11 @@ import javax.swing.SpinnerDateModel;
 import java.util.*;
 import java.text.*;
 
+/**
+ * The GUI pane where the user can block pallets containing one type of cookie
+ * that have been produced within a specified date interval. Contains a list
+ * that displays all blocked pallets.
+ */
 public class BlockPane extends BasicPane {
 
 	/**

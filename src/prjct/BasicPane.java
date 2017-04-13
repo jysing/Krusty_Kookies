@@ -8,6 +8,15 @@ import javax.swing.border.*;
 import java.awt.*;
 import java.awt.event.*;
 
+/**
+ * BasicPane is a pane in the user interface. It consists of three
+ * horizontically aligned subpanels.Each subpanel in turn consists
+ * of three vertically aligned subpanels. Subclasses can choose to
+ * configure these panels as they wish.
+ * 
+ * The class contains a reference to the database object, so subclasses
+ * can communicate with the database.
+ */
 public class BasicPane extends JPanel {
 
 	private static final long serialVersionUID = 1L;

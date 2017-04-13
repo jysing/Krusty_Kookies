@@ -4,6 +4,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.LinkedList;
 
+/**
+ * A class for generating a csv-file containing loading orders (i.e. orders
+ * that have been loaded to a truck and delivered to a customer). The loading
+ * order (csv-file) has for columns; customer, address, cookie type and
+ * number of pallets.
+ */
 public class CSVExporter {
 
 	/**
