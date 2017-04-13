@@ -527,7 +527,7 @@ public class Database {
 		try{
 			ResultSet rs = sendGetQuery(query);
 			while(rs.next()){
-				pallets.add(rs.getString("order_id") + ": " + rs.getString("cookie_name"));
+				pallets.add(rs.getString("order_id") + ":" + rs.getString("cookie_name"));
 			}
 		}catch(SQLException ex){
 			System.err.println(ex.getMessage());
@@ -561,7 +561,8 @@ public class Database {
 	 * 	
 	 * @return List of all delivered pallets
 	 */
-	public boolean load(String order_id, String cookie_name, int inLoading, int totForOrderID) {
+	public String[] load(String order_id, String cookie_name, int inLoading, int totForOrderID) {
+		ArrayList<String> pallets = new ArrayList<String>();
 		int wanted = 0;
 		int avaible = 0;
 		int toLoad = 0;
@@ -572,7 +573,7 @@ public class Database {
 		try{
 			ResultSet rs = sendGetQuery(query);
 			while(rs.next()){
-				wanted = rs.getInt("nbrPallet");
+				wanted = rs.getInt("nbrPallet") - totForOrderID;
 			}
 		}catch(SQLException ex){
 			System.err.println(ex.getMessage());
@@ -585,7 +586,7 @@ public class Database {
 		try{
 			ResultSet rs = sendGetQuery(query);
 			while(rs.next()){
-				avaible = rs.getInt("avaible");
+				avaible = rs.getInt("avaible") - inLoading;
 			}
 		}catch(SQLException ex){
 			System.err.println(ex.getMessage());
@@ -594,24 +595,26 @@ public class Database {
 		if (avaible >= wanted) toLoad = wanted;
 		else toLoad = avaible;
 
-		query  = "UPDATE orderItems " + 
-				"SET nbrPallet = nbrPallet - " + toLoad + " " + 
-				"WHERE order_id = '" + order_id + "' AND cookie_name = '" + cookie_name + "'";
+		query = "SELECT pallet_id, cookie_name, production_date " +
+				"FROM Pallet " + 
+				"WHERE cookie_name = '" + cookie_name + "' " + 
+				"ORDER BY production_date";
+
 		try{
-			int aff = sendPutQuery(query);
-			if (aff != toLoad) return false;
+			ResultSet rs = sendGetQuery(query);
+			for (int i = 0; i < inLoading; i++) rs.next();
+			for (int j = inLoading; j < (toLoad+inLoading); j++) {
+				rs.next();
+				//System.out.println(rs.getInt("pallet_id") + " : " + rs.getString("cookie_name") + " : " + order_id + " : " + rs.getString("production_date"));
+				pallets.add(rs.getInt("pallet_id") + " : " + rs.getString("cookie_name") + " : " + order_id);
+			}
 		}catch(SQLException ex){
+			//System.out.println("Here");
 			System.err.println(ex.getMessage());
+			pallets.clear();
 		}
-
-		query = "UPDATE Pallet " +
-				"SET location = 'delivered' " + 
-				"WHERE cookie_name = '" + cookie_name + "' " +
-				"LIMIT = " + toLoad;
-
-
-
-		return false;
+		//pallets.clear();
+		return pallets.toArray((new String[pallets.size()]));
 	}
 	/**
 	 *

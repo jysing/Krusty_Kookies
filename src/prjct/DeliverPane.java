@@ -343,7 +343,9 @@ public class DeliverPane extends BasicPane {
      					if (inLoadedForOrderID == order_id) totForOrderID++;
      				}
 				}
-				db.load(order_id, cookie_name, totInLoaded, totForOrderID);	
+				for (String s : db.load(order_id, cookie_name, totInLoaded, totForOrderID)) {
+					loadedListModel.addElement(s);
+				}	
 			}
 		}
 	}
