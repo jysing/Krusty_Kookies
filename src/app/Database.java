@@ -659,20 +659,22 @@ public class Database {
 	 *
 	 * @return List of all existing order items
 	 */
-	public String getOrderCookie(String order_id) {
+	public String[] getOrderCookies(String order_id) {
+
+		ArrayList<String> cookies = new ArrayList<>();
 		String query = "SELECT cookie_name " +
 				"FROM OrderItems " +
-				"WHERE order_id + '"+order_id+"'";
+				"WHERE order_id = '"+order_id+"'";
 		try{
 			ResultSet rs = sendGetQuery(query);
 			while(rs.next()){
-				return (rs.getString("cookie_name"));
+				cookies.add(rs.getString("cookie_name"));
 			}
 		}catch(SQLException ex){
 			System.err.println(ex.getMessage());
-			return "";
+			cookies.clear();
 		}
-		return "";
+		return cookies.toArray((new String[cookies.size()]));
 	}
 
 	/**
@@ -682,7 +684,7 @@ public class Database {
 	public String getOrderNbrOfPallets(String order_id, String cookie_name) {
 		String query = "SELECT nbrPallet " +
 				"FROM OrderItems " +
-				"WHERE order_id + '"+order_id+"' AND cookie_name = '" + cookie_name + "'";
+				"WHERE order_id = '"+order_id+"' AND cookie_name = '" + cookie_name + "'";
 		try{
 			ResultSet rs = sendGetQuery(query);
 			while(rs.next()){

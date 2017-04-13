@@ -316,6 +316,7 @@ public class DeliverPane extends BasicPane {
 		loadedItemList();
 		deliveredList();
 		fakeMethod();
+
 	}
 
 	private void loadedItemList() {
@@ -326,6 +327,7 @@ public class DeliverPane extends BasicPane {
 		for (int i = 0; i< 5; i++){
 			loadedListModel.addElement(i + ":" + "Berliner" + ":" + (i+1000));
 		}
+		loadedListModel.addElement(6 + ":" + "Berliner" + ":" + (1004));
 	}
 
 	private void orderItemsList(){
@@ -418,23 +420,26 @@ public class DeliverPane extends BasicPane {
 
 					LinkedList<String[]> orders = new LinkedList<String[]>();
 
-            /* --- DUMMY CODE --- */
-					String[] row = new String[4];
 					for (int i = 0; i < tempList.size(); i++) {
-						String order_id = tempList.get(i);
-						System.out.println("Order_id" + order_id);
-						String customer = db.getOrderCustomer(order_id);
-						String cookie_name = db.getOrderCookie(order_id);
-						String nbrPallets = db.getOrderNbrOfPallets(order_id, cookie_name);
-						String address = db.getCustomerAddress(order_id);
-						row[0] = customer;
-						row[1] = address;
-						row[2] = cookie_name;
-						row[3] = nbrPallets;
-						orders.add(row);
-					}
 
-            /* --- DUMMY CODE --- */
+						String order_id = tempList.get(i);
+						System.out.println("Order_id: " + order_id);
+						String customer = db.getOrderCustomer(order_id);
+						String address = db.getCustomerAddress(order_id);
+						String[] cookie_name = db.getOrderCookies(order_id);
+
+						for (int j = 0; j <cookie_name.length; j++){
+							String nbrPallets = db.getOrderNbrOfPallets(order_id, cookie_name[j]);
+							System.out.println(":::::::" + cookie_name[j] + ":"  + nbrPallets+ "::::::");
+							String[] row = new String[4];
+							row[0] = customer;
+							row[1] = address;
+							row[2] = cookie_name[j];
+							row[3] = nbrPallets;
+							orders.add(row);
+						}
+
+					}
 
 					CSVExporter print = new CSVExporter(orders, filePath);
 				}
