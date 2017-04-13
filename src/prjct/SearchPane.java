@@ -249,7 +249,7 @@ public class SearchPane extends BasicPane {
 			String from = new SimpleDateFormat("yyyy-MM-dd").format(spinnerFrom.getValue());
 			String to = new SimpleDateFormat("yyyy-MM-dd").format(spinnerTo.getValue());
 			System.out.println(from + " : " + to);
-			String[] skit = db.getPallets(from, to);
+			String[] skit = db.getPallets(from, to, "Berliner");
 			palletListModel.removeAllElements();
 			for(String s: skit){
 				palletListModel.addElement(s);
