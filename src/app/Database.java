@@ -127,7 +127,7 @@ public class Database {
 			}
 		} catch (SQLException ex){
 				System.err.println("SQL error: " + ex.getMessage());
-				bills = null;
+				bills.clear();
 			}
 
 		return bills.toArray(new String[bills.size()]);
@@ -152,7 +152,7 @@ public class Database {
 			}
 		}catch(SQLException ex){
 			System.err.println(ex.getMessage());
-			pallets = null;
+			pallets.clear();
 		}
 		return pallets.toArray((new String[pallets.size()]));
 	}
@@ -174,7 +174,7 @@ public class Database {
 			}
 		}catch(SQLException ex){
 			System.err.println(ex.getMessage());
-			pallets = null;
+			pallets.clear();
 		}
 		return pallets.toArray((new String[pallets.size()]));
 	}
@@ -511,7 +511,7 @@ public class Database {
 			}
 		}catch(SQLException ex){
 			System.err.println(ex.getMessage());
-			pallets = null;
+			pallets.clear();
 		}
 		return pallets.toArray((new String[pallets.size()]));
 	}
@@ -531,7 +531,7 @@ public class Database {
 			}
 		}catch(SQLException ex){
 			System.err.println(ex.getMessage());
-			pallets = null;
+			pallets.clear();
 		}
 		return pallets.toArray((new String[pallets.size()]));
 	}
@@ -552,7 +552,7 @@ public class Database {
 			}
 		}catch(SQLException ex){
 			System.err.println(ex.getMessage());
-			pallets = null;
+			pallets.clear();
 		}
 		return pallets.toArray((new String[pallets.size()]));
 	}
