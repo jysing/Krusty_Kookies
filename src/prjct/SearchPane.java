@@ -13,6 +13,7 @@ import java.awt.*;
 import java.awt.event.*;
 
 import java.io.*;
+import java.text.SimpleDateFormat;
 
 public class SearchPane extends BasicPane {
 
@@ -246,8 +247,9 @@ public class SearchPane extends BasicPane {
 		public void actionPerformed(ActionEvent e) {
 			System.out.println("Search by date interval");
 
-			System.out.println(spinnerFrom.getValue());
+			System.out.println(new SimpleDateFormat("yyyy-MM-dd").format(spinnerFrom.getValue()));
 			//db.getPallets();
+			//2015-23-11
 		}
 	}
 
