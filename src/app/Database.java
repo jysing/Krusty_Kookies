@@ -271,7 +271,7 @@ public class Database {
 		try{
 			ResultSet rs = sendGetQuery(query);
 			while(rs.next()) {
-				pallets.add(rs.getString("pallet_id") + " " + rs.getString("cookie_name");
+				pallets.add(rs.getString("pallet_id") + " " + rs.getString("cookie_name"));
 				//pallets.add(rs.getString("pallet_id"));
 			}
 		}catch(SQLException ex){
