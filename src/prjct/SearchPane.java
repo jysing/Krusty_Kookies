@@ -162,33 +162,49 @@ public class SearchPane extends BasicPane {
 	public JComponent createLeftBottomPanel() {
 		JPanel panel = new JPanel();
 
-		String[] texts = new String[NBR_FIELDS];
-		texts[PALLET_ATTR_0] = "Attr 0";
-		texts[PALLET_ATTR_1] = "Attr 1";
-		texts[PALLET_ATTR_2] = "Attr 2";
-		texts[PALLET_ATTR_3] = "Attr 6";
+		Box mainBox = new Box(BoxLayout.X_AXIS);
+		Box labelBox = new Box(BoxLayout.Y_AXIS);
+		Box attributeBox = new Box(BoxLayout.Y_AXIS);
+
+		String[] labels = new String[NBR_FIELDS];
+		labels[PALLET_ATTR_0] = "Attr 0";
+		labels[PALLET_ATTR_1] = "Attr 1";
+		labels[PALLET_ATTR_2] = "Attr 2";
+		labels[PALLET_ATTR_3] = "Attr 6";
+
+		for(int i = 0; i < NBR_FIELDS; i++) {
+			JLabel l = customLabel(labels[i],
+			JLabel.LEFT, Component.RIGHT_ALIGNMENT,
+			Font.BOLD, 14);
+			labelBox.add(l);
+		}
 
 		fields = new JTextField[NBR_FIELDS];
 		for (int i = 0; i < fields.length; i++) {
 			fields[i] = new JTextField(20);
 			fields[i].setEditable(false);
+			attributeBox.add(fields[i]);
 		}
 
-		JPanel left = new JPanel();
-		left.setLayout(new GridLayout(texts.length, 1));
-		for (int i = 0; i < texts.length; i++) {
-			JLabel label = new JLabel(texts[i] + "\n		", JLabel.RIGHT);
-			panel.add(label);
-		}
+		mainBox.add(labelBox);
+		mainBox.add(attributeBox);
+		panel.add(mainBox);
 
-		JPanel right = new JPanel();
-		right.setLayout(new GridLayout(fields.length, 1));
-		for (int i = 0; i < fields.length; i++) {
-			right.add(fields[i]);
-		}
+	//	JPanel left = new JPanel();
+	//	left.setLayout(new GridLayout(texts.length, 1));
+	//	for (int i = 0; i < texts.length; i++) {
+	//		JLabel label = new JLabel(texts[i] + "\n		", JLabel.RIGHT);
+	//		panel.add(label);
+	//	}
+
+	//	JPanel right = new JPanel();
+	//	right.setLayout(new GridLayout(fields.length, 1));
+	//	for (int i = 0; i < fields.length; i++) {
+	//		right.add(fields[i]);
+	//	}
 		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
-		panel.add(left);
-		panel.add(right);
+	//	panel.add(left);
+	//	panel.add(right);
 
 		JPanel p = new JPanel();
 		p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
