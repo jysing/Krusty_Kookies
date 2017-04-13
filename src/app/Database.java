@@ -272,7 +272,6 @@ public class Database {
 			ResultSet rs = sendGetQuery(query);
 			while(rs.next()) {
 				pallets.add("ID: " + rs.getString("pallet_id") + ",    Cookie: " + rs.getString("cookie_name") + ",    Produced: " + rs.getString("production_date"));
-				//pallets.add(rs.getString("pallet_id"));
 			}
 		}catch(SQLException ex){
 			System.err.println(ex.getMessage());
@@ -300,6 +299,29 @@ public class Database {
         }
         return p;
     }
+
+	/**
+	 *
+	 * @param pallet_id
+	 * @return
+	 */
+	public String getPallet(String pallet_id){
+    	String pallet = "";
+		String query = "SELECT pallet_id, cookie_name " +
+				"FROM PALLET " +
+				"WHERE pallet_id = '" + pallet_id + "'";
+		try{
+			ResultSet rs = sendGetQuery(query);
+			while(rs.next()){
+				pallet = (rs.getString("pallet_id") + " : " + rs.getString("cookie_name"));
+			}
+		}catch(SQLException ex){
+			System.err.println(ex.getMessage());
+			pallet = "";
+		}
+		return pallet;
+
+	}
 
 	/**
 	 * Returns location of a specific pallet with pallet id pallet_id
