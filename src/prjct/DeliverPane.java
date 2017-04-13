@@ -311,9 +311,10 @@ public class DeliverPane extends BasicPane {
 	 * Called when user switches to deliver pane
 	 */
 	public void entryActions() {
+		deliveredList();
 		orderItemsList();
 		loadedItemList();
-		deliveredList();
+
 		//fakeMethod();
 
 	}
@@ -332,7 +333,7 @@ public class DeliverPane extends BasicPane {
 	private void orderItemsList(){
 		orderBillsListModel.removeAllElements();
 		for (String s: db.getOrderItems()) {
-            orderBillsListModel.addElement(s);
+			if(!deliveredListModel.contains(s)) orderBillsListModel.addElement(s);
 		}
 	}
 
@@ -489,7 +490,25 @@ public class DeliverPane extends BasicPane {
          *            The selected list item.
          */
 		public void valueChanged(ListSelectionEvent e) {
+			if (loadedList.isSelectionEmpty()){
+				return;
 
+			}
+			if(e.getValueIsAdjusting()){
+				String selectedValue = loadedList.getSelectedValue();
+				String pallet_id = selectedValue.split(":")[0].trim();
+
+				String order_id = selectedValue.split(":")[2].trim();
+				String cookie_name = selectedValue.split(":")[1].trim();
+
+				fields[ORDER_ID].setText(order_id);
+				fields[ORDER_CUSTOMER].setText(db.getOrderCustomer(order_id));
+				fields[ORDER_ADDRESS].setText(db.getCustomerAddress(order_id));
+				fields[ORDER_COOKIE].setText(cookie_name);
+				fields[ORDER_NBR_OF_PALLETS].setText(db.getOrderNbrOfPallets(order_id, cookie_name));
+				fields[ORDER_DELIVERY].setText(db.getOrderDeliveryDate(order_id));
+
+			}
 		}
 	}
 
@@ -512,16 +531,18 @@ public class DeliverPane extends BasicPane {
 			if(e.getValueIsAdjusting()){
 				String selectedValue = deliveredList.getSelectedValue();
 				String pallet_id = selectedValue.split(":")[1].trim();
-				System.out.println(pallet_id);
+				pallet_id = pallet_id.split(" ")[0].trim();
 
-				/*
+				String order_id = db.getPalletOrder(pallet_id);
+				String cookie_name = db.getPalletCookie(pallet_id);
+
 				fields[ORDER_ID].setText(order_id);
 				fields[ORDER_CUSTOMER].setText(db.getOrderCustomer(order_id));
 				fields[ORDER_ADDRESS].setText(db.getCustomerAddress(order_id));
 				fields[ORDER_COOKIE].setText(cookie_name);
 				fields[ORDER_NBR_OF_PALLETS].setText(db.getOrderNbrOfPallets(order_id, cookie_name));
 				fields[ORDER_DELIVERY].setText(db.getOrderDeliveryDate(order_id));
-				*/
+
 			}
 		}
 	}
