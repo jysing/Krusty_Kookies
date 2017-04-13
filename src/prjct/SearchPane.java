@@ -274,7 +274,7 @@ public class SearchPane extends BasicPane {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if(searchText.getValue() != null){
-				int pallet_id = Integer.parseInt((String)searchText.getValue());
+				int pallet_id = Integer.parseInt((String)searchText.getText());
 				String result = db.getPallet(pallet_id+"");
 				palletListModel.removeAllElements();
 				palletListModel.addElement(result);
