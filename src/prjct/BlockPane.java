@@ -46,6 +46,16 @@ public class BlockPane extends BasicPane {
 	private JComboBox dropDown;
 
 	/**
+	 * DateSpinner for time interval
+	 */
+	private JSpinner spinnerFrom;
+
+	/**
+	 * DateSpinner for time interval
+	 */
+	private JSpinner spinnerTo;
+
+	/**
 	 * The text fields where the pallet data is shown
 	 */
 	private JTextField[] fields;
@@ -80,9 +90,8 @@ public class BlockPane extends BasicPane {
 	}
 
 	public JComponent createLeftTopPanel() {
-		SpinnerDateModel dateModel = new SpinnerDateModel();
-    	JSpinner spinnerFrom = new JSpinner(dateModel);
-    	JSpinner spinnerTo = new JSpinner(dateModel);
+		spinnerFrom = new JSpinner(new SpinnerDateModel());
+		spinnerTo = new JSpinner(new SpinnerDateModel());
 
     	spinnerFrom.setEditor(new JSpinner.DateEditor(spinnerFrom, "yyyy/MM/dd"));
     	spinnerTo.setEditor(new JSpinner.DateEditor(spinnerTo, "yyyy/MM/dd"));
@@ -164,7 +173,12 @@ public class BlockPane extends BasicPane {
 	class BlockHandler implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			
+			String from = new SimpleDateFormat("yyyy-MM-dd").format(spinnerFrom.getValue());
+			String to = new SimpleDateFormat("yyyy-MM-dd").format(spinnerTo.getValue());
+			String cookie = (String) dropDown.getSelectedItem();
+
+			db.blockCookieType(cookie, from, to);
+			updateBlockedPalletList();
 		}
 	}
 

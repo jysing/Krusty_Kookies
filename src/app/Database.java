@@ -244,6 +244,7 @@ public class Database {
     		"ELSE is_blocked END";
 		try{
 			int nbrUpdatedLines = sendPutQuery(query);
+			System.out.print("blocked");
 			if (nbrUpdatedLines > 0) return true;
 		}catch(SQLException ex){
 			System.err.println(ex.getMessage());
@@ -261,7 +262,6 @@ public class Database {
 		ArrayList<String> pallets = new ArrayList<String>();
 
 		if(cookie_name.equals("All")) cookie_name = "*";
-		System.out.println(cookie_name);
 
 		String query = "SELECT pallet_id " +
 			"FROM PALLET " + 
@@ -270,16 +270,12 @@ public class Database {
 		try{
 			ResultSet rs = sendGetQuery(query);
 			while(rs.next()) {
-				System.out.println("asdasdasd");
-				System.out.println(rs.getString("pallet_id"));
 				pallets.add(rs.getString("pallet_id"));
 			}
 		}catch(SQLException ex){
 			System.err.println(ex.getMessage());
 			pallets.clear();
 		}
-		System.out.println("here");
-		for (String str : pallets) System.out.println(str);
 		return pallets.toArray((new String[pallets.size()]));
 	}
 
