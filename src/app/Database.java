@@ -517,11 +517,10 @@ public class Database {
 	}
 
 	/**
-	 * 	List of all existing order items
-	 * @return list of pallets in freezer
+	 * 	
+	 * @return List of all existing order items
 	 */
 	public String[] getOrderItems() {
-		System.out.println("here");
 		ArrayList<String> pallets = new ArrayList<String>();
 		String query = "SELECT order_id " +
 				"FROM OrderItems ";
@@ -529,6 +528,27 @@ public class Database {
 			ResultSet rs = sendGetQuery(query);
 			while(rs.next()){
 				pallets.add(rs.getString("order_id"));
+			}
+		}catch(SQLException ex){
+			System.err.println(ex.getMessage());
+			pallets = null;
+		}
+		return pallets.toArray((new String[pallets.size()]));
+	}
+
+	/**
+	 * 	
+	 * @return List of all delivered pallets
+	 */
+	public String[] getDeliveredPallets() {
+		ArrayList<String> pallets = new ArrayList<String>();
+		String query = "SELECT pallet_id, delivery_date " +
+				"FROM Pallet JOIN Order_Bill USING order_id " + 
+				"WHERE location = 'delivered'";
+		try{
+			ResultSet rs = sendGetQuery(query);
+			while(rs.next()){
+				pallets.add("ID: " + rs.getString("pallet_id") + "    Delivered: " + rs.getString("delivery_date"));
 			}
 		}catch(SQLException ex){
 			System.err.println(ex.getMessage());
