@@ -9,6 +9,13 @@ import javax.swing.border.*;
 import java.awt.*;
 import java.awt.event.*;
 
+/**
+ * The GUI pane where the user can produce pallets containing one type of cookie.
+ * The two lists displays produced pallets of a specific cookie type and all 
+ * produced pallets of every kind of cookie types, respectively. When a pallet
+ * in one of the lists is selected information about that pallets is shown in
+ * inte bottom left corner.
+ */
 public class ProductionPane extends BasicPane {
 
 	/**

@@ -13,9 +13,12 @@ import java.awt.event.*;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 
+/**
+ * The GUI pane where the user can search for pallets. There are two search 
+ * options; one which searches by production date interval and cookie type and
+ * one that searches for a specific pallet with a unique pallet ID.
+ */
 public class SearchPane extends BasicPane {
-
-
 
 	/**
 	 * The list model for the all pallets list.

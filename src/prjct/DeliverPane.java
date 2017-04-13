@@ -20,8 +20,12 @@ import javax.swing.SpinnerDateModel;
 import java.util.*;
 import java.text.*;
 
-
-
+/**
+ * The GUI pane where the user can load and deliver pallets that have an attached
+ * order ID to it (i.e. pallets that are part of an order item). Contains three
+ * lists which contains order items, loaded pallets (order items) and delivered 
+ * pallets, respectively.
+ */
 public class DeliverPane extends BasicPane {
 
 	/**
@@ -137,7 +141,7 @@ public class DeliverPane extends BasicPane {
 			JLabel.CENTER, Component.CENTER_ALIGNMENT,
 			Font.BOLD, 18);
 		JLabel labelInfo = customLabel("<html><center>Select which order item you wish to load to<br>" +
-			"a truck and then which then deliver and print corresponding loading orders. </center></html>",
+			"a truck and then deliver and print corresponding loading orders. </center></html>",
 			JLabel.CENTER, Component.CENTER_ALIGNMENT,
 			0, 12);
 
