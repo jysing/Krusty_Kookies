@@ -260,7 +260,7 @@ public class Database {
 	 */
 	public String[] getAllBlockedPallets(String cookie_name) {
 		ArrayList<String> pallets = new ArrayList<String>();
-		String query = "SELECT pallet_id, cookie_name " +
+		String query = "SELECT pallet_id, cookie_name, production_date " +
 			"FROM PALLET " + 
 			"WHERE is_blocked = 1";
 
@@ -271,7 +271,7 @@ public class Database {
 		try{
 			ResultSet rs = sendGetQuery(query);
 			while(rs.next()) {
-				pallets.add(rs.getString("pallet_id") + " " + rs.getString("cookie_name");
+				pallets.add("ID: " + rs.getString("pallet_id") + ",    Cookie: " + rs.getString("cookie_name") + ",    Produced: " + rs.getString("production_date"));
 				//pallets.add(rs.getString("pallet_id"));
 			}
 		}catch(SQLException ex){
