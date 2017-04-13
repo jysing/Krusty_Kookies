@@ -337,13 +337,15 @@ public class DeliverPane extends BasicPane {
 				return;
 			}
 			if(e.getValueIsAdjusting()){
-				String order_id = orderBillsList.getSelectedValue();
+				String selectedValue = orderBillsList.getSelectedValue();
+				String order_id = selectedValue.split(": ")[0];
+				String cookie_name = selectedValue.split(": ")[1];
 
 				fields[ORDER_ID].setText(order_id);
 				fields[ORDER_CUSTOMER].setText(db.getOrderCustomer(order_id));
 				fields[ORDER_ADDRESS].setText(db.getCustomerAddress(order_id));
-				fields[ORDER_COOKIE].setText(db.getOrderCookie(order_id));
-				fields[ORDER_NBR_OF_PALLETS].setText(db.getOrderNbrOfPallets(order_id));
+				fields[ORDER_COOKIE].setText(cookie_name);
+				fields[ORDER_NBR_OF_PALLETS].setText(db.getOrderNbrOfPallets(order_id, cookie_name));
 				fields[ORDER_DELIVERY].setText(db.getOrderDeliveryDate(order_id));
 			}
 		}
