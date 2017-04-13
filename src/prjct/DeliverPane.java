@@ -215,21 +215,21 @@ public class DeliverPane extends BasicPane {
 	 */
 	public void entryActions() {
 		orderItemsList();
-		deliveredList()
+		deliveredList();
 	}
 
 	private void orderItemsList(){
 		orderBillsListModel.removeAllElements();
-		for (String s: db.getAllBlockedPallets(cookie)) {
-            orderBillsListModel.addElement(s);
-		}
+	//	for (String s: db.) {
+    //        orderBillsListModel.addElement(s);
+	//	}
 	}
 
 	private void deliveredList() {
         deliveredListModel.removeAllElements();
-		for (String s: db.getAllBlockedPallets(cookie)) {
-            deliveredListModel.addElement(s);
-		}
+	//	for (String s: db.) {
+    //        deliveredListModel.addElement(s);
+	//	}
 	}
 
 	class LoadHandler implements ActionListener {
