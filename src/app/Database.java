@@ -362,6 +362,21 @@ public class Database {
 		return null;
 	}
 
+	public String getPalletBlocked(String pallet_id){
+		return null;
+	}
+
+	public String getPalletCustomer(String pallet_id){
+		return null;
+	}
+
+	public String getPalletOrder(String pallet_id){
+		return null;
+	}
+
+	public String getPalletDelivery(String pallet_id){
+		return null;
+	}
 
 
 	/**

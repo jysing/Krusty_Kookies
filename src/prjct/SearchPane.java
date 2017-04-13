@@ -335,19 +335,18 @@ public class SearchPane extends BasicPane {
 				return;
 			}
 			if(e.getValueIsAdjusting()){
-			String pallet_id = palletList.getSelectedValue();
-			pallet_id = pallet_id.split(" : ")[0];
-			System.out.println("Search for this and get info: " + pallet_id);
+				String pallet_id = palletList.getSelectedValue();
+				pallet_id = pallet_id.split(" : ")[0];
+				System.out.println("Search for this and get info: " + pallet_id);
 
-			fields[PALLET_ID].setText(db.getPallet(pallet_id));
-			fields[PALLET_COOKIE].setText(db.getPalletCookie(pallet_id));
-			fields[PALLET_PRODUCTION].setText(db.getPalletProdDate(pallet_id));
-			fields[PALLET_LOCATION].setText(db.getPalletLocation(pallet_id));
-			fields[PALLET_BLOCKED].setText(db.getPallet(pallet_id));
-			fields[PALLET_CUSTOMER].setText(db.getPallet(pallet_id));
-			fields[PALLET_ORDER].setText(db.getPallet(pallet_id));
-			fields[PALLET_DELIVERY].setText(db.getPallet(pallet_id));
-
+				fields[PALLET_ID].setText(pallet_id);
+				fields[PALLET_COOKIE].setText(db.getPalletCookie(pallet_id));
+				fields[PALLET_PRODUCTION].setText(db.getPalletProdDate(pallet_id));
+				fields[PALLET_LOCATION].setText(db.getPalletLocation(pallet_id));
+				fields[PALLET_BLOCKED].setText(db.getPalletBlocked(pallet_id));
+				fields[PALLET_CUSTOMER].setText(db.getPalletCustomer(pallet_id));
+				fields[PALLET_ORDER].setText(db.getPalletOrder(pallet_id));
+				fields[PALLET_DELIVERY].setText(db.getPalletDelivery(pallet_id));
 			}
 		}
 	}
