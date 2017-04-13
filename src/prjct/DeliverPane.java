@@ -331,13 +331,19 @@ public class DeliverPane extends BasicPane {
 				order_id.trim();
 				cookie_name.trim();
 				int totInLoaded = 0;
+				int totForOrderID = 0;
 				for(int i = 0; i < loadedListModel.getSize(); i++) {
      				String inLoaded =  loadedListModel.getElementAt(i);
-     				inLoaded = inLoaded.split("[:]")[1];
-     				inLoaded.trim();
-     				if (inLoaded == cookie_name) totInLoaded++;
+     				String inLoadedCookieName = inLoaded.split("[:]")[1];
+     				inLoadedCookieName.trim();
+     				if (inLoadedCookieName == cookie_name) {
+     					totInLoaded++;
+     					String inLoadedForOrderID = inLoaded.split("[:]")[1];
+     					inLoadedForOrderID.trim();
+     					if (inLoadedForOrderID == order_id) totForOrderID++;
+     				}
 				}
-				db.load(order_id, cookie_name, totInLoaded);	
+				db.load(order_id, cookie_name, totInLoaded, totForOrderID);	
 			}
 		}
 	}

@@ -561,7 +561,7 @@ public class Database {
 	 * 	
 	 * @return List of all delivered pallets
 	 */
-	public boolean load(String order_id, String cookie_name, int inLoading) {
+	public boolean load(String order_id, String cookie_name, int inLoading, int totForOrderID) {
 		int wanted = 0;
 		int avaible = 0;
 		int toLoad = 0;
