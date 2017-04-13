@@ -25,7 +25,7 @@ import java.text.*;
 
 public class BlockPane extends BasicPane {
 
-		/**
+	/**
      * The list model for the specific pallet list.
      */
     private DefaultListModel<String> blockedPalletListModel;
@@ -85,10 +85,19 @@ public class BlockPane extends BasicPane {
 	 */
 	private static final int NBR_FIELDS = 4;
 
+	/**
+	 *
+	 * @param db
+	 */
 	public BlockPane(Database db) {
 		super(db);
 	}
 
+	/**
+	 * Create the left top panel.
+	 * 
+	 * @return the left top panel.
+	 */
 	public JComponent createLeftTopPanel() {
 		JLabel labelHeader = customLabel("<html><center>Block pallets</center></html>",
 			JLabel.CENTER, Component.CENTER_ALIGNMENT,
@@ -144,6 +153,9 @@ public class BlockPane extends BasicPane {
 		return panel;
 	}
 
+	/**
+     * Updates the cookie list.
+     */
 	private void updateCookieList(){
 		dropDown.removeAllItems();
 		dropDown.addItem("All");
@@ -152,6 +164,9 @@ public class BlockPane extends BasicPane {
 		}
 	}
 
+	/**
+     * Updates the blocked pallet list.
+     */
 	private void updateBlockedPalletList() {
         blockedPalletListModel.removeAllElements();
         String cookie = (String) dropDown.getSelectedItem();
@@ -208,8 +223,18 @@ public class BlockPane extends BasicPane {
 		return panel;
 	}
 
+	/**
+	 * A class that listens for clicks on the Block button.
+	 */
 	class BlockHandler implements ActionListener {
 		@Override
+		/**
+         * Called when the user clicks the Block button. Blocks
+         * pallets matching the search criteria.
+         * 
+         * @param e
+         *            The event object (not used).
+         */
 		public void actionPerformed(ActionEvent e) {
 			String from = new SimpleDateFormat("yyyy-MM-dd").format(spinnerFrom.getValue());
 			String to = new SimpleDateFormat("yyyy-MM-dd").format(spinnerTo.getValue());

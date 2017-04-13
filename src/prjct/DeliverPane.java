@@ -119,10 +119,19 @@ public class DeliverPane extends BasicPane {
 	 */
 	private static final int NBR_FIELDS = 6;
 
+	/**
+	 *
+	 * @param db
+	 */
 	public DeliverPane(Database db) {
 		super(db);
 	}
 
+	/**
+	 * Create the left top panel.
+	 *
+	 * @return the left top panel.
+	 */
 	public JComponent createLeftTopPanel() {
     	JLabel labelHeader = customLabel("<html><center>Deliver orders</center></html>",
 			JLabel.CENTER, Component.CENTER_ALIGNMENT,
@@ -321,8 +330,18 @@ public class DeliverPane extends BasicPane {
 		}
 	}
 
+	/**
+	 * A class that listens for clicks on the Load button.
+	 */
 	class LoadHandler implements ActionListener {
 		@Override
+		/**
+         * Called when the user clicks the Load button. Loads an order item
+         * to a truck.
+         * 
+         * @param e
+         *            The event object (not used).
+         */
 		public void actionPerformed(ActionEvent e) {
 			String str = orderBillsList.getSelectedValue();
 			if (str != null) {
@@ -342,8 +361,18 @@ public class DeliverPane extends BasicPane {
 		}
 	}
 
+	/**
+	 * A class that listens for clicks on the Deliver button.
+	 */
 	class DeliverHandler implements ActionListener {
 		@Override
+		/**
+         * Called when the user clicks the Deliver button. Marks an order
+         * item as delivered.
+         * 
+         * @param e
+         *            The event object (not used).
+         */
 		public void actionPerformed(ActionEvent e) {
 			
 		}
@@ -412,12 +441,12 @@ public class DeliverPane extends BasicPane {
 	}
 
 	 /**
-     * A class that listens for button clicks.
+     * A class that listens for clicks on the Print button.
      */
     class ExportHandler implements ActionListener {
         /**
-         * Called when the user clicks the Export .csv-file button. Opens up
-         * a file browser.
+         * Called when the user clicks the Print button. Opens up a file browser
+         * and saves a loading order as an csv-file.
          * 
          * @param e
          *            The event object (not used).

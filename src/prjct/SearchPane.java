@@ -99,11 +99,19 @@ public class SearchPane extends BasicPane {
 	 */
 	private static final int NBR_FIELDS = 8;
 
-
+	/**
+	 *
+	 * @param db
+	 */
 	public SearchPane(Database db) {
 		super(db);
 	}
 
+	/**
+	 * Create the left top panel.
+	 * 
+	 * @return the left top panel.
+	 */
 	public JComponent createLeftTopPanel() {
 		JLabel labelHeader = customLabel("<html><center>Search by date</center></html>",
 			JLabel.CENTER, Component.CENTER_ALIGNMENT,
@@ -161,6 +169,11 @@ public class SearchPane extends BasicPane {
 		return panel;
 	}
 
+	/**
+	 * Create the left middle panel.
+	 * 
+	 * @return the left middle panel.
+	 */
 	public JComponent createLeftMiddlePanel() {
 		JLabel labelHeader = customLabel("<html><center>Search by ID</center></html>",
 			JLabel.CENTER, Component.CENTER_ALIGNMENT,
@@ -273,7 +286,6 @@ public class SearchPane extends BasicPane {
 	/**
 	 * Create the center middle panel.
 	 *
-	 *  TODO: Add title to List
 	 * @return the center middle panel.
 	 */
 	public JComponent createMiddlePanel() {
@@ -301,16 +313,25 @@ public class SearchPane extends BasicPane {
 		updateCookieList();
 	}
 
+	/**
+     * Clears all text fields.
+     */
 	private void clearFields(){
 		for (int i = 0; i < fields.length; i++){
 			fields[i].setText("");
 		}
 	}
 
+	/**
+     * Clears the pallet list.
+     */
 	private void clearList(){
 		palletListModel.removeAllElements();
 	}
 
+	/**
+     * Updates the cookie list.
+     */
 	private void updateCookieList(){
 		dropDown.removeAllItems();
 		dropDown.addItem("All");
@@ -319,13 +340,19 @@ public class SearchPane extends BasicPane {
 		}
 	}
 
-
 	/**
-	 * A class that listens for clicks on the produce-button.
+	 * A class that listens for clicks on the upper Search button.
 	 */
 	class SearchHandlerDate implements ActionListener {
 
 		@Override
+		/**
+         * Called when the user clicks the upper Search button. Displays
+         * pallets matching the search criteria.
+         * 
+         * @param e
+         *            The event object (not used).
+         */
 		public void actionPerformed(ActionEvent e) {
 			String from = new SimpleDateFormat("yyyy-MM-dd").format(spinnerFrom.getValue());
 			String to = new SimpleDateFormat("yyyy-MM-dd").format(spinnerTo.getValue());
@@ -339,9 +366,19 @@ public class SearchPane extends BasicPane {
 		}
 	}
 
+	/**
+	 * A class that listens for clicks on the lower Search button.
+	 */
 	class SearchHandlerId implements ActionListener {
 
 		@Override
+		/**
+         * Called when the user clicks the lower Search button. Displays
+         * pallets matching the search criteria.
+         * 
+         * @param e
+         *            The event object (not used).
+         */
 		public void actionPerformed(ActionEvent e) {
 			if(searchText.getValue() != null){
 				String result = db.getPallet(searchText.getText());
