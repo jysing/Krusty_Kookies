@@ -20,6 +20,8 @@ import javax.swing.SpinnerDateModel;
 import java.util.*;
 import java.text.*;
 
+
+
 public class DeliverPane extends BasicPane {
 
 	/**
@@ -63,34 +65,40 @@ public class DeliverPane extends BasicPane {
 	private JSpinner spinnerTo;
 
 	/**
-	 * The text fields where the pallet data is shown
+	 * The text fields where the order item data is shown
 	 */
 	private JTextField[] fields;
 
 	/**
-	 * The number of the pallet attribute 0 field
+	 * The number of the order item attribute field
 	 */
-	private static final int PALLET_ATTR_0 = 0;
+	private static final int ORDER_ID= 0;
 
 	/**
-	 * The number of the pallet attribute 1 field
+	 * The number of the order item attribute field
 	 */
-	private static final int PALLET_ATTR_1 = 1;
+	private static final int ORDER_CUSTOMER = 1;
 
 	/**
-	 * The number of the pallet attribute 2 field
+	 * The number of the order item attribute field
 	 */
-	private static final int PALLET_ATTR_2 = 2;
+	private static final int ORDER_ADDRESS = 2;
 
 	/**
-	 * The number of the pallet attribute 3 field
+	 * The number of the order item attribute field
 	 */
-	private static final int PALLET_ATTR_3 = 3;
+	private static final int ORDER_COOKIE = 3;
+
+	/**
+	 * The number of the order item attribute field
+	 */
+	private static final int ORDER_NBR_OF_PALLETS = 4;
+
 
 	/**
 	 * The total number of fields
 	 */
-	private static final int NBR_FIELDS = 4;
+	private static final int NBR_FIELDS = 5;
 
 	public DeliverPane(Database db) {
 		super(db);
@@ -143,10 +151,11 @@ public class DeliverPane extends BasicPane {
 		Box attributeBox = new Box(BoxLayout.Y_AXIS);
 
 		String[] labels = new String[NBR_FIELDS];
-		labels[0] = "Cookie Type";
-		labels[1] = "Location";
-		labels[2] = "Production date";
-		labels[3] = "Blocked";
+		labels[ORDER_ID] = "Order Id";
+		labels[ORDER_CUSTOMER] = "Customer";
+		labels[ORDER_ADDRESS] = "Address";
+		labels[ORDER_COOKIE] = "Cookie Name";
+		labels[ORDER_NBR_OF_PALLETS] = "Nbr Pallet";
 
 		for(int i = 0; i < NBR_FIELDS; i++) {
 			JLabel l = customLabel(labels[i],
