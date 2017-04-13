@@ -87,6 +87,13 @@ public class ProductionPane extends BasicPane {
 	 * @return the left top panel.
 	 */
 	public JComponent createLeftTopPanel() {
+		JLabel labelHeader = customLabel("<html><center>Produce pallets</center></html>",
+			JLabel.CENTER, Component.CENTER_ALIGNMENT,
+			Font.BOLD, 18);
+		JLabel labelInfo = customLabel("<html><center>Select cookie type and number of pallets you wish to produce.</center></html>",
+			JLabel.CENTER, Component.CENTER_ALIGNMENT,
+			0, 12);
+
 		JPanel panel = new JPanel();
 		Box mainBox = new Box(BoxLayout.Y_AXIS);
 		Box box = new Box(BoxLayout.X_AXIS);
@@ -103,6 +110,9 @@ public class ProductionPane extends BasicPane {
 		box.add(produce);
 
 		mainBox.add(Box.createVerticalStrut(50));
+		mainBox.add(labelHeader);
+		mainBox.add(labelInfo);
+		mainBox.add(Box.createVerticalStrut(10));
 		mainBox.add(dropDown);
 		mainBox.add(Box.createVerticalStrut(10));
 		mainBox.add(box);

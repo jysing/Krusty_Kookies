@@ -97,6 +97,15 @@ public class DeliverPane extends BasicPane {
 	}
 
 	public JComponent createLeftTopPanel() {
+    	JLabel labelHeader = customLabel("<html><center>Deliver orders</center></html>",
+			JLabel.CENTER, Component.CENTER_ALIGNMENT,
+			Font.BOLD, 18);
+		JLabel labelInfo = customLabel("<html><center>Select which order item you wish to load to<br>" +
+			"a truck/assign to a customer and then which<br>" + 
+			"loaded/assigned order item you wish to deliver.</center></html>",
+			JLabel.CENTER, Component.CENTER_ALIGNMENT,
+			0, 12);
+
     	JPanel panel = new JPanel();
 		Box mainBox = new Box(BoxLayout.Y_AXIS);
 		Box box = new Box(BoxLayout.X_AXIS);
@@ -109,6 +118,9 @@ public class DeliverPane extends BasicPane {
 		box.add(Box.createHorizontalStrut(20));
 		box.add(deliver);
 
+		mainBox.add(Box.createVerticalStrut(50));
+		mainBox.add(labelHeader);
+		mainBox.add(labelInfo);
 		mainBox.add(Box.createVerticalStrut(10));
 		mainBox.add(box);
 

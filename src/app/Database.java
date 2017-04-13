@@ -209,27 +209,35 @@ public class Database {
 	 * @param nbr_pallets Number of pallets to be produced of a cookie type
 	 */
 	public boolean producePallets(String cookie_name, int nbr_pallets) {
-		/*
-		SELECT ingredient_name, amount
-		FROM Cookie INNER JOIN RecipeItems ON cookie_name
-		WHERE Cookie.cookie_name = cookie_name AND RecipeItems.cookie_name = cookie.name
 
-		Då fås info om ingredienser och mängd. Sätt in i query nedan
+		String queryIngredient = "SELECT ingredient_name " +
+				"FROM Cookie INNER JOIN RecipeItems ON Cookie.cookie_name = RecipeItems.cookie_name " +
+				"WHERE Cookie.cookie_name = '" + cookie_name + "'";
 
-		Update the ingredient
+		String queryUpdateIngredients = "UPDATE Ingredient " +
+				"set amount = CASE ";
+		try{
+			ResultSet rs = sendGetQuery(queryIngredient);
+			while(rs.next()) {
+				String ingredient = rs.getString("ingredient_name");
+				queryUpdateIngredients += " WHEN ingredient_name = '" + ingredient + "' THEN amount - 54 * " + nbr_pallets + " *" +
+						"(SELECT amount from RecipeItems WHERE cookie_name = '" + cookie_name + "' AND ingredient_name = '" + ingredient + "')";
 
-		UPDATEamo Ingredient
-           set unt = CASE
-                WHEN ingredient_name = 'Butter' THEN amount - 54*(SELECT amount from RecipeItems WHERE cookie_name = 'Berliner' AND ingredient_name = 'Butter')
-                WHEN ingredient_name = 'Eggs' THEN amount - 54*(SELECT amount from RecipeItems WHERE cookie_name = 'Berliner' AND ingredient_name = 'Eggs')
-                ELSE amount END
-         */
-		 /*
+			}
+			queryUpdateIngredients += " ELSE amount END";
+		}catch(SQLException ex){
+			System.err.println(ex.getMessage());
+			queryUpdateIngredients = "";
+		}
 
-         Efter uppdatering av inventariet är det dags att skapa Pallets'
-         INSERT INTO Pallet (cookie_name, order_id, production_date, location, is_blocked)
-    		VALUES ('cookie_name', NULL ,'2017-02-12', 'Freezer', NULL);
-		 */
+
+		try{
+			int nbrUpdatedLines = sendPutQuery(queryUpdateIngredients);
+			if (nbrUpdatedLines < 1) return false;
+		}catch(SQLException ex){
+			System.err.println(ex.getMessage());
+		}
+
 		for (int i = 0; i < nbr_pallets; i++) {
 			String query = "INSERT INTO Pallet (cookie_name, production_date, location) " +
 					"VALUES ('" + cookie_name + "', date() , 'Freezer');";
