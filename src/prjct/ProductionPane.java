@@ -93,6 +93,7 @@ public class ProductionPane extends BasicPane {
 		Box box = new Box(BoxLayout.X_AXIS);
 		
 		dropDown = new JComboBox();
+
 		nbrOfPallets = customSpinner(new SpinnerNumberModel(1,1,500,1), 50, 25);
 		JButton produce = customButton("Produce",new ProduceHandler(), 100, 25);
 		//JButton deliver = customButton("Deliver",new ProduceHandler(), 100, 25);
@@ -297,5 +298,4 @@ public class ProductionPane extends BasicPane {
 			//System.out.println("Hämtar film");
 		}
 	}
-
 }
