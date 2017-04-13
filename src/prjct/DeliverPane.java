@@ -180,7 +180,7 @@ public class DeliverPane extends BasicPane {
 			JLabel.CENTER, Component.CENTER_ALIGNMENT,
 			Font.BOLD, 16);
 
-		JLabel rightLabel = customLabel("Delivered orders",
+		JLabel rightLabel = customLabel("Delivered pallets",
 			JLabel.CENTER, Component.CENTER_ALIGNMENT,
 			Font.BOLD, 16);
 
@@ -239,9 +239,9 @@ public class DeliverPane extends BasicPane {
 
 	private void deliveredList() {
         deliveredListModel.removeAllElements();
-	//	for (String s: db.) {
-    //        deliveredListModel.addElement(s);
-	//	}
+		for (String s: db.getDeliveredPallets()) {
+            deliveredListModel.addElement(s);
+		}
 	}
 
 	class LoadHandler implements ActionListener {
