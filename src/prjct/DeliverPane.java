@@ -137,8 +137,7 @@ public class DeliverPane extends BasicPane {
 			JLabel.CENTER, Component.CENTER_ALIGNMENT,
 			Font.BOLD, 18);
 		JLabel labelInfo = customLabel("<html><center>Select which order item you wish to load to<br>" +
-			"a truck/assign to a customer and then which<br>" + 
-			"loaded/assigned order item you wish to deliver.</center></html>",
+			"a truck and then which then deliver and print corresponding loading orders. </center></html>",
 			JLabel.CENTER, Component.CENTER_ALIGNMENT,
 			0, 12);
 
