@@ -408,17 +408,17 @@ public class DeliverPane extends BasicPane {
 					selectedFile = fileChooser.getSelectedFile();
 					filePath = selectedFile.getPath();
 
-					LinkedList<String[]> orders = new LinkedList<String[]>();
+					LinkedList<String[]> orders = new LinkedList<>();
 					ArrayList<String> tempList = new ArrayList<>();
 
 					for (int i = 0; i < loadedListModel.size(); i++){
 						String item = loadedListModel.getElementAt(i);
-						if(!tempList.contains(item)){
-							tempList.add(item);
-
-							String pallet_id = item.split(":")[0].trim();
-							String cookie_name = item.split(":")[1].trim();
-							String order_id = item.split(":")[2].trim();
+						String pallet_id = item.split(":")[0].trim();
+						String cookie_name = item.split(":")[1].trim();
+						String order_id = item.split(":")[2].trim();
+						String derp = order_id+":"+cookie_name;
+						if(!tempList.contains(derp)){
+							tempList.add(derp);
 							db.setPalletDelivered(pallet_id, order_id); //Gör att Pallet ändras till delivered
 							String customer = db.getOrderCustomer(order_id);
 							String address = db.getCustomerAddress(order_id);
@@ -505,7 +505,24 @@ public class DeliverPane extends BasicPane {
          *            The selected list item.
          */
 		public void valueChanged(ListSelectionEvent e) {
-			// implement if needed.
+			if (deliveredList.isSelectionEmpty()){
+				return;
+
+			}
+			if(e.getValueIsAdjusting()){
+				String selectedValue = deliveredList.getSelectedValue();
+				String pallet_id = selectedValue.split(":")[1].trim();
+				System.out.println(pallet_id);
+
+				/*
+				fields[ORDER_ID].setText(order_id);
+				fields[ORDER_CUSTOMER].setText(db.getOrderCustomer(order_id));
+				fields[ORDER_ADDRESS].setText(db.getCustomerAddress(order_id));
+				fields[ORDER_COOKIE].setText(cookie_name);
+				fields[ORDER_NBR_OF_PALLETS].setText(db.getOrderNbrOfPallets(order_id, cookie_name));
+				fields[ORDER_DELIVERY].setText(db.getOrderDeliveryDate(order_id));
+				*/
+			}
 		}
 	}
 
