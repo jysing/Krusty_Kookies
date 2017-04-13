@@ -42,6 +42,16 @@ public class DeliverPane extends BasicPane {
     /**
      * The list model for the specific pallet list.
      */
+    private DefaultListModel<String> loadedListModel;
+
+    /**
+     * The specific pallet list.
+     */
+    private JList<String> loadedList;
+
+    /**
+     * The list model for the specific pallet list.
+     */
     private DefaultListModel<String> deliveredListModel;
 
     /**
@@ -244,17 +254,26 @@ public class DeliverPane extends BasicPane {
 		
 		JScrollPane p1 = new JScrollPane(orderBillsList);
 
+		loadedListModel = new DefaultListModel<String>();
+
+		loadedList = new JList<String>(loadedListModel);
+		loadedList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		loadedList.addListSelectionListener(new loadedListSelectionListener());
+
+		JScrollPane p2 = new JScrollPane(loadedList);
+
 		deliveredListModel = new DefaultListModel<String>();
 
 		deliveredList = new JList<String>(deliveredListModel);
 		deliveredList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		deliveredList.addListSelectionListener(new deliveredSelectionListener());
 
-		JScrollPane p2 = new JScrollPane(deliveredList);
+		JScrollPane p3 = new JScrollPane(deliveredList);
 
 		panel.setLayout(new GridLayout(1, 2));
 		panel.add(p1);
 		panel.add(p2);
+		panel.add(p3);
 		
 		return panel;
 	}
@@ -301,6 +320,22 @@ public class DeliverPane extends BasicPane {
 	class orderBillsSelectionListener implements ListSelectionListener {
 		/**
          * Called when the user selects a order item in the specific order items list. Fetches
+         * pallet information from the database and displays them in the info box.
+         * 
+         * @param e
+         *            The selected list item.
+         */
+		public void valueChanged(ListSelectionEvent e) {
+			// implement if needed.
+		}
+	}
+
+	/**
+	 * A class that listens for clicks in the specific loaded list.
+	 */
+	class loadedListSelectionListener implements ListSelectionListener {
+		/**
+         * Called when the user selects a item in the specific delivered list. Fetches
          * pallet information from the database and displays them in the info box.
          * 
          * @param e
