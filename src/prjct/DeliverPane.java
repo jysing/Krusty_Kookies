@@ -119,10 +119,19 @@ public class DeliverPane extends BasicPane {
 	 */
 	private static final int NBR_FIELDS = 6;
 
+	/**
+	 *
+	 * @param db
+	 */
 	public DeliverPane(Database db) {
 		super(db);
 	}
 
+	/**
+	 * Create the left top panel.
+	 *
+	 * @return the left top panel.
+	 */
 	public JComponent createLeftTopPanel() {
     	JLabel labelHeader = customLabel("<html><center>Deliver orders</center></html>",
 			JLabel.CENTER, Component.CENTER_ALIGNMENT,
@@ -166,7 +175,7 @@ public class DeliverPane extends BasicPane {
 		JLabel labelHeader = customLabel("<html><center>Print loading orders</center></html>",
 			JLabel.CENTER, Component.CENTER_ALIGNMENT,
 			Font.BOLD, 18);
-		JLabel labelInfo = customLabel("<html><center>Exports the selected loading order to a .csv-file.",
+		JLabel labelInfo = customLabel("<html><center>Exports the selected loading order to a .csv-file.</center></html>",
 			JLabel.CENTER, Component.CENTER_ALIGNMENT,
 			0, 12);
 
@@ -333,8 +342,18 @@ public class DeliverPane extends BasicPane {
 		}
 	}
 
+	/**
+	 * A class that listens for clicks on the Load button.
+	 */
 	class LoadHandler implements ActionListener {
 		@Override
+		/**
+         * Called when the user clicks the Load button. Loads an order item
+         * to a truck.
+         * 
+         * @param e
+         *            The event object (not used).
+         */
 		public void actionPerformed(ActionEvent e) {
 			String str = orderBillsList.getSelectedValue();
 			if (str != null) {
@@ -343,19 +362,35 @@ public class DeliverPane extends BasicPane {
 				order_id.trim();
 				cookie_name.trim();
 				int totInLoaded = 0;
+				int totForOrderID = 0;
 				for(int i = 0; i < loadedListModel.getSize(); i++) {
      				String inLoaded =  loadedListModel.getElementAt(i);
-     				inLoaded = inLoaded.split("[:]")[1];
-     				inLoaded.trim();
-     				if (inLoaded == cookie_name) totInLoaded++;
+     				String inLoadedCookieName = inLoaded.split("[:]")[1];
+     				inLoadedCookieName.trim();
+     				if (inLoadedCookieName == cookie_name) {
+     					totInLoaded++;
+     					String inLoadedForOrderID = inLoaded.split("[:]")[1];
+     					inLoadedForOrderID.trim();
+     					if (inLoadedForOrderID == order_id) totForOrderID++;
+     				}
 				}
-				db.load(order_id, cookie_name, totInLoaded);	
+				db.load(order_id, cookie_name, totInLoaded, totForOrderID);	
 			}
 		}
 	}
 
+	/**
+	 * A class that listens for clicks on the Deliver button.
+	 */
 	class DeliverHandler implements ActionListener {
 		@Override
+		/**
+         * Called when the user clicks the Deliver button. Marks an order
+         * item as delivered.
+         * 
+         * @param e
+         *            The event object (not used).
+         */
 		public void actionPerformed(ActionEvent e) {
 			ArrayList<String> tempList = new ArrayList<>();
 			for (int i = 0; i < loadedListModel.size(); i++){
@@ -434,12 +469,12 @@ public class DeliverPane extends BasicPane {
 	}
 
 	 /**
-     * A class that listens for button clicks.
+     * A class that listens for clicks on the Print button.
      */
     class ExportHandler implements ActionListener {
         /**
-         * Called when the user clicks the Export .csv-file button. Opens up
-         * a file browser.
+         * Called when the user clicks the Print button. Opens up a file browser
+         * and saves a loading order as an csv-file.
          * 
          * @param e
          *            The event object (not used).

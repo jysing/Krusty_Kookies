@@ -160,6 +160,9 @@ public class BasicPane extends JPanel {
 	 */
 	public void entryActions() {}
 
+	/**
+	 * A custom JButton object.
+	 */
 	protected JButton customButton(String label, ActionListener actHand, int width, int height) {
 		JButton b = new JButton(label);
 		b.setFont(new Font("custom_button",Font.BOLD, 14));
@@ -172,6 +175,9 @@ public class BasicPane extends JPanel {
 		return b;
 	}
 
+	/**
+	 * A custom JSpinner object.
+	 */
 	protected JSpinner customSpinner(SpinnerNumberModel spinnerNumberModel, int width, int height) {
 		JSpinner s = new JSpinner(spinnerNumberModel);
 		s.setFont(new Font("custom_spinner",Font.BOLD, 14));
@@ -183,6 +189,9 @@ public class BasicPane extends JPanel {
 		return s;
 	}
 
+	/**
+	 * A custom JLabel object.
+	 */
 	protected JLabel customLabel(String text, int labelAlignment, float componentAlignment, int font, int size) {
 		JLabel l = new JLabel(text, labelAlignment);
 		l.setFont(new Font("custom_label",font, size));
