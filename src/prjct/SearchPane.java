@@ -370,8 +370,7 @@ public class SearchPane extends BasicPane {
 			}
 			if(e.getValueIsAdjusting()){
 				String pallet_id = palletList.getSelectedValue();
-				pallet_id = pallet_id.split(" : ")[0];
-				System.out.println("Search for this and get info: " + pallet_id);
+				pallet_id = pallet_id.split(":")[0].trim();
 
 				fields[PALLET_ID].setText(pallet_id);
 				fields[PALLET_COOKIE].setText(db.getPalletCookie(pallet_id));

@@ -343,8 +343,8 @@ public class DeliverPane extends BasicPane {
 			}
 			if(e.getValueIsAdjusting()){
 				String selectedValue = orderBillsList.getSelectedValue();
-				String order_id = selectedValue.split(": ")[0];
-				String cookie_name = selectedValue.split(": ")[1];
+				String order_id = selectedValue.split(":")[0].trim();
+				String cookie_name = selectedValue.split(":")[1].trim();
 
 				fields[ORDER_ID].setText(order_id);
 				fields[ORDER_CUSTOMER].setText(db.getOrderCustomer(order_id));
