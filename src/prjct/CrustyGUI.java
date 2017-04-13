@@ -48,6 +48,11 @@ public class CrustyGUI {
 		tabbedPane.addTab("Search", null, searchPane, "Search pallets");
 		tabbedPane.setTabComponentAt(2, tabLabel(tabbedPane.getTitleAt(2)));
 
+		/* --- Tab 3: Place guests --- */
+		DeliverPane deliverPane = new DeliverPane(db);
+		tabbedPane.addTab("Deliver", null, deliverPane, "Deliver pallets");
+		tabbedPane.setTabComponentAt(3, tabLabel(tabbedPane.getTitleAt(3)));
+
 		tabbedPane.setSelectedIndex(0);
 		tabbedPane.addChangeListener(new ChangeHandler());
 		
