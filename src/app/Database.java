@@ -350,7 +350,21 @@ public class Database {
 	 * @return
 	 */
 	public String getPalletProdDate(String pallet_id){
-		return null;
+
+		String pallet = "";
+		String query = "SELECT production_date " +
+				"FROM PALLET " +
+				"WHERE pallet_id = '" + pallet_id + "'";
+		try{
+			ResultSet rs = sendGetQuery(query);
+			while(rs.next()){
+				pallet = (rs.getString("production_date"));
+			}
+		}catch(SQLException ex){
+			System.err.println(ex.getMessage());
+			pallet = "";
+		}
+		return pallet;
 	}
 
 	/**
@@ -359,23 +373,90 @@ public class Database {
 	 * @return
 	 */
 	public String getPalletLocation(String pallet_id){
-		return null;
+		String pallet = "";
+		String query = "SELECT location " +
+				"FROM PALLET " +
+				"WHERE pallet_id = '" + pallet_id + "'";
+		try{
+			ResultSet rs = sendGetQuery(query);
+			while(rs.next()){
+				pallet = (rs.getString("location"));
+			}
+		}catch(SQLException ex){
+			System.err.println(ex.getMessage());
+			pallet = "";
+		}
+		return pallet;
 	}
 
 	public String getPalletBlocked(String pallet_id){
-		return null;
+		String pallet = "Not Blocked";
+		String query = "SELECT is_blocked " +
+				"FROM PALLET " +
+				"WHERE pallet_id = '" + pallet_id + "'";
+		try{
+			ResultSet rs = sendGetQuery(query);
+			while(rs.next()){
+				if(rs.getInt("is_blocked") == 1) {
+					pallet = "Blocked";
+				}
+			}
+		}catch(SQLException ex){
+			System.err.println(ex.getMessage());
+			pallet = "";
+		}
+		return pallet;
 	}
 
 	public String getPalletCustomer(String pallet_id){
-		return null;
+		String pallet = "";
+		String query = "SELECT customer_name " +
+				"FROM Pallet INNER JOIN Order_Bill ON Pallet.order_id = Order_Bill.order_id " +
+				"WHERE pallet_id = '" + pallet_id + "'";
+		try{
+			ResultSet rs = sendGetQuery(query);
+			while(rs.next()){
+				pallet = (rs.getString("customer_name"));
+			}
+		}catch(SQLException ex){
+			System.err.println(ex.getMessage());
+			pallet = "";
+		}
+		return pallet;
 	}
 
 	public String getPalletOrder(String pallet_id){
-		return null;
+		String pallet = "";
+		String query = "SELECT Pallet.order_id " +
+				"FROM Pallet INNER JOIN Order_Bill ON Pallet.order_id = Order_Bill.order_id " +
+				"WHERE pallet_id = '" + pallet_id + "'";
+		try{
+			ResultSet rs = sendGetQuery(query);
+			while(rs.next()){
+				pallet = (rs.getString("order_id"));
+			}
+		}catch(SQLException ex){
+			System.err.println(ex.getMessage());
+			pallet = "";
+		}
+		return pallet;
 	}
 
 	public String getPalletDelivery(String pallet_id){
-		return null;
+		String pallet = "";
+		String query = "SELECT delivery_date " +
+				"FROM Pallet INNER JOIN Order_Bill ON Pallet.order_id = Order_Bill.order_id " +
+				"WHERE pallet_id = '" + pallet_id + "'";
+		try{
+			ResultSet rs = sendGetQuery(query);
+			while(rs.next()){
+				pallet = (rs.getString("delivery_date"));
+			}
+		}catch(SQLException ex){
+			System.err.println(ex.getMessage());
+			pallet = "";
+		}
+		return pallet;
 	}
 
 
