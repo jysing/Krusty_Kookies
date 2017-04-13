@@ -339,7 +339,7 @@ public class DeliverPane extends BasicPane {
 	private void deliveredList() {
         deliveredListModel.removeAllElements();
 		for (String s: db.getDeliveredPallets()) {
-            deliveredListModel.addElement(s);
+			if(!deliveredListModel.contains(s)) deliveredListModel.addElement(s);
 		}
 	}
 

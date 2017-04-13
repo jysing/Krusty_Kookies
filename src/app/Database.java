@@ -542,13 +542,13 @@ public class Database {
 	 */
 	public String[] getDeliveredPallets() {
 		ArrayList<String> pallets = new ArrayList<>();
-		String query = "SELECT order_id, delivery_date " +
-				"FROM Pallet JOIN Order_Bill USING (order_id)" +
+		String query = "SELECT order_id, cookie_name, delivery_date " +
+				"FROM Pallet INNER JOIN Order_Bill USING (order_id)" +
 				"WHERE location = 'Delivered'";
 		try{
 			ResultSet rs = sendGetQuery(query);
 			while(rs.next()){
-				pallets.add("ID: " + rs.getString("order_id") + "    Delivered: " + rs.getString("delivery_date"));
+				pallets.add("ID: " + rs.getString("order_id") + "    Cookie: " + rs.getString("cookie_name") + "    Delivered: " + rs.getString("delivery_date"));
 			}
 		}catch(SQLException ex){
 			System.err.println(ex.getMessage());
