@@ -238,10 +238,12 @@ public class Database {
 			System.err.println(ex.getMessage());
 		}
 
-		String query = "INSERT INTO Pallet (cookie_name, production_date, location) ";
+		String query = "INSERT INTO Pallet (cookie_name, production_date, location) VALUES ";
 		for (int i = 0; i < nbr_pallets; i++) {
-			query += " VALUES ('" + cookie_name + "', date() , 'Freezer');";
+			query += " ('" + cookie_name + "', date() , 'Freezer') ";
+			if(i != nbr_pallets-1) query += ", ";
 		}
+		query += ";";
 
 		try{
 			sendPutQuery(query);
