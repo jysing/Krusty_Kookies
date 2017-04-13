@@ -25,17 +25,18 @@ public class CSVExporter {
 	
 	//\Users\Kewin\Desktop\Bord_C.csv
 	public void generateCsvFile(String sFileName) {
+		String sep = ";";
 		
 		try {
 			
 			FileWriter writer = new FileWriter(sFileName);
 
 			writer.append("Customer Name");
-			writer.append(",");
+			writer.append(sep);
 			writer.append("Address");
-			writer.append(",");
+			writer.append(sep);
 			writer.append("Product");
-			writer.append(",");
+			writer.append(sep);
 			writer.append("No of pallets");
 			writer.append("\n");
 
@@ -45,7 +46,7 @@ public class CSVExporter {
 				for(int j = 0; j < NBR_COLUMNS; j++) {
 					String item = row[j];
 					writer.append(item);
-					writer.append(",");
+					writer.append(sep);
 				}
 				writer.append("\n");
 				
