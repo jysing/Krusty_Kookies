@@ -600,7 +600,7 @@ public class Database {
 		
 		query = "SELECT pallet_id, cookie_name, production_date " +
 				"FROM Pallet " + 
-				"WHERE cookie_name = '" + cookie_name + "' AND location = 'Freezer'" +
+				"WHERE cookie_name = '" + cookie_name + "' AND location = 'Freezer' " +
 				"ORDER BY production_date";
 
 		try{
