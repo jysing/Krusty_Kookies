@@ -194,8 +194,7 @@ public class BlockPane extends BasicPane {
          *            The selected list item.
          */
 		public void valueChanged(ListSelectionEvent e) {
-			// implement.
-			System.out.println("YOLLO");
+			// implement if needed.
 		}
 	}
 

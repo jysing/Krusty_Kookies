@@ -260,17 +260,19 @@ public class Database {
 	 */
 	public String[] getAllBlockedPallets(String cookie_name) {
 		ArrayList<String> pallets = new ArrayList<String>();
-
-		if(cookie_name.equals("All")) cookie_name = "*";
-
-		String query = "SELECT pallet_id " +
+		String query = "SELECT pallet_id, cookie_name " +
 			"FROM PALLET " + 
-			"WHERE is_blocked = 1 AND cookie_name = '" + cookie_name + "'";
+			"WHERE is_blocked = 1";
+
+		if(!cookie_name.equals("All")) {
+			query += " AND cookie_name = '" + cookie_name + "'";
+		}
 
 		try{
 			ResultSet rs = sendGetQuery(query);
 			while(rs.next()) {
-				pallets.add(rs.getString("pallet_id"));
+				pallets.add(rs.getString("pallet_id") + " " + rs.getString("cookie_name");
+				//pallets.add(rs.getString("pallet_id"));
 			}
 		}catch(SQLException ex){
 			System.err.println(ex.getMessage());
