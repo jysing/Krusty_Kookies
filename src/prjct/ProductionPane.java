@@ -156,8 +156,6 @@ public class ProductionPane extends BasicPane {
 	public JComponent createTopPanel() {
 		JPanel panel = new JPanel();
 
-		Box listBox = new Box(BoxLayout.X_AXIS);
-
 		JLabel leftLabel = customLabel("Selected",
 			JLabel.CENTER, Component.CENTER_ALIGNMENT,
 			Font.BOLD, 16);
@@ -166,11 +164,9 @@ public class ProductionPane extends BasicPane {
 			JLabel.CENTER, Component.CENTER_ALIGNMENT,
 			Font.BOLD, 16);
 
-		listBox.add(leftLabel);
-		listBox.add(Box.createHorizontalStrut(250));
-		listBox.add(rightLabel);
-
-		panel.add(listBox);
+		panel.setLayout(new GridLayout(1, 2));
+		panel.add(leftLabel);
+		panel.add(rightLabel);
 
 		return panel;
 	}

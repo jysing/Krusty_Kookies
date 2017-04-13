@@ -150,6 +150,24 @@ public class BlockPane extends BasicPane {
 	}
 
 	/**
+	 * Create the top middle panel.
+	 *
+	 * @return the top middle panel.
+	 */
+	public JComponent createTopPanel() {
+		JPanel panel = new JPanel();
+
+		JLabel label = customLabel("Blocked pallets",
+			JLabel.CENTER, Component.CENTER_ALIGNMENT,
+			Font.BOLD, 16);
+
+		panel.setLayout(new GridLayout(1, 1));
+		panel.add(label);
+
+		return panel;
+	}
+
+	/**
 	 * Create the center middle panel.
 	 *
 	 * @return the center middle panel.
