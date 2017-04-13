@@ -562,10 +562,10 @@ public class Database {
 	 * @return List of all existing order items
 	 */
 	public String getOrderCustomer(String order_id) {
-		String innerquery = "SELECT";
-		String query = "SELECT customer_name " +
-				"FROM OrderItems INNER JOIN Customer ON OrderItems.order_id = Customer.order_id " +
-				"WHERE order_id + "+order_id+"";
+		String query = "SELECT customer_name" +
+				" FROM Order_Bill" +
+				" WHERE order_id =  '" + order_id + "'";
+
 		try{
 			ResultSet rs = sendGetQuery(query);
 			while(rs.next()){
@@ -583,9 +583,10 @@ public class Database {
 	 * @return List of all existing order items
 	 */
 	public String getCustomerAddress(String order_id) {
-		String query = "SELECT address, country " +
-				"FROM OrderItems INNER JOIN Customer ON OrderItems.order_id = Customer.order_id " +
-				"WHERE order_id + "+order_id+"";
+		String query = "SELECT address, country" +
+				" FROM Customer INNER JOIN Order_Bill" +
+				" ON Order_Bill.customer_name = Customer.customer_name" +
+				" WHERE order_id =  '" + order_id + "'";
 		try{
 			ResultSet rs = sendGetQuery(query);
 			while(rs.next()){
@@ -605,7 +606,7 @@ public class Database {
 	public String getOrderCookie(String order_id) {
 		String query = "SELECT cookie_name " +
 				"FROM OrderItems " +
-				"WHERE order_id + "+order_id+"";
+				"WHERE order_id + '"+order_id+"'";
 		try{
 			ResultSet rs = sendGetQuery(query);
 			while(rs.next()){
@@ -644,8 +645,8 @@ public class Database {
 	 */
 	public String getOrderDeliveryDate(String order_id) {
 		String query = "SELECT delivery_date " +
-				"FROM OrderItems " +
-				"WHERE order_id + "+order_id+"";
+				"FROM Order_Bill " +
+				"WHERE order_id + '"+order_id+"'";
 		try{
 			ResultSet rs = sendGetQuery(query);
 			while(rs.next()){
