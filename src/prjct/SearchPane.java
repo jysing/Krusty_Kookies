@@ -245,7 +245,8 @@ public class SearchPane extends BasicPane {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			System.out.println("Search by date interval");
-			spinnerFrom
+
+			System.out.println(spinnerFrom.getValue());
 			//db.getPallets();
 		}
 	}
