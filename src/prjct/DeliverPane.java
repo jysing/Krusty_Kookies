@@ -157,6 +157,29 @@ public class DeliverPane extends BasicPane {
 	}
 
 	/**
+	 * Create the top middle panel.
+	 *
+	 * @return the top middle panel.
+	 */
+	public JComponent createTopPanel() {
+		JPanel panel = new JPanel();
+
+		JLabel leftLabel = customLabel("Order items",
+			JLabel.CENTER, Component.CENTER_ALIGNMENT,
+			Font.BOLD, 16);
+
+		JLabel rightLabel = customLabel("Delivered orders",
+			JLabel.CENTER, Component.CENTER_ALIGNMENT,
+			Font.BOLD, 16);
+
+		panel.setLayout(new GridLayout(1, 2));
+		panel.add(leftLabel);
+		panel.add(rightLabel);
+
+		return panel;
+	}
+
+	/**
 	 * Create the center middle panel.
 	 *
 	 * @return the center middle panel.

@@ -283,7 +283,11 @@ public class ProductionPane extends BasicPane {
 				fields[PALLET_ATTR_0].setText(p.cookie_name);
 				fields[PALLET_ATTR_1].setText(p.location);
 				fields[PALLET_ATTR_2].setText(p.production_date);
-				fields[PALLET_ATTR_3].setText(Integer.toString(p.order_id));
+				if (p.is_blocked == 0) {
+					fields[PALLET_ATTR_3].setText("No");
+				} else {
+					fields[PALLET_ATTR_3].setText("Yes");
+				}
 			}
 		}
 	}
