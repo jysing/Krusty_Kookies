@@ -558,6 +558,21 @@ public class Database {
 	}
 
 	/**
+	 * 	
+	 * @return List of all delivered pallets
+	 */
+	public String[] load(String orderItem) {
+		String orderID = orderItem.split("[:]")[0];
+		orderID = orderID.trim();
+
+		String cookieName = orderItem.split("[:]")[1];
+		cookieName = cookieName.trim();
+
+		ArrayList<String> pallets = new ArrayList<String>();
+		pallets.clear();
+		return pallets.toArray((new String[pallets.size()]));
+	}
+	/**
 	 *
 	 * @return List of all existing order items
 	 */
@@ -658,5 +673,4 @@ public class Database {
 		}
 		return "";
 	}
-
 }

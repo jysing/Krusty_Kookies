@@ -315,7 +315,10 @@ public class DeliverPane extends BasicPane {
 	class LoadHandler implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			
+			String str = orderBillsList.getSelectedValue();
+			if (str != null) {
+				
+			}
 		}
 	}
 
