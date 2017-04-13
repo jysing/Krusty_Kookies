@@ -170,38 +170,6 @@ public class DeliverPane extends BasicPane {
 	}
 
 	/**
-	 * Create the left middle panel.
-	 *
-	 * @return the left middle panel.
-	 */
-	public JComponent createLeftMiddlePanel() {
-		JLabel labelHeader = customLabel("<html><center>Print loading orders</center></html>",
-			JLabel.CENTER, Component.CENTER_ALIGNMENT,
-			Font.BOLD, 18);
-		JLabel labelInfo = customLabel("<html><center>Exports the selected loading order to a .csv-file.</center></html>",
-			JLabel.CENTER, Component.CENTER_ALIGNMENT,
-			0, 12);
-
-		JPanel panel = new JPanel();
-
-		Box mainBox = new Box(BoxLayout.Y_AXIS);
-
-		JButton export = customButton("Print", new ExportHandler(), 150, 40);
-		
-		mainBox.add(Box.createVerticalStrut(20));
-		mainBox.add(labelHeader);
-		mainBox.add(labelInfo);
-		mainBox.add(Box.createVerticalStrut(10));
-		mainBox.add(export);
-
-		panel.add(mainBox);
-
-		panel.setBorder(new CompoundBorder(new SoftBevelBorder(BevelBorder.RAISED), panel.getBorder()));
-
-		return panel;
-	}
-
-	/**
 	 * Create the left bottom panel.
 	 *
 	 * @return the left bottom panel.
@@ -401,7 +369,8 @@ public class DeliverPane extends BasicPane {
 		@Override
 		/**
          * Called when the user clicks the Deliver button. Marks an order
-         * item as delivered.
+         * item as delivered. Also opens up a file browser for saving the 
+         * loading order as an csv-file.
          * 
          * @param e
          *            The event object (not used).
@@ -557,40 +526,4 @@ public class DeliverPane extends BasicPane {
 			}
 		}
 	}
-
-	 /**
-     * A class that listens for clicks on the Print button.
-     */
-    class ExportHandler implements ActionListener {
-        /**
-         * Called when the user clicks the Print button. Opens up a file browser
-         * and saves a loading order as an csv-file.
-         * 
-         * @param e
-         *            The event object (not used).
-         */
-        public void actionPerformed(ActionEvent e) {
-            fileChooser = new JFileChooser();
-            fileChooser.setAcceptAllFileFilterUsed(false);
-            fileChooser.addChoosableFileFilter(new FileNameExtensionFilter(".csv","csv"));
-            fileChooser.setPreferredSize(new Dimension(700,500));
-			fileChooser.showSaveDialog(null);
-
-            String filePath;
-            File selectedFile = fileChooser.getSelectedFile();
-            filePath = selectedFile.getPath();
-
-            LinkedList<String[]> orders = new LinkedList<String[]>();
-
-            /* --- DUMMY CODE --- */
-            String[] row = new String[4];
-            for (int i = 0; i < 4; i++) {
-            	row[i] = "Hej";
-            }
-            orders.add(row);
-            /* --- DUMMY CODE --- */
-
-			CSVExporter print = new CSVExporter(orders, filePath);
-        }
-    }
 }
