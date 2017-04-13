@@ -522,12 +522,12 @@ public class Database {
 	 */
 	public String[] getOrderItems() {
 		ArrayList<String> pallets = new ArrayList<String>();
-		String query = "SELECT order_id " +
+		String query = "SELECT order_id, cookie_name " +
 				"FROM OrderItems ";
 		try{
 			ResultSet rs = sendGetQuery(query);
 			while(rs.next()){
-				pallets.add(rs.getString("order_id"));
+				pallets.add(rs.getString("order_id") + ": " + rs.getString("cookie_name"));
 			}
 		}catch(SQLException ex){
 			System.err.println(ex.getMessage());
@@ -556,4 +556,107 @@ public class Database {
 		}
 		return pallets.toArray((new String[pallets.size()]));
 	}
+
+	/**
+	 *
+	 * @return List of all existing order items
+	 */
+	public String getOrderCustomer(String order_id) {
+		String query = "SELECT customer_name" +
+				" FROM Order_Bill" +
+				" WHERE order_id =  '" + order_id + "'";
+
+		try{
+			ResultSet rs = sendGetQuery(query);
+			while(rs.next()){
+				return (rs.getString("customer_name"));
+			}
+		}catch(SQLException ex){
+			System.err.println(ex.getMessage());
+			return "";
+		}
+		return "";
+	}
+
+	/**
+	 *
+	 * @return List of all existing order items
+	 */
+	public String getCustomerAddress(String order_id) {
+		String query = "SELECT address, country" +
+				" FROM Customer INNER JOIN Order_Bill" +
+				" ON Order_Bill.customer_name = Customer.customer_name" +
+				" WHERE order_id =  '" + order_id + "'";
+		try{
+			ResultSet rs = sendGetQuery(query);
+			while(rs.next()){
+				return rs.getString("address") + " " + rs.getString("country");
+			}
+		}catch(SQLException ex){
+			System.err.println(ex.getMessage());
+			return "";
+		}
+		return "";
+	}
+
+	/**
+	 *
+	 * @return List of all existing order items
+	 */
+	public String getOrderCookie(String order_id) {
+		String query = "SELECT cookie_name " +
+				"FROM OrderItems " +
+				"WHERE order_id + '"+order_id+"'";
+		try{
+			ResultSet rs = sendGetQuery(query);
+			while(rs.next()){
+				return (rs.getString("cookie_name"));
+			}
+		}catch(SQLException ex){
+			System.err.println(ex.getMessage());
+			return "";
+		}
+		return "";
+	}
+
+	/**
+	 *
+	 * @return List of all existing order items
+	 */
+	public String getOrderNbrOfPallets(String order_id) {
+		String query = "SELECT nbrPallet " +
+				"FROM OrderItems " +
+				"WHERE order_id + "+order_id+"";
+		try{
+			ResultSet rs = sendGetQuery(query);
+			while(rs.next()){
+				return (rs.getString("nbrPallet"));
+			}
+		}catch(SQLException ex){
+			System.err.println(ex.getMessage());
+			return "";
+		}
+		return "";
+	}
+
+	/**
+	 *
+	 * @return List of all existing order items
+	 */
+	public String getOrderDeliveryDate(String order_id) {
+		String query = "SELECT delivery_date " +
+				"FROM Order_Bill " +
+				"WHERE order_id + '"+order_id+"'";
+		try{
+			ResultSet rs = sendGetQuery(query);
+			while(rs.next()){
+				return (rs.getString("delivery_date"));
+			}
+		}catch(SQLException ex){
+			System.err.println(ex.getMessage());
+			return "";
+		}
+		return "";
+	}
+
 }
