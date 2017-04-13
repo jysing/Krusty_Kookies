@@ -157,13 +157,6 @@ public class DeliverPane extends BasicPane {
 	}
 
 	/**
-	 * Called when user switches to deliver pane
-	 */
-	public void entryActions() {
-		
-	}
-
-	/**
 	 * Create the center middle panel.
 	 *
 	 * @return the center middle panel.
@@ -194,6 +187,28 @@ public class DeliverPane extends BasicPane {
 		return panel;
 	}
 
+	/**
+	 * Called when user switches to deliver pane
+	 */
+	public void entryActions() {
+		orderItemsList();
+		deliveredList()
+	}
+
+	private void orderItemsList(){
+		orderBillsListModel.removeAllElements();
+		for (String s: db.getAllBlockedPallets(cookie)) {
+            orderBillsListModel.addElement(s);
+		}
+	}
+
+	private void deliveredList() {
+        deliveredListModel.removeAllElements();
+		for (String s: db.getAllBlockedPallets(cookie)) {
+            deliveredListModel.addElement(s);
+		}
+	}
+
 	class LoadHandler implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -209,11 +224,11 @@ public class DeliverPane extends BasicPane {
 	}
 
 	/**
-	 * A class that listens for clicks in the specific pallet list.
+	 * A class that listens for clicks in the specific order items list.
 	 */
 	class orderBillsSelectionListener implements ListSelectionListener {
 		/**
-         * Called when the user selects a pallet in the specific pallet list. Fetches
+         * Called when the user selects a order item in the specific order items list. Fetches
          * pallet information from the database and displays them in the info box.
          * 
          * @param e
@@ -225,11 +240,11 @@ public class DeliverPane extends BasicPane {
 	}
 
 	/**
-	 * A class that listens for clicks in the specific pallet list.
+	 * A class that listens for clicks in the specific delivered list.
 	 */
 	class deliveredSelectionListener implements ListSelectionListener {
 		/**
-         * Called when the user selects a pallet in the specific pallet list. Fetches
+         * Called when the user selects a item in the specific delivered list. Fetches
          * pallet information from the database and displays them in the info box.
          * 
          * @param e
