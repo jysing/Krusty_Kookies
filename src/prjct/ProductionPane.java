@@ -359,7 +359,7 @@ public class ProductionPane extends BasicPane {
 
 	class DropDownListener implements ItemListener {
 		@Override
-		// This method is called only if a new item has been selected in dropDown.
+		// This method is called when a new item has been selected in dropDown.
 		public void itemStateChanged(ItemEvent evt) {
 			JComboBox cb = (JComboBox) evt.getSource();
 

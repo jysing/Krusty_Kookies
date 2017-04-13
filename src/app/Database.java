@@ -180,29 +180,6 @@ public class Database {
 	}
 
 	/**
-	 * List of all pallets that are delivered in a time interval.
-	 *
-	 * @param from_date start date of interval
-	 * @param to_date end date of interval
-	 * @return list of pallets delivered in time intervall
-	 */
-	public String[] getDeliveredPallets(String from_date, String to_date) {
-		return null;
-	}
-
-	/**
-	 * See which pallets that have been delivered to a customer_ID
-	 * and what dates they were delivered.
-	 *
-	 * @param customer_ID customer id to search
-	 * @return list of pallets
-	 */
-	public String[] getDeliveredPallets(String customer_ID) {
-		return null;
-	}
-
-
-	/**
 	 * Produces nbr_pallets of cookie_name and stores them in the freezer.
 	 *
 	 * @param cookie_name Cookie to be produced
@@ -741,7 +718,6 @@ public class Database {
 			ResultSet rs = sendGetQuery(query);
 			while(rs.next()){
 				if(rs.getString("order_id").equals(order_id) && rs.getString("cookie_name").equals(cookie_name));
-					System.out.println(rs.getString("order_id") +":"+ rs.getString("cookie_name"));
 					return false;
 			}
 		}catch(SQLException ex){
