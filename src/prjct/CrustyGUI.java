@@ -32,28 +32,26 @@ public class CrustyGUI {
 	public CrustyGUI(Database db) {
 		this.db = db;
 
-		// SeatingGenerator() sg = new SeatingGenerator(db);
-
 		JFrame frame = new JFrame("Crusty Cookies");
 		tabbedPane = new JTabbedPane();
 
 		/* --- set up the tabs --- */
-		/* --- Tab 1: Produce orders --- */
+		/* --- Tab 1: Production --- */
 		ProductionPane productionPane = new ProductionPane(db);
 		tabbedPane.addTab("Production", null, productionPane, "Produce orders");
 		tabbedPane.setTabComponentAt(0, tabLabel(tabbedPane.getTitleAt(0)));
 
-		/* --- Tab 2: Generate tables --- */
+		/* --- Tab 2: Block --- */
 		BlockPane blockPane = new BlockPane(db);
 		tabbedPane.addTab("Block", null, blockPane, "Block cookies and pallets");
 		tabbedPane.setTabComponentAt(1, tabLabel(tabbedPane.getTitleAt(1)));
 
-		/* --- Tab 3: Place guests --- */
+		/* --- Tab 3: Search --- */
 		SearchPane searchPane = new SearchPane(db);
 		tabbedPane.addTab("Search", null, searchPane, "Search pallets");
 		tabbedPane.setTabComponentAt(2, tabLabel(tabbedPane.getTitleAt(2)));
 
-		/* --- Tab 3: Place guests --- */
+		/* --- Tab 3: Deliver --- */
 		DeliverPane deliverPane = new DeliverPane(db);
 		tabbedPane.addTab("Deliver", null, deliverPane, "Deliver pallets");
 		tabbedPane.setTabComponentAt(3, tabLabel(tabbedPane.getTitleAt(3)));
@@ -68,16 +66,6 @@ public class CrustyGUI {
 		frame.setVisible(true);
 
 		productionPane.entryActions();
-
-		/* --- connect to database --- */
-		//System.out.println("Connecting to database ...");
-
-		//if (db.openConnection("notebook.db")) {
-		//	System.out.println("Connected to database.");
-			/* --- add code to clear the database file */
-		//} else {
-		//	System.out.println("Could not connect to database");
-		//}
 	}
 
 	/*
