@@ -193,21 +193,7 @@ public class SearchPane extends BasicPane {
 		mainBox.add(attributeBox);
 		panel.add(mainBox);
 
-	//	JPanel left = new JPanel();
-	//	left.setLayout(new GridLayout(texts.length, 1));
-	//	for (int i = 0; i < texts.length; i++) {
-	//		JLabel label = new JLabel(texts[i] + "\n		", JLabel.RIGHT);
-	//		panel.add(label);
-	//	}
-
-	//	JPanel right = new JPanel();
-	//	right.setLayout(new GridLayout(fields.length, 1));
-	//	for (int i = 0; i < fields.length; i++) {
-	//		right.add(fields[i]);
-	//	}
 		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
-	//	panel.add(left);
-	//	panel.add(right);
 
 		JPanel p = new JPanel();
 		p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
@@ -281,7 +267,6 @@ public class SearchPane extends BasicPane {
 			for(String s: result){
 				palletListModel.addElement(s);
 			}
-
 		}
 	}
 
@@ -295,7 +280,6 @@ public class SearchPane extends BasicPane {
 				palletListModel.removeAllElements();
 				palletListModel.addElement(result);
 			}
-
 		}
 	}
 
