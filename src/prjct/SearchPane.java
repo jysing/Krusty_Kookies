@@ -1,21 +1,18 @@
 package src.prjct;
 
 import src.app.Database;
-import src.app.Pallet;
 
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.border.*;
-import javax.swing.JComponent.*;
-import javax.swing.filechooser.*;
 import javax.swing.text.NumberFormatter;
 
 import java.awt.*;
 import java.awt.event.*;
 
-import java.io.*;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class SearchPane extends BasicPane {
 
@@ -101,7 +98,7 @@ public class SearchPane extends BasicPane {
 
 		dropDown = new JComboBox();
 
-		JButton search = customButton("Search",new SearchPane.SearchHandler1(), 100, 25);
+		JButton search = customButton("Search",new SearchHandlerDate(), 100, 25);
 
 		box.add(Box.createHorizontalStrut(10));
 		box.add(spinnerFrom);
@@ -130,7 +127,7 @@ public class SearchPane extends BasicPane {
 		Box mainBox = new Box(BoxLayout.Y_AXIS);
 		Box box = new Box(BoxLayout.X_AXIS);
 
-		JButton search = customButton("Search",new SearchPane.SearchHandler2(), 100, 25);
+		JButton search = customButton("Search",new SearchHandlerId(), 100, 25);
 
 		NumberFormat format = NumberFormat.getInstance();
 		NumberFormatter formatter = new NumberFormatter(format);
@@ -253,7 +250,7 @@ public class SearchPane extends BasicPane {
 	/**
 	 * A class that listens for clicks on the produce-button.
 	 */
-	class SearchHandler1 implements ActionListener {
+	class SearchHandlerDate implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -269,17 +266,15 @@ public class SearchPane extends BasicPane {
 		}
 	}
 
-	class SearchHandler2 implements ActionListener {
+	class SearchHandlerId implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if(searchText.getValue() != null){
-				int pallet_id = Integer.parseInt((String)searchText.getText());
-				String result = db.getPallet(pallet_id+"");
+				String result = db.getPallet(searchText.getText());
 				palletListModel.removeAllElements();
 				palletListModel.addElement(result);
 			}
-
 		}
 	}
 
