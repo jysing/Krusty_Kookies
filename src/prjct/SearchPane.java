@@ -112,6 +112,13 @@ public class SearchPane extends BasicPane {
 			JLabel.CENTER, Component.CENTER_ALIGNMENT,
 			0, 12);
 
+		JLabel fromLabel = customLabel("From: ",
+			JLabel.RIGHT, Component.RIGHT_ALIGNMENT,
+			Font.BOLD, 12);
+		JLabel toLabel = customLabel("To: ",
+			JLabel.RIGHT, Component.RIGHT_ALIGNMENT,
+			Font.BOLD, 12);
+
 		JPanel panel = new JPanel();
 
 		spinnerFrom = new JSpinner(new SpinnerDateModel());
@@ -128,8 +135,10 @@ public class SearchPane extends BasicPane {
 		JButton search = customButton("Search",new SearchHandlerDate(), 100, 25);
 
 		box.add(Box.createHorizontalStrut(10));
+		box.add(fromLabel);
 		box.add(spinnerFrom);
-
+		box.add(Box.createHorizontalStrut(5));
+		box.add(toLabel);
 		box.add(spinnerTo);
 		box.add(Box.createHorizontalStrut(20));
 		box.add(dropDown);

@@ -94,6 +94,10 @@ public class ProductionPane extends BasicPane {
 			JLabel.CENTER, Component.CENTER_ALIGNMENT,
 			0, 12);
 
+		JLabel nbrLabel = customLabel("No of pallets: ",
+			JLabel.RIGHT, Component.RIGHT_ALIGNMENT,
+			Font.BOLD, 12);
+
 		JPanel panel = new JPanel();
 		Box mainBox = new Box(BoxLayout.Y_AXIS);
 		Box box = new Box(BoxLayout.X_AXIS);
@@ -105,6 +109,7 @@ public class ProductionPane extends BasicPane {
 		nbrOfPallets = customSpinner(new SpinnerNumberModel(1,1,500,1), 50, 25);
 		JButton produce = customButton("Produce",new ProduceHandler(), 100, 25);
 
+		box.add(nbrLabel);
 		box.add(nbrOfPallets);
 		box.add(Box.createHorizontalStrut(200));
 		box.add(produce);

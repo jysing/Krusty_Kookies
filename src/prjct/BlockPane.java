@@ -98,6 +98,13 @@ public class BlockPane extends BasicPane {
 			JLabel.CENTER, Component.CENTER_ALIGNMENT,
 			0, 12);
 
+		JLabel fromLabel = customLabel("From: ",
+			JLabel.RIGHT, Component.RIGHT_ALIGNMENT,
+			Font.BOLD, 12);
+		JLabel toLabel = customLabel("To: ",
+			JLabel.RIGHT, Component.RIGHT_ALIGNMENT,
+			Font.BOLD, 12);
+
 		spinnerFrom = new JSpinner(new SpinnerDateModel());
 		spinnerTo = new JSpinner(new SpinnerDateModel());
 
@@ -115,8 +122,10 @@ public class BlockPane extends BasicPane {
 		JButton block = customButton("Block",new BlockHandler(), 100, 25);
 
 		box.add(Box.createHorizontalStrut(200));
+		box.add(fromLabel);
 		box.add(spinnerFrom);
 		box.add(Box.createHorizontalStrut(10));
+		box.add(toLabel);
 		box.add(spinnerTo);
 		box.add(Box.createHorizontalStrut(20));
 		box.add(block);
