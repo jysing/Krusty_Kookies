@@ -94,12 +94,10 @@ public class ProductionPane extends BasicPane {
 		dropDown = new JComboBox();
 		nbrOfPallets = customSpinner(new SpinnerNumberModel(1,1,500,1), 50, 25);
 		JButton produce = customButton("Produce",new ProduceHandler(), 100, 25);
-		JButton deliver = customButton("Deliver",new ProduceHandler(), 100, 25);
 
 		box.add(nbrOfPallets);
 		box.add(Box.createHorizontalStrut(200));
 		box.add(produce);
-		box.add(deliver);
 
 		mainBox.add(Box.createVerticalStrut(50));
 		mainBox.add(dropDown);
@@ -151,26 +149,39 @@ public class ProductionPane extends BasicPane {
 	}
 
 	/**
+	 * Create the top middle panel.
+	 *
+	 * @return the top middle panel.
+	 */
+	public JComponent createTopPanel() {
+		JPanel panel = new JPanel();
+
+		Box listBox = new Box(BoxLayout.X_AXIS);
+
+		JLabel leftLabel = customLabel("Selected",
+			JLabel.CENTER, Component.CENTER_ALIGNMENT,
+			Font.BOLD, 16);
+
+		JLabel rightLabel = customLabel("All",
+			JLabel.CENTER, Component.CENTER_ALIGNMENT,
+			Font.BOLD, 16);
+
+		listBox.add(leftLabel);
+		listBox.add(Box.createHorizontalStrut(250));
+		listBox.add(rightLabel);
+
+		panel.add(listBox);
+
+		return panel;
+	}
+
+	/**
 	 * Create the center middle panel.
 	 *
 	 * @return the center middle panel.
 	 */
 	public JComponent createMiddlePanel() {
 		JPanel panel = new JPanel();
-
-		Box mainBox = new Box(BoxLayout.Y_AXIS);
-		Box labelBox = new Box(BoxLayout.X_AXIS);
-		Box listBox = new Box(BoxLayout.X_AXIS);
-
-		JLabel leftLabel = customLabel("Selected",
-			JLabel.CENTER, Component.CENTER_ALIGNMENT,
-			Font.BOLD, 16);
-		JLabel rightLabel = customLabel("All",
-			JLabel.CENTER, Component.CENTER_ALIGNMENT,
-			Font.BOLD, 16);
-
-		labelBox.add(leftLabel);
-		labelBox.add(rightLabel);
 
 		specPalletListModel = new DefaultListModel<String>();
 
@@ -186,20 +197,9 @@ public class ProductionPane extends BasicPane {
 		allPalletList.addListSelectionListener(new AllPalletSelectionListener());
 		JScrollPane p2 = new JScrollPane(allPalletList);
 
-		mainBox.add(labelBox);
-		JPanel p0 = new JPanel();
-
 		panel.setLayout(new GridLayout(1, 2));
 		panel.add(p1);
 		panel.add(p2);
-
-//		listBox.add(p1);
-//		listBox.add(p2);
-
-		mainBox.add(listBox);
-
-//		panel.add(p0);
-		panel.setBorder(new LineBorder(Color.BLACK));
 
 		return panel;
 	}
@@ -249,17 +249,6 @@ public class ProductionPane extends BasicPane {
 	}
 
 	/**
-	 * A class that listens for clicks on the deliver-button.
-	 */
-	class DeliverHandler implements ActionListener {
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			
-		}
-	}
-
-	/**
 	 * A class that listens for clicks in the specific pallet list.
 	 */
 	class SpecPalletSelectionListener implements ListSelectionListener {
@@ -295,13 +284,11 @@ public class ProductionPane extends BasicPane {
 			Pallet p;
 			p = db.trackPalletObject(pallet_id);
 			if(e.getValueIsAdjusting()){
-				System.out.println("Laddar in film");
 				fields[PALLET_ATTR_0].setText(p.cookie_name);
 				fields[PALLET_ATTR_1].setText(p.location);
 				fields[PALLET_ATTR_2].setText(p.production_date);
 				fields[PALLET_ATTR_3].setText(Integer.toString(p.order_id));
 			}
-			System.out.println("Hämtar film");
 		}
 	}
 
