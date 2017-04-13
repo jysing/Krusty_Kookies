@@ -556,4 +556,106 @@ public class Database {
 		}
 		return pallets.toArray((new String[pallets.size()]));
 	}
+
+	/**
+	 *
+	 * @return List of all existing order items
+	 */
+	public String getOrderCustomer(String order_id) {
+		String innerquery = "SELECT";
+		String query = "SELECT customer_name " +
+				"FROM OrderItems INNER JOIN Customer ON OrderItems.order_id = Customer.order_id " +
+				"WHERE order_id + "+order_id+"";
+		try{
+			ResultSet rs = sendGetQuery(query);
+			while(rs.next()){
+				return (rs.getString("customer_name"));
+			}
+		}catch(SQLException ex){
+			System.err.println(ex.getMessage());
+			return "";
+		}
+		return "";
+	}
+
+	/**
+	 *
+	 * @return List of all existing order items
+	 */
+	public String getCustomerAddress(String order_id) {
+		String query = "SELECT address, country " +
+				"FROM OrderItems INNER JOIN Customer ON OrderItems.order_id = Customer.order_id " +
+				"WHERE order_id + "+order_id+"";
+		try{
+			ResultSet rs = sendGetQuery(query);
+			while(rs.next()){
+				return rs.getString("address") + " " + rs.getString("country");
+			}
+		}catch(SQLException ex){
+			System.err.println(ex.getMessage());
+			return "";
+		}
+		return "";
+	}
+
+	/**
+	 *
+	 * @return List of all existing order items
+	 */
+	public String getOrderCookie(String order_id) {
+		String query = "SELECT cookie_name " +
+				"FROM OrderItems " +
+				"WHERE order_id + "+order_id+"";
+		try{
+			ResultSet rs = sendGetQuery(query);
+			while(rs.next()){
+				return (rs.getString("cookie_name"));
+			}
+		}catch(SQLException ex){
+			System.err.println(ex.getMessage());
+			return "";
+		}
+		return "";
+	}
+
+	/**
+	 *
+	 * @return List of all existing order items
+	 */
+	public String getOrderNbrOfPallets(String order_id) {
+		String query = "SELECT nbrPallet " +
+				"FROM OrderItems " +
+				"WHERE order_id + "+order_id+"";
+		try{
+			ResultSet rs = sendGetQuery(query);
+			while(rs.next()){
+				return (rs.getString("nbrPallet"));
+			}
+		}catch(SQLException ex){
+			System.err.println(ex.getMessage());
+			return "";
+		}
+		return "";
+	}
+
+	/**
+	 *
+	 * @return List of all existing order items
+	 */
+	public String getOrderDeliveryDate(String order_id) {
+		String query = "SELECT delivery_date " +
+				"FROM OrderItems " +
+				"WHERE order_id + "+order_id+"";
+		try{
+			ResultSet rs = sendGetQuery(query);
+			while(rs.next()){
+				return (rs.getString("delivery_date"));
+			}
+		}catch(SQLException ex){
+			System.err.println(ex.getMessage());
+			return "";
+		}
+		return "";
+	}
+
 }

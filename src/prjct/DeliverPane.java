@@ -94,11 +94,15 @@ public class DeliverPane extends BasicPane {
 	 */
 	private static final int ORDER_NBR_OF_PALLETS = 4;
 
+	/**
+	 * The number of the order item attribute field
+	 */
+	private static final int ORDER_DELIVERY = 5;
 
 	/**
 	 * The total number of fields
 	 */
-	private static final int NBR_FIELDS = 5;
+	private static final int NBR_FIELDS = 6;
 
 	public DeliverPane(Database db) {
 		super(db);
@@ -155,7 +159,8 @@ public class DeliverPane extends BasicPane {
 		labels[ORDER_CUSTOMER] = "Customer";
 		labels[ORDER_ADDRESS] = "Address";
 		labels[ORDER_COOKIE] = "Cookie Name";
-		labels[ORDER_NBR_OF_PALLETS] = "Nbr Pallet";
+		labels[ORDER_NBR_OF_PALLETS] = "Nbr of Pallet";
+		labels[ORDER_DELIVERY] = "Due Delivery Date";
 
 		for(int i = 0; i < NBR_FIELDS; i++) {
 			JLabel l = customLabel(labels[i],
@@ -208,17 +213,17 @@ public class DeliverPane extends BasicPane {
 	public JComponent createMiddlePanel() {
 		JPanel panel = new JPanel();
 
-		orderBillsListModel = new DefaultListModel<String>();
+		orderBillsListModel = new DefaultListModel<>();
 
-		orderBillsList = new JList<String>(orderBillsListModel);
+		orderBillsList = new JList<>(orderBillsListModel);
 		orderBillsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		orderBillsList.addListSelectionListener(new orderBillsSelectionListener());
 		
 		JScrollPane p1 = new JScrollPane(orderBillsList);
 
-		deliveredListModel = new DefaultListModel<String>();
+		deliveredListModel = new DefaultListModel<>();
 
-		deliveredList = new JList<String>(deliveredListModel);
+		deliveredList = new JList<>(deliveredListModel);
 		deliveredList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		deliveredList.addListSelectionListener(new deliveredSelectionListener());
 
@@ -279,7 +284,19 @@ public class DeliverPane extends BasicPane {
          *            The selected list item.
          */
 		public void valueChanged(ListSelectionEvent e) {
-			// implement if needed.
+			if (orderBillsList.isSelectionEmpty()){
+				return;
+			}
+			if(e.getValueIsAdjusting()){
+				String order_id = orderBillsList.getSelectedValue();
+
+				fields[ORDER_ID].setText(order_id);
+				fields[ORDER_CUSTOMER].setText(db.getOrderCustomer(order_id));
+				fields[ORDER_ADDRESS].setText(db.getCustomerAddress(order_id));
+				fields[ORDER_COOKIE].setText(db.getOrderCookie(order_id));
+				fields[ORDER_NBR_OF_PALLETS].setText(db.getOrderNbrOfPallets(order_id));
+				fields[ORDER_DELIVERY].setText(db.getOrderDeliveryDate(order_id));
+			}
 		}
 	}
 
