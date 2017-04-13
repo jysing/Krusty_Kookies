@@ -101,23 +101,58 @@ public class DeliverPane extends BasicPane {
 		Box mainBox = new Box(BoxLayout.Y_AXIS);
 		Box box = new Box(BoxLayout.X_AXIS);
 		
-		dropDown = new JComboBox();
-		DropDownListener ddListener = new DropDownListener();
-		dropDown.addItemListener(ddListener);
+		JButton load = customButton("Load",new LoadHandler(), 100, 25);
+		JButton deliver = customButton("Deliver",new DeliverHandler(), 100, 25);
 
-		JButton deliver = customButton("Deliver",new BlockHandler(), 100, 25);
-
+		box.add(Box.createHorizontalStrut(20));
+		box.add(load);
 		box.add(Box.createHorizontalStrut(20));
 		box.add(deliver);
 
-		mainBox.add(Box.createVerticalStrut(50));
-		mainBox.add(dropDown);
 		mainBox.add(Box.createVerticalStrut(10));
 		mainBox.add(box);
 
 		panel.add(mainBox);
 		panel.setBorder(new LineBorder(Color.BLACK));
 
+		return panel;
+	}
+
+	/**
+	 * Create the left bottom panel.
+	 *
+	 * @return the left bottom panel.
+	 */
+	public JComponent createLeftBottomPanel() {
+		JPanel panel = new JPanel();
+
+		Box mainBox = new Box(BoxLayout.X_AXIS);
+		Box labelBox = new Box(BoxLayout.Y_AXIS);
+		Box attributeBox = new Box(BoxLayout.Y_AXIS);
+
+		String[] labels = new String[NBR_FIELDS];
+		labels[0] = "Cookie Type";
+		labels[1] = "Location";
+		labels[2] = "Production date";
+		labels[3] = "Blocked";
+
+		for(int i = 0; i < NBR_FIELDS; i++) {
+			JLabel l = customLabel(labels[i],
+			JLabel.LEFT, Component.RIGHT_ALIGNMENT,
+			Font.BOLD, 14);
+			labelBox.add(l);
+		}
+
+		fields = new JTextField[NBR_FIELDS];
+		for (int i = 0; i < fields.length; i++) {
+			fields[i] = new JTextField(20);
+			fields[i].setEditable(false);
+			attributeBox.add(fields[i]);
+		}
+
+		mainBox.add(labelBox);
+		mainBox.add(attributeBox);
+		panel.add(mainBox);
 		return panel;
 	}
 
@@ -182,7 +217,14 @@ public class DeliverPane extends BasicPane {
 		return panel;
 	}
 
-	class BlockHandler implements ActionListener {
+	class LoadHandler implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			
+		}
+	}
+
+	class DeliverHandler implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			
@@ -220,18 +262,4 @@ public class DeliverPane extends BasicPane {
 			// implement if needed.
 		}
 	}
-
-	class DropDownListener implements ItemListener {
-		@Override
-		// This method is called only if a new item has been selected in dropDown.
-  		public void itemStateChanged(ItemEvent evt) {
-    		JComboBox cb = (JComboBox) evt.getSource();
-
-    		Object item = evt.getItem();
-
-    		if (evt.getStateChange() == ItemEvent.SELECTED) {
-    			// Do something...
-    		}
-    	}
-    }
 }
