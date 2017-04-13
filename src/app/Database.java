@@ -541,10 +541,10 @@ public class Database {
 	 * @return List of all delivered pallets
 	 */
 	public String[] getDeliveredPallets() {
-		ArrayList<String> pallets = new ArrayList<String>();
+		ArrayList<String> pallets = new ArrayList<>();
 		String query = "SELECT pallet_id, delivery_date " +
 				"FROM Pallet JOIN Order_Bill USING (order_id)" +
-				"WHERE location = 'delivered'";
+				"WHERE location = 'Delivered'";
 		try{
 			ResultSet rs = sendGetQuery(query);
 			while(rs.next()){

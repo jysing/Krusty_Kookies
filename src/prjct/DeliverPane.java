@@ -314,7 +314,7 @@ public class DeliverPane extends BasicPane {
 		orderItemsList();
 		loadedItemList();
 		deliveredList();
-		fakeMethod();
+		//fakeMethod();
 
 	}
 
@@ -395,17 +395,6 @@ public class DeliverPane extends BasicPane {
          *            The event object (not used).
          */
 		public void actionPerformed(ActionEvent e) {
-			ArrayList<String> tempList = new ArrayList<>();
-			for (int i = 0; i < loadedListModel.size(); i++){
-				String item = loadedListModel.getElementAt(i);
-
-				String pallet_id = item.split(":")[0].trim();
-				String order_id = item.split(":")[2].trim();
-				db.setPalletDelivered(pallet_id, order_id); //Gör att Pallet ändras till delivered
-
-				if(!tempList.contains(order_id)) tempList.add(order_id);
-			}
-
 			String filePath;
 			do{
 				filePath = null;
@@ -420,28 +409,28 @@ public class DeliverPane extends BasicPane {
 					filePath = selectedFile.getPath();
 
 					LinkedList<String[]> orders = new LinkedList<String[]>();
+					ArrayList<String> tempList = new ArrayList<>();
 
-					for (int i = 0; i < tempList.size(); i++) {
+					for (int i = 0; i < loadedListModel.size(); i++){
+						String item = loadedListModel.getElementAt(i);
+						if(!tempList.contains(item)){
+							tempList.add(item);
 
-						String order_id = tempList.get(i);
-						System.out.println("Order_id: " + order_id);
-						String customer = db.getOrderCustomer(order_id);
-						String address = db.getCustomerAddress(order_id);
-						String[] cookie_name = db.getOrderCookies(order_id);
-
-						for (int j = 0; j <cookie_name.length; j++){
-							String nbrPallets = db.getOrderNbrOfPallets(order_id, cookie_name[j]);
-							System.out.println(":::::::" + cookie_name[j] + ":"  + nbrPallets+ "::::::");
+							String pallet_id = item.split(":")[0].trim();
+							String cookie_name = item.split(":")[1].trim();
+							String order_id = item.split(":")[2].trim();
+							db.setPalletDelivered(pallet_id, order_id); //Gör att Pallet ändras till delivered
+							String customer = db.getOrderCustomer(order_id);
+							String address = db.getCustomerAddress(order_id);
+							String nbrPallets = db.getOrderNbrOfPallets(order_id, cookie_name);
 							String[] row = new String[4];
 							row[0] = customer;
 							row[1] = address;
-							row[2] = cookie_name[j];
+							row[2] = cookie_name;
 							row[3] = nbrPallets;
 							orders.add(row);
 						}
-
 					}
-
 					CSVExporter print = new CSVExporter(orders, filePath);
 				}
 				catch (NullPointerException ex) {
