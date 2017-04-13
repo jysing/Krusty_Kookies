@@ -561,16 +561,57 @@ public class Database {
 	 * 	
 	 * @return List of all delivered pallets
 	 */
-	public String[] load(String orderItem) {
-		String orderID = orderItem.split("[:]")[0];
-		orderID = orderID.trim();
+	public boolean load(String order_id, String cookie_name, int inLoading) {
+		int wanted = 0;
+		int avaible = 0;
+		int toLoad = 0;
+		
+		String query = "SELECT nbrPallet " +
+				"FROM OrderItems " + 
+				"WHERE order_id = '" + order_id + "' AND cookie_name = '" + cookie_name + "'";
+		try{
+			ResultSet rs = sendGetQuery(query);
+			while(rs.next()){
+				wanted = rs.getInt("nbrPallet");
+			}
+		}catch(SQLException ex){
+			System.err.println(ex.getMessage());
+		}
 
-		String cookieName = orderItem.split("[:]")[1];
-		cookieName = cookieName.trim();
+		query = "SELECT COUNT() AS avaible " +
+				"FROM Pallet " +
+				"WHERE is_blocked IS NOT 1 AND location = 'Freezer' " + 
+				"AND cookie_name = '" + cookie_name + "'";
+		try{
+			ResultSet rs = sendGetQuery(query);
+			while(rs.next()){
+				avaible = rs.getInt("avaible");
+			}
+		}catch(SQLException ex){
+			System.err.println(ex.getMessage());
+		}
 
-		ArrayList<String> pallets = new ArrayList<String>();
-		pallets.clear();
-		return pallets.toArray((new String[pallets.size()]));
+		if (avaible >= wanted) toLoad = wanted;
+		else toLoad = avaible;
+
+		query  = "UPDATE orderItems " + 
+				"SET nbrPallet = nbrPallet - " + toLoad + " " + 
+				"WHERE order_id = '" + order_id + "' AND cookie_name = '" + cookie_name + "'";
+		try{
+			int aff = sendPutQuery(query);
+			if (aff != toLoad) return false;
+		}catch(SQLException ex){
+			System.err.println(ex.getMessage());
+		}
+
+		query = "UPDATE Pallet " +
+				"SET location = 'delivered' " + 
+				"WHERE cookie_name = '" + cookie_name + "' " +
+				"LIMIT = " + toLoad;
+
+
+
+		return false;
 	}
 	/**
 	 *
