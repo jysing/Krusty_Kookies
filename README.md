@@ -29,7 +29,7 @@ E/R-diagram:
 >
 >customers(**customer_name**, address, ~~country~~)
 >
->order_Bills(**order_id**, *customer_name*, delivery_date)
+>orderBills(**order_id**, *customer_name*, delivery_date)
 >
 >orderItems(*order_id*, *cookie_name*, nbrPallet)
 >
@@ -99,5 +99,6 @@ CREATE TABLE Ingredient (
 );
 ```
 
-# 8. **A user’s manual (not necessary if everything in the program is self-explanatory).**
+# 8.
+CoolButton Inc. software are by basis self-explanatory.
 
