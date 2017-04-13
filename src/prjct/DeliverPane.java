@@ -347,6 +347,21 @@ public class DeliverPane extends BasicPane {
             fileChooser.showSaveDialog(null);
 
             /* --- add I/O-code to save files --- */
+            String filePath;
+            File selectedFile = fileChooser.getSelectedFile();
+            filePath = selectedFile.getPath();
+
+            String[] row = new String[4];
+            for (int i = 0; i < 4; i++) {
+            	row[i] = "Hej";
+            }
+            LinkedList<String[]> orders = new LinkedList<String[]>();
+            orders.add(row);
+
+
+            CSVExporter print = new CSVExporter(orders, filePath);
+
+            System.out.println(filePath);
         }
     }
 }
