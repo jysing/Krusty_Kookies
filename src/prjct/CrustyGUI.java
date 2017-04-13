@@ -24,6 +24,11 @@ public class CrustyGUI {
 	 */
 	private JTabbedPane tabbedPane;
 
+	/**
+	 * Create a GUI object and connect to the database.
+	 *
+	 * @param db
+	 */
 	public CrustyGUI(Database db) {
 		this.db = db;
 
