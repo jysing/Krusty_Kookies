@@ -2,7 +2,6 @@ package src.app;
 
 import java.sql.*;
 import java.util.*;
-import java.text.*;
 
 /**
  * Database is a class that specifies the interface to the xxx
@@ -16,7 +15,7 @@ public class Database {
 	private Connection conn;
 
 	/**
-	 * Create the databace interface object.
+	 * Create the database interface object.
 	 */
 	public Database() {
 		conn = null;
@@ -68,7 +67,7 @@ public class Database {
 	 * @param query to be executed
 	 * @return either (1) the row count for SQL Data Manipulation Language (DML) statements or
 	 * 				  (2) 0 for SQL statements that return nothing
-	 * @throws SQLException
+	 * @throws SQLException an exception
 	 */
 	private int sendPutQuery(String query) throws SQLException{
 		Statement stmt = conn.createStatement();
@@ -79,18 +78,18 @@ public class Database {
 	 * For SELECT
 	 *
 	 * @param query to be executed
-	 * @return Resultset containing result from SQL query
-	 * @throws SQLException
+	 * @return ResultSet containing result from SQL query
+	 * @throws SQLException an exception
 	 */
 	private ResultSet sendGetQuery(String query) throws SQLException {
-		ResultSet rs = null;
+		ResultSet rs;
 		Statement stmt = conn.createStatement();
 		rs = stmt.executeQuery(query);
 		return rs;
 	}
 
 	public String[] getCookieNames(){
-		ArrayList<String> cookies = new ArrayList<String>();
+		ArrayList<String> cookies = new ArrayList<>();
 		String query = "SELECT cookie_name " +
 				"FROM Cookie";
 		try {
@@ -100,7 +99,7 @@ public class Database {
 			}
 		} catch (SQLException ex){
 			System.err.println("SQL error: " + ex.getMessage());
-			cookies = null;
+			cookies.clear();
 		}
 
 		return cookies.toArray(new String[cookies.size()]);
@@ -328,8 +327,21 @@ public class Database {
 	 * @param pallet_id
 	 * @return
 	 */
-	public String getPalletLocation(String pallet_id){
-		return null;
+	public String getPalletCookie(String pallet_id){
+		String pallet = "";
+		String query = "SELECT cookie_name " +
+				"FROM PALLET " +
+				"WHERE pallet_id = '" + pallet_id + "'";
+		try{
+			ResultSet rs = sendGetQuery(query);
+			while(rs.next()){
+				pallet = (rs.getString("cookie_name"));
+			}
+		}catch(SQLException ex){
+			System.err.println(ex.getMessage());
+			pallet = "";
+		}
+		return pallet;
 	}
 
 	/**
@@ -340,6 +352,17 @@ public class Database {
 	public String getPalletProdDate(String pallet_id){
 		return null;
 	}
+
+	/**
+	 * Returns location of a specific pallet with pallet id pallet_id
+	 * @param pallet_id
+	 * @return
+	 */
+	public String getPalletLocation(String pallet_id){
+		return null;
+	}
+
+
 
 	/**
 	 * Returns a list of pallets that were produced in a time interval.
