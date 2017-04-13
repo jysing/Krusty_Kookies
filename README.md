@@ -1,22 +1,23 @@
 # Krusty_Kookies
 
-# 1. **A section with your names, program/year, and email-addresses**
+# 1.
 - Kewin Erichsen, E11, rys10ker@student.lu.se
 - Henrik Fryklund, E13, kem12hfr@student.lu.se
 - Joakim Ysing, D12, lan11jys@student.lu.se
 
-# 2. **A section with an introduction (what the project is about, etc.).**
-Lorem Ipsum
+# 2.
+Krusty Kookies is an open source CMS (Cookie Management System) developed by CoolButton Inc. 
+The CMS is developed for our customer Crusty Cookies by demand from the course EDA216 at LTH.
 
 # 3. **A section with notes about requirements that you fulfill or don’t fulfill.**
-Lorem Ipsum
+We fulfill all requirements given by the customer through the written order. No further contact has been made with the customer since receiving the order. 
 
 # 4. **An outline of your system (which database manager you use, which programs you have written, how the programs communicate with the database, etc.).**
-The DBMS used is **SQLite** and the programs are written i **Java**. **Jupyter Notebook** was used to create and test SQL-commands.
+The CMS uses the DBMS  **SQLite** and the software is written in **Java**. **Jupyter Notebook** was used to create and test SQL-commands.
 
-# 5. **An E/R diagram (using UML-notation) which describes your system.**
+# 5.
 E/R-diagram: 
-![alt text](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "UML-notation of databse structure")
+![alt text](https://github.com/jysing/Krusty_Kookies/blob/master/UML.png "UML-notation of databse structure")
 
 
 # 6. **Relations. Indicate primary keys, possibly secondary keys, and foreign keys. You must show that the relations are normalized according to your chosen normal form (if a relation "obviously" is in BCNF you may say so, provided that you justify your statement). If a relation is in a lower normal form than BCNF, you must justify this choice.**
@@ -28,7 +29,7 @@ E/R-diagram:
 >
 >customers(**customer_name**, address, ~~country~~)
 >
->orders(**order_id**, *customer_name*, delivery_date)
+>order_Bills(**order_id**, *customer_name*, delivery_date)
 >
 >orderItems(*order_id*, *cookie_name*, nbrPallet)
 >
@@ -40,7 +41,7 @@ E/R-diagram:
 >
 >ingredients(**ingridient_name**, amount, unit, refill_date)
 
-# 7. **SQL statements to create all tables, views, stored procedures, and other database elements.**
+# 7.
 ```SQL
 PRAGMA foreign_keys=OFF;
 DROP TABLE IF EXISTS Customer;
