@@ -201,7 +201,7 @@ public class ProductionPane extends BasicPane {
 
 	private void updateAllPalletList() {
         allPalletListModel.removeAllElements();
-		for (String s: db.updateFreezer()){
+		for (String s: db.getAllPalletsInFreezer()){
             allPalletListModel.addElement(s);
 		}
 	}

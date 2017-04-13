@@ -115,7 +115,7 @@ public class Database {
 	 * @param to_date end date of interval
 	 * @return list of Order_Bill
 	 */
-	public String[] updateOrder_bills(String from_date, String to_date) {
+	public String[] getOrderBills(String from_date, String to_date) {
 		ArrayList<String> bills = new ArrayList<String>();
 		String query = "SELECT order_id " +
 						"FROM Order_Bill " +
@@ -135,49 +135,13 @@ public class Database {
 
 	}
 
-	/**
-	 * Retrieves information about a order.
-	 * TODO: Change so it returns an object. Add information about pallets.
-	 * @param order_id
-	 * @return Information about order_id
-	 */
-	public String[] loading_order(int order_id){
-		ArrayList<String> order = new ArrayList<String>();
-		String query = "SELECT * " +
-				"FROM Order_Bill INNER JOIN OrderItems ON Order_Bill.order_id = OrderItems.order_id " +
-				"WHERE order_id = " + order_id;
-		try{
-			ResultSet rs = sendGetQuery(query);
-			while(rs.next()){
-				order.add(rs.getString("customer_name"));
-			}
-		}catch(SQLException ex){
-			System.err.println(ex.getMessage());
-			order = null;
-		}
-		return order.toArray((new String[order.size()]));
-	}
-
-
-	/**
-	 * Retrieves information about a Customers orders
-	 * with a specific delivery date.
-	 *
-	 * TODO: Redefine method
-	 * @param customer_ID Customer id to search
-	 * @param date Delivery date of order
-	 * @return
-	 */
-	public String[] loading_order(String customer_ID, String date){
-		return null;
-	}
 
 	/**
 	 * 	List of all existing pallets in location freezer.
-	 *
+	 * TODO: Concaterna cookie_name med pallet_id
 	 * @return list of pallets in freezer
 	 */
-	public String[] updateFreezer() {
+	public String[] getAllPalletsInFreezer() {
 		ArrayList<String> pallets = new ArrayList<String>();
 		String query = "SELECT pallet_id " +
 				"FROM Pallet " +
@@ -201,7 +165,7 @@ public class Database {
 	 * @param to_date end date of interval
 	 * @return list of pallets delivered in time intervall
 	 */
-	public String[] updateDelivered(String from_date, String to_date) {
+	public String[] getDeliveredPallets(String from_date, String to_date) {
 		return null;
 	}
 
@@ -212,7 +176,7 @@ public class Database {
 	 * @param customer_ID customer id to search
 	 * @return list of pallets
 	 */
-	public String[] deliveredPallets(String customer_ID) {
+	public String[] getDeliveredPallets(String customer_ID) {
 		return null;
 	}
 
@@ -223,7 +187,7 @@ public class Database {
 	 * @param cookie_name Cookie to be produced
 	 * @param nbr_pallets Number of pallets to be produced of a cookie type
 	 */
-	public void producePallets(String cookie_name, int nbr_pallets) {
+	public boolean producePallets(String cookie_name, int nbr_pallets) {
 		/*
 		SELECT ingredient_name, amount
 		FROM Cookie INNER JOIN RecipeItems ON cookie_name
@@ -233,8 +197,8 @@ public class Database {
 
 		Update the ingredient
 
-		UPDATE Ingredient
-           set amount = CASE
+		UPDATEamo Ingredient
+           set unt = CASE
                 WHEN ingredient_name = 'Butter' THEN amount - 54*(SELECT amount from RecipeItems WHERE cookie_name = 'Berliner' AND ingredient_name = 'Butter')
                 WHEN ingredient_name = 'Eggs' THEN amount - 54*(SELECT amount from RecipeItems WHERE cookie_name = 'Berliner' AND ingredient_name = 'Eggs')
                 ELSE amount END
@@ -254,11 +218,12 @@ public class Database {
 
 			}catch(SQLException ex){
 				System.err.println(ex.getMessage());
-				result = -1;
+				return false;
 			}
 			System.out.println(result);
 
 		}
+		return true;
 	}
 
 	/**
@@ -286,25 +251,21 @@ public class Database {
 		return false;
 	}
 
-	/**
-	 * Returns a list of blocked cookies.
-	 *
-	 * @return list of blocked cookies
-	 */
-	public String[] blockedCookieType() {
-		return null;
-	}
 
 	/**
 	 * Returns a list of pallets that have been blocked.
 	 *
 	 * @return list of blocked pallets
 	 */
-	public String[] blockedPallets() {
+	public String[] getAllBlockedPallets(String cookie_name) {
 		ArrayList<String> pallets = new ArrayList<String>();
-		String query = "SELECT pallet_id " + 
+
+		if(cookie_name.equals("all")) cookie_name = "*";
+
+		String query = "SELECT pallet_id " +
 			"FROM PALLET " + 
-			"WHERE is_blocked = 1";
+			"WHERE is_blocked = 1 AND cookie_name = '" + cookie_name + "'";
+
 		try{
 			ResultSet rs = sendGetQuery(query);
 			while(rs.next()){
@@ -312,46 +273,15 @@ public class Database {
 			}
 		}catch(SQLException ex){
 			System.err.println(ex.getMessage());
-			pallets = null;
+			pallets.clear();
 		}
 		return pallets.toArray((new String[pallets.size()]));
 	}
 
-	/**
-	 *	Eventuellt ta in pallet_ID array
-	 *
-	 *
-	 */
-	public void exportLoadingOrder() {
-
-	}
-
-	/**
-	 * Returns information about a pallet. The information contains production date, type of cookie
-	 *
-	 * @param palletID pallet to be found
-	 * @return information about pallet
-	 */
-	public String trackPallet(int palletID) {
-		StringBuilder pallet = new StringBuilder();
-		String query = "SELECT * " +
-			"FROM PALLET " + 
-			"WHERE pallet_id = " + palletID;
-		try{
-			ResultSet rs = sendGetQuery(query);
-			pallet.append("Cookie: " + rs.getString("cookie_name"));
-			java.util.Date date = rs.getDate("production_date");
-			DateFormat df = new SimpleDateFormat("yyyy/MM/dd");
-			pallet.append(", Produced: " + df.format(date));
-		}catch(SQLException ex){
-			System.err.println(ex.getMessage());
-			pallet = null;
-		}
-		return pallet.toString();
-	}
-
     /**
      * Tracks a pallet and resturns a Pallet Object
+	 * TODO: remove and replace with methods beneath getPalletLocation and getPalletProdDate
+	 *
      */
     public Pallet trackPalletObject(String pallet_id){
         Pallet p;
@@ -369,21 +299,40 @@ public class Database {
     }
 
 	/**
+	 * Returns location of a specific pallet with pallet id pallet_id
+	 * @param pallet_id
+	 * @return
+	 */
+	public String getPalletLocation(String pallet_id){
+		return null;
+	}
+
+	/**
+	 * Returns production date of a specific pallet with pallet id pallet_id
+	 * @param pallet_id
+	 * @return
+	 */
+	public String getPalletProdDate(String pallet_id){
+		return null;
+	}
+
+	/**
 	 * Returns a list of pallets that were produced in a time interval.
-	 *
+	 * TODO:
 	 * @param from_date start date of interval
 	 * @param to_date end date of interval
 	 * @return list of pallets
 	 */
-	public String[] trackPallets(String from_date, String to_date) {
+	public String[] getPallets(String from_date, String to_date) {
 		ArrayList<String> pallets = new ArrayList<String>();
-		String query = "SELECT * " + 
+		String query = "SELECT pallet_id, cookie_name " +
 			"FROM PALLET " + 
 			"WHERE production_date BETWEEN " + from_date + " AND " + to_date;
 		try{
 			ResultSet rs = sendGetQuery(query);
 			while(rs.next()){
-				pallets.add(rs.getString("pallet_id"));
+				pallets.add("derp");
+				System.out.println("getPallet: JAG FUNGERAR INTE!!!");
 			}
 		}catch(SQLException ex){
 			System.err.println(ex.getMessage());
@@ -391,7 +340,5 @@ public class Database {
 		}
 		return pallets.toArray((new String[pallets.size()]));
 	}
-
-
 
 }

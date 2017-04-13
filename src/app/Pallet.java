@@ -3,9 +3,7 @@ package src.app;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/**
- * Created by Henri_000 on 2017-03-30.
- */
+
 public class Pallet{
     public final int pallet_id;
     public final String cookie_name;
