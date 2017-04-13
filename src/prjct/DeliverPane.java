@@ -109,11 +109,15 @@ public class DeliverPane extends BasicPane {
 	 */
 	private static final int ORDER_NBR_OF_PALLETS = 4;
 
+	/**
+	 * The number of the order item attribute field
+	 */
+	private static final int ORDER_DELIVERY = 5;
 
 	/**
 	 * The total number of fields
 	 */
-	private static final int NBR_FIELDS = 5;
+	private static final int NBR_FIELDS = 6;
 
 	public DeliverPane(Database db) {
 		super(db);
@@ -193,7 +197,8 @@ public class DeliverPane extends BasicPane {
 		labels[ORDER_CUSTOMER] = "Customer";
 		labels[ORDER_ADDRESS] = "Address";
 		labels[ORDER_COOKIE] = "Cookie Name";
-		labels[ORDER_NBR_OF_PALLETS] = "Nbr Pallet";
+		labels[ORDER_NBR_OF_PALLETS] = "Nbr of Pallet";
+		labels[ORDER_DELIVERY] = "Due Delivery Date";
 
 		for(int i = 0; i < NBR_FIELDS; i++) {
 			JLabel l = customLabel(labels[i],
@@ -227,12 +232,17 @@ public class DeliverPane extends BasicPane {
 			JLabel.CENTER, Component.CENTER_ALIGNMENT,
 			Font.BOLD, 16);
 
+		JLabel centerLabel = customLabel("Loaded",
+			JLabel.CENTER, Component.CENTER_ALIGNMENT,
+			Font.BOLD, 16);
+
 		JLabel rightLabel = customLabel("Delivered pallets",
 			JLabel.CENTER, Component.CENTER_ALIGNMENT,
 			Font.BOLD, 16);
 
 		panel.setLayout(new GridLayout(1, 2));
 		panel.add(leftLabel);
+		panel.add(centerLabel);
 		panel.add(rightLabel);
 
 		return panel;
@@ -246,13 +256,14 @@ public class DeliverPane extends BasicPane {
 	public JComponent createMiddlePanel() {
 		JPanel panel = new JPanel();
 
-		orderBillsListModel = new DefaultListModel<String>();
+		orderBillsListModel = new DefaultListModel<>();
 
-		orderBillsList = new JList<String>(orderBillsListModel);
+		orderBillsList = new JList<>(orderBillsListModel);
 		orderBillsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		orderBillsList.addListSelectionListener(new orderBillsSelectionListener());
 		
 		JScrollPane p1 = new JScrollPane(orderBillsList);
+
 
 		loadedListModel = new DefaultListModel<String>();
 
@@ -264,7 +275,8 @@ public class DeliverPane extends BasicPane {
 
 		deliveredListModel = new DefaultListModel<String>();
 
-		deliveredList = new JList<String>(deliveredListModel);
+
+		deliveredList = new JList<>(deliveredListModel);
 		deliveredList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		deliveredList.addListSelectionListener(new deliveredSelectionListener());
 
@@ -329,7 +341,21 @@ public class DeliverPane extends BasicPane {
          *            The selected list item.
          */
 		public void valueChanged(ListSelectionEvent e) {
-			// implement if needed.
+			if (orderBillsList.isSelectionEmpty()){
+				return;
+			}
+			if(e.getValueIsAdjusting()){
+				String selectedValue = orderBillsList.getSelectedValue();
+				String order_id = selectedValue.split(": ")[0];
+				String cookie_name = selectedValue.split(": ")[1];
+
+				fields[ORDER_ID].setText(order_id);
+				fields[ORDER_CUSTOMER].setText(db.getOrderCustomer(order_id));
+				fields[ORDER_ADDRESS].setText(db.getCustomerAddress(order_id));
+				fields[ORDER_COOKIE].setText(cookie_name);
+				fields[ORDER_NBR_OF_PALLETS].setText(db.getOrderNbrOfPallets(order_id, cookie_name));
+				fields[ORDER_DELIVERY].setText(db.getOrderDeliveryDate(order_id));
+			}
 		}
 	}
 
@@ -385,6 +411,21 @@ public class DeliverPane extends BasicPane {
             fileChooser.showSaveDialog(null);
 
             /* --- add I/O-code to save files --- */
+            String filePath;
+            File selectedFile = fileChooser.getSelectedFile();
+            filePath = selectedFile.getPath();
+
+            String[] row = new String[4];
+            for (int i = 0; i < 4; i++) {
+            	row[i] = "Hej";
+            }
+            LinkedList<String[]> orders = new LinkedList<String[]>();
+            orders.add(row);
+
+
+            CSVExporter print = new CSVExporter(orders, filePath);
+
+            System.out.println(filePath);
         }
     }
 }
