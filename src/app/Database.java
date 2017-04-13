@@ -227,7 +227,7 @@ public class Database {
 			queryUpdateIngredients += " ELSE amount END";
 		}catch(SQLException ex){
 			System.err.println(ex.getMessage());
-			queryUpdateIngredients = "";
+			return false;
 		}
 
 
@@ -238,19 +238,16 @@ public class Database {
 			System.err.println(ex.getMessage());
 		}
 
+		String query = "INSERT INTO Pallet (cookie_name, production_date, location) ";
 		for (int i = 0; i < nbr_pallets; i++) {
-			String query = "INSERT INTO Pallet (cookie_name, production_date, location) " +
-					"VALUES ('" + cookie_name + "', date() , 'Freezer');";
-			int result;
-			try{
-				result = sendPutQuery(query);
+			query += " VALUES ('" + cookie_name + "', date() , 'Freezer');";
+		}
 
-			}catch(SQLException ex){
-				System.err.println(ex.getMessage());
-				return false;
-			}
-			System.out.println(result);
-
+		try{
+			sendPutQuery(query);
+		}catch(SQLException ex){
+			System.err.println(ex.getMessage());
+			return false;
 		}
 		return true;
 	}
