@@ -399,7 +399,7 @@ public class DeliverPane extends BasicPane {
 				String pallet_id = item.split(":")[0].trim();
 				String cookie_name = item.split(":")[1].trim();
 				String order_id = item.split(":")[2].trim();
-				db.setPalletDelivered(pallet_id, cookie_name, order_id); //Gör att Pallet ändras till delivered
+				db.setPalletDelivered(pallet_id, order_id); //Gör att Pallet ändras till delivered
 			}
 			loadedItemList(); //rensar listan
 
