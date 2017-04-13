@@ -326,6 +326,7 @@ public class SearchPane extends BasicPane {
 			for(String s: result){
 				palletListModel.addElement(s);
 			}
+			clearFields();
 		}
 	}
 
@@ -337,6 +338,7 @@ public class SearchPane extends BasicPane {
 				String result = db.getPallet(searchText.getText());
 				palletListModel.removeAllElements();
 				palletListModel.addElement(result);
+				clearFields();
 			}
 		}
 	}
