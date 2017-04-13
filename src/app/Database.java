@@ -736,7 +736,7 @@ public class Database {
 	public boolean connectedToPallet(String order_id, String cookie_name) {
 		String query = "SELECT order_id, cookie_name " +
 				"FROM Pallet " +
-				"WHERE order_id = '" + order_id + "'";
+				"WHERE order_id = '" + order_id + "' ";
 		try{
 			ResultSet rs = sendGetQuery(query);
 			while(rs.next()){

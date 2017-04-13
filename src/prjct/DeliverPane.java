@@ -510,11 +510,13 @@ public class DeliverPane extends BasicPane {
 			}
 			if(e.getValueIsAdjusting()){
 				String selectedValue = deliveredList.getSelectedValue();
-				String pallet_id = selectedValue.split(":")[1].trim();
-				pallet_id = pallet_id.split(" ")[0].trim();
+				String order_id = selectedValue.split(":")[1].trim();
+				order_id = order_id.split(" ")[0].trim();
 
-				String order_id = db.getPalletOrder(pallet_id);
-				String cookie_name = db.getPalletCookie(pallet_id);
+				String cookie_name = selectedValue.split(":")[2].trim();
+				cookie_name = cookie_name.split("Delivered")[0].trim();
+
+
 
 				fields[ORDER_ID].setText(order_id);
 				fields[ORDER_CUSTOMER].setText(db.getOrderCustomer(order_id));
