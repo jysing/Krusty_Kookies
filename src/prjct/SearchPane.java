@@ -8,11 +8,13 @@ import javax.swing.event.*;
 import javax.swing.border.*;
 import javax.swing.JComponent.*;
 import javax.swing.filechooser.*;
+import javax.swing.text.NumberFormatter;
 
 import java.awt.*;
 import java.awt.event.*;
 
 import java.io.*;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 
 public class SearchPane extends BasicPane {
@@ -45,6 +47,10 @@ public class SearchPane extends BasicPane {
 	 */
 	private JSpinner spinnerTo;
 
+	/**
+	 * TextField for searching for pallet_id
+	 */
+	private JFormattedTextField searchText;
 
 	/**
 	 * The text fields where the pallet data is shown
@@ -126,8 +132,15 @@ public class SearchPane extends BasicPane {
 
 		JButton search = customButton("Search",new SearchPane.SearchHandler2(), 100, 25);
 
-		JTextField searchText = new JTextField();
-		searchText.setEditable(true);
+		NumberFormat format = NumberFormat.getInstance();
+		NumberFormatter formatter = new NumberFormatter(format);
+		formatter.setValueClass(Integer.class);
+		formatter.setMinimum(0);
+		formatter.setMaximum(Integer.MAX_VALUE);
+		formatter.setAllowsInvalid(false);
+		formatter.setCommitsOnValidEdit(true);
+		searchText = new JFormattedTextField(formatter);
+
 
 
 		box.add(Box.createHorizontalStrut(5));
@@ -260,7 +273,13 @@ public class SearchPane extends BasicPane {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			System.out.println("Search by pallet_id");
+			if(searchText.getValue() != null){
+				int pallet_id = Integer.parseInt((String)searchText.getValue());
+				String result = db.getPallet(pallet_id+"");
+				palletListModel.removeAllElements();
+				palletListModel.addElement(result);
+			}
+
 		}
 	}
 
@@ -283,7 +302,7 @@ public class SearchPane extends BasicPane {
 			if(e.getValueIsAdjusting()){
 			String pallet_id = palletList.getSelectedValue();
 			pallet_id = pallet_id.split(" : ")[0];
-			System.out.println("Search for this and get info" + pallet_id);
+			System.out.println("Search for this and get info: " + pallet_id);
 			/*Pallet p;
 			p = db.trackPalletObject(pallet_id);
 
