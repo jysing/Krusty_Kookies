@@ -220,9 +220,10 @@ public class DeliverPane extends BasicPane {
 
 	private void orderItemsList(){
 		orderBillsListModel.removeAllElements();
-	//	for (String s: db.) {
-    //        orderBillsListModel.addElement(s);
-	//	}
+		for (String s: db.getOrderItems()) {
+            orderBillsListModel.addElement(s);
+            setForeground(Color.green);
+		}
 	}
 
 	private void deliveredList() {

@@ -487,4 +487,24 @@ public class Database {
 		return pallets.toArray((new String[pallets.size()]));
 	}
 
+	/**
+	 * 	List of all existing order items
+	 * @return list of pallets in freezer
+	 */
+	public String[] getOrderItems() {
+		System.out.println("here");
+		ArrayList<String> pallets = new ArrayList<String>();
+		String query = "SELECT order_id " +
+				"FROM OrderItems ";
+		try{
+			ResultSet rs = sendGetQuery(query);
+			while(rs.next()){
+				pallets.add(rs.getString("order_id"));
+			}
+		}catch(SQLException ex){
+			System.err.println(ex.getMessage());
+			pallets = null;
+		}
+		return pallets.toArray((new String[pallets.size()]));
+	}
 }
