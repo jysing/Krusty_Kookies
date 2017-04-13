@@ -12,7 +12,6 @@ import java.awt.event.*;
 
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class SearchPane extends BasicPane {
 
@@ -55,29 +54,50 @@ public class SearchPane extends BasicPane {
 	private JTextField[] fields;
 
 	/**
-	 * The number of the pallet attribute 0 field
+	 * The number of the pallet attribute field
 	 */
-	private static final int PALLET_ATTR_0 = 0;
+	private static final int PALLET_ID = 0;
 
 	/**
-	 * The number of the pallet attribute 1 field
+	 * The number of the pallet attribute field
 	 */
-	private static final int PALLET_ATTR_1 = 1;
+	private static final int PALLET_COOKIE = 1;
 
 	/**
-	 * The number of the pallet attribute 2 field
+	 * The number of the pallet attribute field
 	 */
-	private static final int PALLET_ATTR_2 = 2;
+	private static final int PALLET_PRODUCTION = 2;
 
 	/**
-	 * The number of the pallet attribute 3 field
+	 * The number of the pallet attribute field
 	 */
-	private static final int PALLET_ATTR_3 = 3;
+	private static final int PALLET_LOCATION = 3;
+
+	/**
+	 * The number of the pallet attribute field
+	 */
+	private static final int PALLET_BLOCKED = 4;
+
+	/**
+	 * The number of the pallet attribute field
+	 */
+	private static final int PALLET_CUSTOMER = 5;
+
+	/**
+	 * The number of the pallet attribute field
+	 */
+	private static final int PALLET_ORDER = 6;
+
+	/**
+	 * The number of the pallet attribute field
+	 */
+	private static final int PALLET_DELIVERY = 7;
+
 
 	/**
 	 * The total number of fields
 	 */
-	private static final int NBR_FIELDS = 4;
+	private static final int NBR_FIELDS = 8;
 
 
 	public SearchPane(Database db) {
@@ -167,10 +187,14 @@ public class SearchPane extends BasicPane {
 		Box attributeBox = new Box(BoxLayout.Y_AXIS);
 
 		String[] labels = new String[NBR_FIELDS];
-		labels[PALLET_ATTR_0] = "Attr 0";
-		labels[PALLET_ATTR_1] = "Attr 1";
-		labels[PALLET_ATTR_2] = "Attr 2";
-		labels[PALLET_ATTR_3] = "Attr 6";
+		labels[PALLET_ID] = "Pallet ID";
+		labels[PALLET_COOKIE] = "Cookie Name";
+		labels[PALLET_PRODUCTION] = "Production Date";
+		labels[PALLET_LOCATION] = "Location";
+		labels[PALLET_BLOCKED] = "Blocked";
+		labels[PALLET_CUSTOMER] = "Customer";
+		labels[PALLET_ORDER] = "Order ID";
+		labels[PALLET_DELIVERY] = "Delivery Date";
 
 		for(int i = 0; i < NBR_FIELDS; i++) {
 			JLabel l = customLabel(labels[i],
@@ -314,14 +338,16 @@ public class SearchPane extends BasicPane {
 			String pallet_id = palletList.getSelectedValue();
 			pallet_id = pallet_id.split(" : ")[0];
 			System.out.println("Search for this and get info: " + pallet_id);
-			/*Pallet p;
-			p = db.trackPalletObject(pallet_id);
 
-				fields[PALLET_ATTR_0].setText(p.cookie_name);
-				fields[PALLET_ATTR_1].setText(p.location);
-				fields[PALLET_ATTR_2].setText(p.production_date);
+			fields[PALLET_ID].setText(db.getPallet(pallet_id));
+			fields[PALLET_COOKIE].setText(db.getPalletCookie(pallet_id));
+			fields[PALLET_PRODUCTION].setText(db.getPalletProdDate(pallet_id));
+			fields[PALLET_LOCATION].setText(db.getPalletLocation(pallet_id));
+			fields[PALLET_BLOCKED].setText(db.getPallet(pallet_id));
+			fields[PALLET_CUSTOMER].setText(db.getPallet(pallet_id));
+			fields[PALLET_ORDER].setText(db.getPallet(pallet_id));
+			fields[PALLET_DELIVERY].setText(db.getPallet(pallet_id));
 
-			*/
 			}
 		}
 	}
