@@ -25,6 +25,11 @@ import java.text.*;
 public class DeliverPane extends BasicPane {
 
 	/**
+	 * The file chooser object.
+	 */
+	private JFileChooser fileChooser;
+
+	/**
      * The list model for the specific pallet list.
      */
     private DefaultListModel<String> orderBillsListModel;
@@ -141,6 +146,29 @@ public class DeliverPane extends BasicPane {
 
 		return panel;
 	}
+
+	/**
+	 * Create the left middle panel.
+	 *
+	 * @return the left middle panel.
+	 */
+	public JComponent createLeftMiddlePanel() {
+		JPanel panel = new JPanel();
+
+		Box mainBox = new Box(BoxLayout.Y_AXIS);
+
+		JButton export = customButton("Export .csv-file", new ExportHandler(), 150, 40);
+		
+		mainBox.add(Box.createVerticalStrut(50));
+		mainBox.add(export);
+
+		panel.add(mainBox);
+
+		panel.setBorder(new CompoundBorder(new SoftBevelBorder(BevelBorder.RAISED), panel.getBorder()));
+
+		return panel;
+	}
+
 
 	/**
 	 * Create the left bottom panel.
@@ -315,4 +343,27 @@ public class DeliverPane extends BasicPane {
 			// implement if needed.
 		}
 	}
+
+	 /**
+     * A class that listens for button clicks.
+     */
+    class ExportHandler implements ActionListener {
+        /**
+         * Called when the user clicks the Export .csv-file button. Opens up
+         * a file browser.
+         * 
+         * @param e
+         *            The event object (not used).
+         */
+        public void actionPerformed(ActionEvent e) {
+            fileChooser = new JFileChooser();
+            fileChooser.setAcceptAllFileFilterUsed(false);
+            fileChooser.addChoosableFileFilter(new FileNameExtensionFilter(".csv","csv"));
+            fileChooser.setPreferredSize(new Dimension(700,500));
+
+            fileChooser.showSaveDialog(null);
+
+            /* --- add I/O-code to save files --- */
+        }
+    }
 }
