@@ -84,9 +84,8 @@ public class SearchPane extends BasicPane {
 	public JComponent createLeftTopPanel() {
 		JPanel panel = new JPanel();
 
-		SpinnerDateModel dateModel = new SpinnerDateModel();
-		spinnerFrom = new JSpinner(dateModel);
-		spinnerTo = new JSpinner(dateModel);
+		spinnerFrom = new JSpinner(new SpinnerDateModel());
+		spinnerTo = new JSpinner(new SpinnerDateModel());
 
 		spinnerFrom.setEditor(new JSpinner.DateEditor(spinnerFrom, "yyyy/MM/dd"));
 		spinnerTo.setEditor(new JSpinner.DateEditor(spinnerTo, "yyyy/MM/dd"));
@@ -247,9 +246,14 @@ public class SearchPane extends BasicPane {
 		public void actionPerformed(ActionEvent e) {
 			System.out.println("Search by date interval");
 
-			System.out.println(new SimpleDateFormat("yyyy-MM-dd").format(spinnerFrom.getValue()));
-			//db.getPallets();
-			//2015-23-11
+			String from = new SimpleDateFormat("yyyy-MM-dd").format(spinnerFrom.getValue());
+			String to = new SimpleDateFormat("yyyy-MM-dd").format(spinnerTo.getValue());
+			System.out.println(from + " : " + to);
+			String[] skit = db.getPallets(from, to);
+			for(String s: skit){
+				palletListModel.addElement(s);
+			}
+
 		}
 	}
 
@@ -278,6 +282,7 @@ public class SearchPane extends BasicPane {
 				return;
 			}
 			String pallet_id = palletList.getSelectedValue();
+			pallet_id.split("(?:[0-9]|[0-9])");
 			Pallet p;
 			p = db.trackPalletObject(pallet_id);
 			if(e.getValueIsAdjusting()){
@@ -285,7 +290,7 @@ public class SearchPane extends BasicPane {
 				fields[PALLET_ATTR_1].setText(p.location);
 				fields[PALLET_ATTR_2].setText(p.production_date);
 			}
-
+			
 		}
 	}
 }
