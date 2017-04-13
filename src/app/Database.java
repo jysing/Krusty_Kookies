@@ -142,13 +142,35 @@ public class Database {
 	 */
 	public String[] getAllPalletsInFreezer() {
 		ArrayList<String> pallets = new ArrayList<String>();
-		String query = "SELECT pallet_id " +
+		String query = "SELECT pallet_id, cookie_name " +
 				"FROM Pallet " +
 				"WHERE is_blocked IS NOT 1 AND location = 'Freezer'";
 		try{
 			ResultSet rs = sendGetQuery(query);
 			while(rs.next()){
-				pallets.add(rs.getString("pallet_id"));
+				pallets.add(rs.getString("pallet_id") + " : " + rs.getString("cookie_name"));
+			}
+		}catch(SQLException ex){
+			System.err.println(ex.getMessage());
+			pallets = null;
+		}
+		return pallets.toArray((new String[pallets.size()]));
+	}
+
+	/**
+	 * 	List of all existing pallets in location freezer.
+	 * TODO: Concaterna cookie_name med pallet_id
+	 * @return list of pallets in freezer
+	 */
+	public String[] getAllPalletsInFreezer(String cookie_name) {
+		ArrayList<String> pallets = new ArrayList<>();
+		String query = "SELECT pallet_id, cookie_name " +
+				"FROM Pallet " +
+				"WHERE is_blocked IS NOT 1 AND location = 'Freezer' AND cookie_name = '" + cookie_name + "'";
+		try{
+			ResultSet rs = sendGetQuery(query);
+			while(rs.next()){
+				pallets.add(rs.getString("pallet_id") + " : " + rs.getString("cookie_name"));
 			}
 		}catch(SQLException ex){
 			System.err.println(ex.getMessage());

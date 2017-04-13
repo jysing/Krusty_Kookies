@@ -1,7 +1,6 @@
 package src.prjct;
 
 import src.app.Database;
-import src.app.Pallet;
 
 import javax.swing.*;
 import javax.swing.event.*;
@@ -48,24 +47,25 @@ public class ProductionPane extends BasicPane {
 	private JTextField[] fields;
 
 	/**
-	 * The number of the pallet attribute 0 field
+	 * The number of the pallet attribute field
 	 */
-	private static final int PALLET_ATTR_0 = 0;
+	private static final int PALLET_ID = 0;
 
 	/**
-	 * The number of the pallet attribute 1 field
+	 * The number of the pallet attribute field
 	 */
-	private static final int PALLET_ATTR_1 = 1;
+	private static final int PALLET_COOKIE = 1;
 
 	/**
-	 * The number of the pallet attribute 2 field
+	 * The number of the pallet attribute field
 	 */
-	private static final int PALLET_ATTR_2 = 2;
+	private static final int PALLET_PRODUCTION = 2;
 
 	/**
-	 * The number of the pallet attribute 3 field
+	 * The number of the pallet attribute field
 	 */
-	private static final int PALLET_ATTR_3 = 3;
+	private static final int PALLET_LOCATION = 3;
+
 
 	/**
 	 * The total number of fields
@@ -92,6 +92,9 @@ public class ProductionPane extends BasicPane {
 		Box box = new Box(BoxLayout.X_AXIS);
 		
 		dropDown = new JComboBox();
+		DropDownListener ddListener = new DropDownListener();
+		dropDown.addItemListener(ddListener);
+
 		nbrOfPallets = customSpinner(new SpinnerNumberModel(1,1,500,1), 50, 25);
 		JButton produce = customButton("Produce",new ProduceHandler(), 100, 25);
 
@@ -123,10 +126,10 @@ public class ProductionPane extends BasicPane {
 		Box attributeBox = new Box(BoxLayout.Y_AXIS);
 
 		String[] labels = new String[NBR_FIELDS];
-		labels[0] = "Cookie Type";
-		labels[1] = "Location";
+		labels[0] = "Pallet Id";
+		labels[1] = "Cookie Type";
 		labels[2] = "Production date";
-		labels[3] = "Blocked";
+		labels[3] = "Location";
 
 		for(int i = 0; i < NBR_FIELDS; i++) {
 			JLabel l = customLabel(labels[i],
@@ -179,16 +182,16 @@ public class ProductionPane extends BasicPane {
 	public JComponent createMiddlePanel() {
 		JPanel panel = new JPanel();
 
-		specPalletListModel = new DefaultListModel<String>();
+		specPalletListModel = new DefaultListModel<>();
 
-		specPalletList = new JList<String>(specPalletListModel);
+		specPalletList = new JList<>(specPalletListModel);
 		specPalletList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		specPalletList.addListSelectionListener(new SpecPalletSelectionListener());
 		JScrollPane p1 = new JScrollPane(specPalletList);
 
-		allPalletListModel = new DefaultListModel<String>();
+		allPalletListModel = new DefaultListModel<>();
 
-		allPalletList = new JList<String>(allPalletListModel);
+		allPalletList = new JList<>(allPalletListModel);
 		allPalletList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		allPalletList.addListSelectionListener(new AllPalletSelectionListener());
 		JScrollPane p2 = new JScrollPane(allPalletList);
@@ -222,6 +225,15 @@ public class ProductionPane extends BasicPane {
 		}
 	}
 
+	private void updateSpecPalletList() {
+		specPalletListModel.removeAllElements();
+		String cookie = (String) dropDown.getSelectedItem();
+
+		for (String s: db.getAllPalletsInFreezer(cookie)){
+			specPalletListModel.addElement(s);
+		}
+	}
+
 	private void updateCookieList(){
 		dropDown.removeAllItems();
 		for(String s: db.getCookieNames()){
@@ -240,7 +252,10 @@ public class ProductionPane extends BasicPane {
 			String cookie = (String) dropDown.getSelectedItem();
 			if(number > 0 && cookie != null){
 				db.producePallets(cookie, number);
+
 			}
+			updateAllPalletList();
+			updateSpecPalletList();
 		}
 	}
 
@@ -256,8 +271,19 @@ public class ProductionPane extends BasicPane {
          *            The selected list item.
          */
 		public void valueChanged(ListSelectionEvent e) {
-			// implement.
-			System.out.println("YOLLO");
+			if (specPalletList.isSelectionEmpty()){
+				return;
+			}
+			if(e.getValueIsAdjusting()){
+				String pallet_id = specPalletList.getSelectedValue();
+				pallet_id = pallet_id.split(" : ")[0];
+				System.out.println("Search for this and get info: " + pallet_id);
+
+				fields[PALLET_ID].setText(pallet_id);
+				fields[PALLET_COOKIE].setText(db.getPalletCookie(pallet_id));
+				fields[PALLET_PRODUCTION].setText(db.getPalletProdDate(pallet_id));
+				fields[PALLET_LOCATION].setText(db.getPalletLocation(pallet_id));
+			}
 		}
 	}
 
@@ -276,20 +302,28 @@ public class ProductionPane extends BasicPane {
 			if (allPalletList.isSelectionEmpty()){
 				return;
 			}
-			String pallet_id = allPalletList.getSelectedValue();
-			Pallet p;
-			p = db.trackPalletObject(pallet_id);
 			if(e.getValueIsAdjusting()){
-				fields[PALLET_ATTR_0].setText(p.cookie_name);
-				fields[PALLET_ATTR_1].setText(p.location);
-				fields[PALLET_ATTR_2].setText(p.production_date);
-				if (p.is_blocked == 0) {
-					fields[PALLET_ATTR_3].setText("No");
-				} else {
-					fields[PALLET_ATTR_3].setText("Yes");
-				}
+				String pallet_id = allPalletList.getSelectedValue();
+				pallet_id = pallet_id.split(" : ")[0];
+				System.out.println("Search for this and get info: " + pallet_id);
+
+				fields[PALLET_ID].setText(pallet_id);
+				fields[PALLET_COOKIE].setText(db.getPalletCookie(pallet_id));
+				fields[PALLET_PRODUCTION].setText(db.getPalletProdDate(pallet_id));
+				fields[PALLET_LOCATION].setText(db.getPalletLocation(pallet_id));
 			}
 		}
 	}
 
+	class DropDownListener implements ItemListener {
+		@Override
+		// This method is called only if a new item has been selected in dropDown.
+		public void itemStateChanged(ItemEvent evt) {
+			JComboBox cb = (JComboBox) evt.getSource();
+
+			Object item = evt.getItem();
+
+			if (evt.getStateChange() == ItemEvent.SELECTED) updateSpecPalletList();
+		}
+	}
 }
