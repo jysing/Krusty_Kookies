@@ -256,6 +256,7 @@ public class ProductionPane extends BasicPane {
 			}
 			updateAllPalletList();
 			updateSpecPalletList();
+			clearFields();
 		}
 	}
 
@@ -275,9 +276,9 @@ public class ProductionPane extends BasicPane {
 				return;
 			}
 			if(e.getValueIsAdjusting()){
+				updateAllPalletList();
 				String pallet_id = specPalletList.getSelectedValue();
 				pallet_id = pallet_id.split(" : ")[0];
-				System.out.println("Search for this and get info: " + pallet_id);
 
 				fields[PALLET_ID].setText(pallet_id);
 				fields[PALLET_COOKIE].setText(db.getPalletCookie(pallet_id));
@@ -303,9 +304,9 @@ public class ProductionPane extends BasicPane {
 				return;
 			}
 			if(e.getValueIsAdjusting()){
+				updateSpecPalletList();
 				String pallet_id = allPalletList.getSelectedValue();
 				pallet_id = pallet_id.split(" : ")[0];
-				System.out.println("Search for this and get info: " + pallet_id);
 
 				fields[PALLET_ID].setText(pallet_id);
 				fields[PALLET_COOKIE].setText(db.getPalletCookie(pallet_id));
