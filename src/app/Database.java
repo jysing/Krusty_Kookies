@@ -522,12 +522,12 @@ public class Database {
 	 */
 	public String[] getOrderItems() {
 		ArrayList<String> pallets = new ArrayList<String>();
-		String query = "SELECT order_id " +
+		String query = "SELECT order_id, cookie_name " +
 				"FROM OrderItems ";
 		try{
 			ResultSet rs = sendGetQuery(query);
 			while(rs.next()){
-				pallets.add(rs.getString("order_id"));
+				pallets.add(rs.getString("order_id") + ": " + rs.getString("cookie_name"));
 			}
 		}catch(SQLException ex){
 			System.err.println(ex.getMessage());
