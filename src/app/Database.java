@@ -543,7 +543,7 @@ public class Database {
 	public String[] getDeliveredPallets() {
 		ArrayList<String> pallets = new ArrayList<String>();
 		String query = "SELECT pallet_id, delivery_date " +
-				"FROM Pallet JOIN Order_Bill USING order_id " + 
+				"FROM Pallet JOIN Order_Bill USING (order_id)" +
 				"WHERE location = 'delivered'";
 		try{
 			ResultSet rs = sendGetQuery(query);
@@ -716,5 +716,18 @@ public class Database {
 			return "";
 		}
 		return "";
+	}
+
+	public boolean setPalletDelivered(String pallet_id, String order_id) {
+		String query = "UPDATE Pallet " +
+				"SET location = 'Delivered', order_id = '" + order_id + "' WHERE pallet_id = '"+ pallet_id+"'";
+		try{
+			int rs = sendPutQuery(query);
+			if (rs != 1) return false;
+		}catch(SQLException ex){
+			System.err.println(ex.getMessage());
+			return false;
+		}
+		return true;
 	}
 }

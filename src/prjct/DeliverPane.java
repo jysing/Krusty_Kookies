@@ -119,17 +119,25 @@ public class DeliverPane extends BasicPane {
 	 */
 	private static final int NBR_FIELDS = 6;
 
+	/**
+	 *
+	 * @param db
+	 */
 	public DeliverPane(Database db) {
 		super(db);
 	}
 
+	/**
+	 * Create the left top panel.
+	 *
+	 * @return the left top panel.
+	 */
 	public JComponent createLeftTopPanel() {
     	JLabel labelHeader = customLabel("<html><center>Deliver orders</center></html>",
 			JLabel.CENTER, Component.CENTER_ALIGNMENT,
 			Font.BOLD, 18);
 		JLabel labelInfo = customLabel("<html><center>Select which order item you wish to load to<br>" +
-			"a truck/assign to a customer and then which<br>" + 
-			"loaded/assigned order item you wish to deliver.</center></html>",
+			"a truck and then which then deliver and print corresponding loading orders. </center></html>",
 			JLabel.CENTER, Component.CENTER_ALIGNMENT,
 			0, 12);
 
@@ -304,7 +312,19 @@ public class DeliverPane extends BasicPane {
 	 */
 	public void entryActions() {
 		orderItemsList();
+		loadedItemList();
 		deliveredList();
+		fakeMethod();
+	}
+
+	private void loadedItemList() {
+		loadedListModel.removeAllElements();
+	}
+
+	private void fakeMethod(){
+		for (int i = 0; i< 5; i++){
+			loadedListModel.addElement(i + ":" + "Berliner" + ":" + (i+1000));
+		}
 	}
 
 	private void orderItemsList(){
@@ -321,8 +341,18 @@ public class DeliverPane extends BasicPane {
 		}
 	}
 
+	/**
+	 * A class that listens for clicks on the Load button.
+	 */
 	class LoadHandler implements ActionListener {
 		@Override
+		/**
+         * Called when the user clicks the Load button. Loads an order item
+         * to a truck.
+         * 
+         * @param e
+         *            The event object (not used).
+         */
 		public void actionPerformed(ActionEvent e) {
 			String str = orderBillsList.getSelectedValue();
 			if (str != null) {
@@ -350,10 +380,76 @@ public class DeliverPane extends BasicPane {
 		}
 	}
 
+	/**
+	 * A class that listens for clicks on the Deliver button.
+	 */
 	class DeliverHandler implements ActionListener {
 		@Override
+		/**
+         * Called when the user clicks the Deliver button. Marks an order
+         * item as delivered.
+         * 
+         * @param e
+         *            The event object (not used).
+         */
 		public void actionPerformed(ActionEvent e) {
-			
+			ArrayList<String> tempList = new ArrayList<>();
+			for (int i = 0; i < loadedListModel.size(); i++){
+				String item = loadedListModel.getElementAt(i);
+
+				String pallet_id = item.split(":")[0].trim();
+				String order_id = item.split(":")[2].trim();
+				db.setPalletDelivered(pallet_id, order_id); //Gör att Pallet ändras till delivered
+
+				if(!tempList.contains(order_id)) tempList.add(order_id);
+			}
+
+			String filePath;
+			do{
+				filePath = null;
+				File selectedFile = null;
+				try {
+					fileChooser = new JFileChooser();
+					fileChooser.setAcceptAllFileFilterUsed(false);
+					fileChooser.addChoosableFileFilter(new FileNameExtensionFilter(".csv","csv"));
+					fileChooser.setPreferredSize(new Dimension(700,500));
+					fileChooser.showSaveDialog(null);
+					selectedFile = fileChooser.getSelectedFile();
+					filePath = selectedFile.getPath();
+
+					LinkedList<String[]> orders = new LinkedList<String[]>();
+
+            /* --- DUMMY CODE --- */
+					String[] row = new String[4];
+					for (int i = 0; i < tempList.size(); i++) {
+						String order_id = tempList.get(i);
+						System.out.println("Order_id" + order_id);
+						String customer = db.getOrderCustomer(order_id);
+						String cookie_name = db.getOrderCookie(order_id);
+						String nbrPallets = db.getOrderNbrOfPallets(order_id, cookie_name);
+						String address = db.getCustomerAddress(order_id);
+						row[0] = customer;
+						row[1] = address;
+						row[2] = cookie_name;
+						row[3] = nbrPallets;
+						orders.add(row);
+					}
+
+            /* --- DUMMY CODE --- */
+
+					CSVExporter print = new CSVExporter(orders, filePath);
+				}
+				catch (NullPointerException ex) {
+					ex.printStackTrace();
+					filePath = null;
+					selectedFile = null;
+				}
+
+			}
+			while(filePath == null);
+
+			loadedItemList(); //rensar listan
+
 		}
 	}
 
@@ -399,7 +495,7 @@ public class DeliverPane extends BasicPane {
          *            The selected list item.
          */
 		public void valueChanged(ListSelectionEvent e) {
-			// implement if needed.
+
 		}
 	}
 
@@ -420,12 +516,12 @@ public class DeliverPane extends BasicPane {
 	}
 
 	 /**
-     * A class that listens for button clicks.
+     * A class that listens for clicks on the Print button.
      */
     class ExportHandler implements ActionListener {
         /**
-         * Called when the user clicks the Export .csv-file button. Opens up
-         * a file browser.
+         * Called when the user clicks the Print button. Opens up a file browser
+         * and saves a loading order as an csv-file.
          * 
          * @param e
          *            The event object (not used).

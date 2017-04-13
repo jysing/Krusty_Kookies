@@ -227,12 +227,18 @@ public class ProductionPane extends BasicPane {
 		clearFields();
 	}
 
+	/**
+     * Clears all text fields.
+     */
 	private void clearFields(){
 		for (int i = 0; i < fields.length; i++){
 			fields[i].setText("");
 		}
 	}
 
+	/**
+     * Updates the all pallet list.
+     */
 	private void updateAllPalletList() {
         allPalletListModel.removeAllElements();
 		for (String s: db.getAllPalletsInFreezer()){
@@ -240,6 +246,9 @@ public class ProductionPane extends BasicPane {
 		}
 	}
 
+	/**
+     * Updates the specific pallet list.
+     */
 	private void updateSpecPalletList() {
 		specPalletListModel.removeAllElements();
 		String cookie = (String) dropDown.getSelectedItem();
@@ -249,6 +258,9 @@ public class ProductionPane extends BasicPane {
 		}
 	}
 
+	/**
+     * Updates the cookie list.
+     */
 	private void updateCookieList(){
 		dropDown.removeAllItems();
 		for(String s: db.getCookieNames()){
@@ -262,6 +274,13 @@ public class ProductionPane extends BasicPane {
 	class ProduceHandler implements ActionListener {
 
 		@Override
+		/**
+         * Called when the user clicks the Produce button. Produces a
+         * pallet of the specified cookie type.
+         * 
+         * @param e
+         *            The event object (not used).
+         */
 		public void actionPerformed(ActionEvent e) {
 			int number = (Integer) nbrOfPallets.getValue();
 			String cookie = (String) dropDown.getSelectedItem();

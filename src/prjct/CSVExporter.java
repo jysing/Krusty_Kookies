@@ -2,33 +2,36 @@ package src.prjct;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.LinkedList;
 
 public class CSVExporter {
 
+	/**
+	 * A list containing loading orders.
+	 */
 	private LinkedList<String[]> loadingOrders;
+	
+	/**
+	 * The number of columns in the csv-file.
+	 */
 	private static final int NBR_COLUMNS = 4;
 	
-	/*
-	 * Loading Order: Exportera lista över pallar och vart de ska till föraren i form av:
+	/**
 	 * 
-	 * Customer name
-	 * adress
-	 * nbr of pallets of each product 
+	 * @param loadingOrders, saveLocation
 	 */
-
 	public CSVExporter(LinkedList<String[]> loadingOrders, String saveLocation) {
 		this.loadingOrders = loadingOrders;
 		generateCsvFile(saveLocation);
 	}
 	
-	//\Users\Kewin\Desktop\Bord_C.csv
+	/**
+	 * Generates a csv-file.
+	 */
 	public void generateCsvFile(String sFileName) {
 		String sep = ";";
 		
 		try {
-			
 			FileWriter writer = new FileWriter(sFileName);
 
 			writer.append("Customer Name");
@@ -48,10 +51,8 @@ public class CSVExporter {
 					writer.append(item);
 					writer.append(sep);
 				}
-				writer.append("\n");
-				
+				writer.append("\n");			
 			}
-
 			writer.flush();
 			writer.close();
 		}
