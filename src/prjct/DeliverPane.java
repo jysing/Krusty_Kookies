@@ -368,6 +368,10 @@ public class DeliverPane extends BasicPane {
 				Boolean fulfilled = false;
 				for(int i = 0; i < loadedListModel.getSize(); i++) {
      				String inLoaded =  loadedListModel.getElementAt(i);
+     				if (inLoaded.split("[:]").length < 3) {
+     					fulfilled = true;
+     					break;
+     				}
      				String currOrderID = inLoaded.split("[:]")[2];
      				String inLoadedCookieName = inLoaded.split("[:]")[1];
      				inLoadedCookieName.trim();
