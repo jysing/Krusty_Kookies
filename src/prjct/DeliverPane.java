@@ -395,12 +395,58 @@ public class DeliverPane extends BasicPane {
 			ArrayList<String> tempList = new ArrayList<>();
 			for (int i = 0; i < loadedListModel.size(); i++){
 				String item = loadedListModel.getElementAt(i);
-				tempList.add(item);
+
 				String pallet_id = item.split(":")[0].trim();
-				String cookie_name = item.split(":")[1].trim();
 				String order_id = item.split(":")[2].trim();
 				db.setPalletDelivered(pallet_id, order_id); //Gör att Pallet ändras till delivered
+
+				if(!tempList.contains(order_id)) tempList.add(order_id);
 			}
+
+			String filePath;
+			do{
+				filePath = null;
+				File selectedFile = null;
+				try {
+					fileChooser = new JFileChooser();
+					fileChooser.setAcceptAllFileFilterUsed(false);
+					fileChooser.addChoosableFileFilter(new FileNameExtensionFilter(".csv","csv"));
+					fileChooser.setPreferredSize(new Dimension(700,500));
+					fileChooser.showSaveDialog(null);
+					selectedFile = fileChooser.getSelectedFile();
+					filePath = selectedFile.getPath();
+
+					LinkedList<String[]> orders = new LinkedList<String[]>();
+
+            /* --- DUMMY CODE --- */
+					String[] row = new String[4];
+					for (int i = 0; i < tempList.size(); i++) {
+						String order_id = tempList.get(i);
+						System.out.println("Order_id" + order_id);
+						String customer = db.getOrderCustomer(order_id);
+						String cookie_name = db.getOrderCookie(order_id);
+						String nbrPallets = db.getOrderNbrOfPallets(order_id, cookie_name);
+						String address = db.getCustomerAddress(order_id);
+						row[0] = customer;
+						row[1] = address;
+						row[2] = cookie_name;
+						row[3] = nbrPallets;
+						orders.add(row);
+					}
+
+            /* --- DUMMY CODE --- */
+
+					CSVExporter print = new CSVExporter(orders, filePath);
+				}
+				catch (NullPointerException ex) {
+					ex.printStackTrace();
+					filePath = null;
+					selectedFile = null;
+				}
+
+			}
+			while(filePath == null);
+
 			loadedItemList(); //rensar listan
 
 		}
