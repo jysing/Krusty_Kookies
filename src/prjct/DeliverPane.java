@@ -163,13 +163,23 @@ public class DeliverPane extends BasicPane {
 	 * @return the left middle panel.
 	 */
 	public JComponent createLeftMiddlePanel() {
+		JLabel labelHeader = customLabel("<html><center>Print loading orders</center></html>",
+			JLabel.CENTER, Component.CENTER_ALIGNMENT,
+			Font.BOLD, 18);
+		JLabel labelInfo = customLabel("<html><center>Exports the selected loading order to a .csv-file.",
+			JLabel.CENTER, Component.CENTER_ALIGNMENT,
+			0, 12);
+
 		JPanel panel = new JPanel();
 
 		Box mainBox = new Box(BoxLayout.Y_AXIS);
 
-		JButton export = customButton("Export .csv-file", new ExportHandler(), 150, 40);
+		JButton export = customButton("Print", new ExportHandler(), 150, 40);
 		
-		mainBox.add(Box.createVerticalStrut(50));
+		mainBox.add(Box.createVerticalStrut(20));
+		mainBox.add(labelHeader);
+		mainBox.add(labelInfo);
+		mainBox.add(Box.createVerticalStrut(10));
 		mainBox.add(export);
 
 		panel.add(mainBox);
@@ -178,7 +188,6 @@ public class DeliverPane extends BasicPane {
 
 		return panel;
 	}
-
 
 	/**
 	 * Create the left bottom panel.
@@ -357,8 +366,8 @@ public class DeliverPane extends BasicPane {
 			}
 			if(e.getValueIsAdjusting()){
 				String selectedValue = orderBillsList.getSelectedValue();
-				String order_id = selectedValue.split(": ")[0];
-				String cookie_name = selectedValue.split(": ")[1];
+				String order_id = selectedValue.split(":")[0].trim();
+				String cookie_name = selectedValue.split(":")[1].trim();
 
 				fields[ORDER_ID].setText(order_id);
 				fields[ORDER_CUSTOMER].setText(db.getOrderCustomer(order_id));
@@ -418,25 +427,23 @@ public class DeliverPane extends BasicPane {
             fileChooser.setAcceptAllFileFilterUsed(false);
             fileChooser.addChoosableFileFilter(new FileNameExtensionFilter(".csv","csv"));
             fileChooser.setPreferredSize(new Dimension(700,500));
+			fileChooser.showSaveDialog(null);
 
-            fileChooser.showSaveDialog(null);
-
-            /* --- add I/O-code to save files --- */
             String filePath;
             File selectedFile = fileChooser.getSelectedFile();
             filePath = selectedFile.getPath();
 
+            LinkedList<String[]> orders = new LinkedList<String[]>();
+
+            /* --- DUMMY CODE --- */
             String[] row = new String[4];
             for (int i = 0; i < 4; i++) {
             	row[i] = "Hej";
             }
-            LinkedList<String[]> orders = new LinkedList<String[]>();
             orders.add(row);
+            /* --- DUMMY CODE --- */
 
-
-            CSVExporter print = new CSVExporter(orders, filePath);
-
-            System.out.println(filePath);
+			CSVExporter print = new CSVExporter(orders, filePath);
         }
     }
 }
