@@ -244,6 +244,7 @@ public class Database {
     		"ELSE is_blocked END";
 		try{
 			int nbrUpdatedLines = sendPutQuery(query);
+			System.out.print("blocked");
 			if (nbrUpdatedLines > 0) return true;
 		}catch(SQLException ex){
 			System.err.println(ex.getMessage());
@@ -259,17 +260,18 @@ public class Database {
 	 */
 	public String[] getAllBlockedPallets(String cookie_name) {
 		ArrayList<String> pallets = new ArrayList<String>();
-
-		if(cookie_name.equals("all")) cookie_name = "*";
-
-		String query = "SELECT pallet_id " +
+		String query = "SELECT pallet_id, cookie_name, production_date " +
 			"FROM PALLET " + 
-			"WHERE is_blocked = 1 AND cookie_name = '" + cookie_name + "'";
+			"WHERE is_blocked = 1";
+
+		if(!cookie_name.equals("All")) {
+			query += " AND cookie_name = '" + cookie_name + "'";
+		}
 
 		try{
 			ResultSet rs = sendGetQuery(query);
-			while(rs.next()){
-				pallets.add(rs.getString("pallet_id"));
+			while(rs.next()) {
+				pallets.add("ID: " + rs.getString("pallet_id") + ",    Cookie: " + rs.getString("cookie_name") + ",    Produced: " + rs.getString("production_date"));
 			}
 		}catch(SQLException ex){
 			System.err.println(ex.getMessage());
@@ -299,6 +301,29 @@ public class Database {
     }
 
 	/**
+	 *
+	 * @param pallet_id
+	 * @return
+	 */
+	public String getPallet(String pallet_id){
+    	String pallet = "";
+		String query = "SELECT pallet_id, cookie_name " +
+				"FROM PALLET " +
+				"WHERE pallet_id = '" + pallet_id + "'";
+		try{
+			ResultSet rs = sendGetQuery(query);
+			while(rs.next()){
+				pallet = (rs.getString("pallet_id") + " : " + rs.getString("cookie_name"));
+			}
+		}catch(SQLException ex){
+			System.err.println(ex.getMessage());
+			pallet = "";
+		}
+		return pallet;
+
+	}
+
+	/**
 	 * Returns location of a specific pallet with pallet id pallet_id
 	 * @param pallet_id
 	 * @return
@@ -323,11 +348,14 @@ public class Database {
 	 * @param to_date end date of interval
 	 * @return list of pallets
 	 */
-	public String[] getPallets(String from_date, String to_date) {
+	public String[] getPallets(String from_date, String to_date, String cookie_name) {
 		ArrayList<String> pallets = new ArrayList<String>();
 		String query = "SELECT pallet_id, cookie_name " +
 			"FROM PALLET " + 
 			"WHERE production_date BETWEEN '" + from_date + "' AND '" + to_date + "'";
+		if(!cookie_name.equals("All")) {
+			query += " AND cookie_name = '" + cookie_name + "'";
+		}
 		try{
 			ResultSet rs = sendGetQuery(query);
 			while(rs.next()){

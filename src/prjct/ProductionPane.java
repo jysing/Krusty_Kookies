@@ -94,12 +94,12 @@ public class ProductionPane extends BasicPane {
 		dropDown = new JComboBox();
 		nbrOfPallets = customSpinner(new SpinnerNumberModel(1,1,500,1), 50, 25);
 		JButton produce = customButton("Produce",new ProduceHandler(), 100, 25);
-		//JButton deliver = customButton("Deliver",new ProduceHandler(), 100, 25);
+		JButton deliver = customButton("Deliver",new ProduceHandler(), 100, 25);
 
 		box.add(nbrOfPallets);
 		box.add(Box.createHorizontalStrut(200));
 		box.add(produce);
-		//box.add(deliver);
+		box.add(deliver);
 
 		mainBox.add(Box.createVerticalStrut(50));
 		mainBox.add(dropDown);
@@ -221,7 +221,7 @@ public class ProductionPane extends BasicPane {
 
 	private void updateAllPalletList() {
         allPalletListModel.removeAllElements();
-		for (String s: db.getAllPalletsInFreezer()){
+		for (String s: db.updateFreezer()){
             allPalletListModel.addElement(s);
 		}
 	}
@@ -245,6 +245,17 @@ public class ProductionPane extends BasicPane {
 			if(number > 0 && cookie != null){
 				db.producePallets(cookie, number);
 			}
+		}
+	}
+
+	/**
+	 * A class that listens for clicks on the deliver-button.
+	 */
+	class DeliverHandler implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			
 		}
 	}
 
@@ -284,14 +295,13 @@ public class ProductionPane extends BasicPane {
 			Pallet p;
 			p = db.trackPalletObject(pallet_id);
 			if(e.getValueIsAdjusting()){
-				//System.out.println("Laddar in film");
+				System.out.println("Laddar in film");
 				fields[PALLET_ATTR_0].setText(p.cookie_name);
 				fields[PALLET_ATTR_1].setText(p.location);
 				fields[PALLET_ATTR_2].setText(p.production_date);
 				fields[PALLET_ATTR_3].setText(Integer.toString(p.order_id));
 			}
-			//entryActions();
-			//System.out.println("Hämtar film");
+			System.out.println("Hämtar film");
 		}
 	}
 
