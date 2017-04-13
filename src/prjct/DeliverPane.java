@@ -318,26 +318,17 @@ public class DeliverPane extends BasicPane {
 		deliveredList();
 		orderItemsList();
 		loadedItemList();
-
-		//fakeMethod();
-
 	}
 
 	private void loadedItemList() {
 		loadedListModel.removeAllElements();
 	}
 
-	private void fakeMethod(){
-		for (int i = 0; i< 5; i++){
-			loadedListModel.addElement(i + ":" + "Berliner" + ":" + (i+1000));
-		}
-		loadedListModel.addElement(6 + ":" + "Berliner" + ":" + (1004));
-	}
-
 	private void orderItemsList(){
 		orderBillsListModel.removeAllElements();
 		for (String s: db.getOrderItems()) {
-			if(!deliveredListModel.contains(s)) orderBillsListModel.addElement(s);
+			String order = s.split(":")[0].trim();
+			if(!db.connectedToPallet(order)) orderBillsListModel.addElement(s);
 		}
 	}
 
@@ -372,6 +363,10 @@ public class DeliverPane extends BasicPane {
 				Boolean fulfilled = false;
 				for(int i = 0; i < loadedListModel.getSize(); i++) {
      				String inLoaded =  loadedListModel.getElementAt(i);
+     				if (inLoaded.split("[:]").length < 3) {
+     					fulfilled = true;
+     					break;
+     				}
      				String currOrderID = inLoaded.split("[:]")[2];
      				String inLoadedCookieName = inLoaded.split("[:]")[1];
      				inLoadedCookieName.trim();
@@ -429,10 +424,10 @@ public class DeliverPane extends BasicPane {
 						String pallet_id = item.split(":")[0].trim();
 						String cookie_name = item.split(":")[1].trim();
 						String order_id = item.split(":")[2].trim();
-						String derp = order_id+":"+cookie_name;
+						String derp = order_id + ":" + cookie_name;
+						db.setPalletDelivered(pallet_id, order_id); //Gör att Pallet ändras till delivered
 						if(!tempList.contains(derp)){
 							tempList.add(derp);
-							db.setPalletDelivered(pallet_id, order_id); //Gör att Pallet ändras till delivered
 							String customer = db.getOrderCustomer(order_id);
 							String address = db.getCustomerAddress(order_id);
 							String nbrPallets = db.getOrderNbrOfPallets(order_id, cookie_name);

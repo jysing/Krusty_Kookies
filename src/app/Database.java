@@ -542,13 +542,13 @@ public class Database {
 	 */
 	public String[] getDeliveredPallets() {
 		ArrayList<String> pallets = new ArrayList<>();
-		String query = "SELECT pallet_id, delivery_date " +
+		String query = "SELECT order_id, delivery_date " +
 				"FROM Pallet JOIN Order_Bill USING (order_id)" +
 				"WHERE location = 'Delivered'";
 		try{
 			ResultSet rs = sendGetQuery(query);
 			while(rs.next()){
-				pallets.add("ID: " + rs.getString("pallet_id") + "    Delivered: " + rs.getString("delivery_date"));
+				pallets.add("ID: " + rs.getString("order_id") + "    Delivered: " + rs.getString("delivery_date"));
 			}
 		}catch(SQLException ex){
 			System.err.println(ex.getMessage());
@@ -600,7 +600,7 @@ public class Database {
 		
 		query = "SELECT pallet_id, cookie_name, production_date " +
 				"FROM Pallet " + 
-				"WHERE cookie_name = '" + cookie_name + "' " + 
+				"WHERE cookie_name = '" + cookie_name + "' AND location = 'Freezer' " +
 				"ORDER BY production_date";
 
 		try{
@@ -726,6 +726,22 @@ public class Database {
 		try{
 			int rs = sendPutQuery(query);
 			if (rs != 1) return false;
+		}catch(SQLException ex){
+			System.err.println(ex.getMessage());
+			return false;
+		}
+		return true;
+	}
+
+	public boolean connectedToPallet(String order_id) {
+		String query = "SELECT * " +
+				"FROM Pallet " +
+				"WHERE order_id = '" + order_id + "'";
+		try{
+			ResultSet rs = sendGetQuery(query);
+			while(rs.next()){
+				return false;
+			}
 		}catch(SQLException ex){
 			System.err.println(ex.getMessage());
 			return false;
