@@ -57,6 +57,8 @@ public class CrustyGUI {
 		frame.setSize(1100, 1000);
 		frame.setVisible(true);
 
+		productionPane.entryActions();
+
 		/* --- connect to database --- */
 		//System.out.println("Connecting to database ...");
 
