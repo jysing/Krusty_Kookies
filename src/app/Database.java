@@ -605,15 +605,12 @@ public class Database {
 			for (int i = 0; i < inLoading; i++) rs.next();
 			for (int j = inLoading; j < (toLoad+inLoading); j++) {
 				rs.next();
-				//System.out.println(rs.getInt("pallet_id") + " : " + rs.getString("cookie_name") + " : " + order_id + " : " + rs.getString("production_date"));
-				pallets.add(rs.getInt("pallet_id") + " : " + rs.getString("cookie_name") + " : " + order_id);
+				pallets.add(rs.getInt("pallet_id") + ":" + rs.getString("cookie_name") + ":" + order_id);
 			}
 		}catch(SQLException ex){
-			//System.out.println("Here");
 			System.err.println(ex.getMessage());
 			pallets.clear();
 		}
-		//pallets.clear();
 		return pallets.toArray((new String[pallets.size()]));
 	}
 	/**
