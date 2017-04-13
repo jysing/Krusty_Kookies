@@ -311,10 +311,12 @@ public class DeliverPane extends BasicPane {
 	 * Called when user switches to deliver pane
 	 */
 	public void entryActions() {
+		deliveredList();
 		orderItemsList();
 		loadedItemList();
-		deliveredList();
-		fakeMethod();
+
+		//fakeMethod();
+
 	}
 
 	private void loadedItemList() {
@@ -325,12 +327,13 @@ public class DeliverPane extends BasicPane {
 		for (int i = 0; i< 5; i++){
 			loadedListModel.addElement(i + ":" + "Berliner" + ":" + (i+1000));
 		}
+		loadedListModel.addElement(6 + ":" + "Berliner" + ":" + (1004));
 	}
 
 	private void orderItemsList(){
 		orderBillsListModel.removeAllElements();
 		for (String s: db.getOrderItems()) {
-            orderBillsListModel.addElement(s);
+			if(!deliveredListModel.contains(s)) orderBillsListModel.addElement(s);
 		}
 	}
 
@@ -401,17 +404,6 @@ public class DeliverPane extends BasicPane {
          *            The event object (not used).
          */
 		public void actionPerformed(ActionEvent e) {
-			ArrayList<String> tempList = new ArrayList<>();
-			for (int i = 0; i < loadedListModel.size(); i++){
-				String item = loadedListModel.getElementAt(i);
-
-				String pallet_id = item.split(":")[0].trim();
-				String order_id = item.split(":")[2].trim();
-				db.setPalletDelivered(pallet_id, order_id); //Gör att Pallet ändras till delivered
-
-				if(!tempList.contains(order_id)) tempList.add(order_id);
-			}
-
 			String filePath;
 			do{
 				filePath = null;
@@ -425,26 +417,29 @@ public class DeliverPane extends BasicPane {
 					selectedFile = fileChooser.getSelectedFile();
 					filePath = selectedFile.getPath();
 
-					LinkedList<String[]> orders = new LinkedList<String[]>();
+					LinkedList<String[]> orders = new LinkedList<>();
+					ArrayList<String> tempList = new ArrayList<>();
 
-            /* --- DUMMY CODE --- */
-					String[] row = new String[4];
-					for (int i = 0; i < tempList.size(); i++) {
-						String order_id = tempList.get(i);
-						System.out.println("Order_id" + order_id);
-						String customer = db.getOrderCustomer(order_id);
-						String cookie_name = db.getOrderCookie(order_id);
-						String nbrPallets = db.getOrderNbrOfPallets(order_id, cookie_name);
-						String address = db.getCustomerAddress(order_id);
-						row[0] = customer;
-						row[1] = address;
-						row[2] = cookie_name;
-						row[3] = nbrPallets;
-						orders.add(row);
+					for (int i = 0; i < loadedListModel.size(); i++){
+						String item = loadedListModel.getElementAt(i);
+						String pallet_id = item.split(":")[0].trim();
+						String cookie_name = item.split(":")[1].trim();
+						String order_id = item.split(":")[2].trim();
+						String derp = order_id+":"+cookie_name;
+						if(!tempList.contains(derp)){
+							tempList.add(derp);
+							db.setPalletDelivered(pallet_id, order_id); //Gör att Pallet ändras till delivered
+							String customer = db.getOrderCustomer(order_id);
+							String address = db.getCustomerAddress(order_id);
+							String nbrPallets = db.getOrderNbrOfPallets(order_id, cookie_name);
+							String[] row = new String[4];
+							row[0] = customer;
+							row[1] = address;
+							row[2] = cookie_name;
+							row[3] = nbrPallets;
+							orders.add(row);
+						}
 					}
-
-            /* --- DUMMY CODE --- */
-
 					CSVExporter print = new CSVExporter(orders, filePath);
 				}
 				catch (NullPointerException ex) {
@@ -503,7 +498,25 @@ public class DeliverPane extends BasicPane {
          *            The selected list item.
          */
 		public void valueChanged(ListSelectionEvent e) {
+			if (loadedList.isSelectionEmpty()){
+				return;
 
+			}
+			if(e.getValueIsAdjusting()){
+				String selectedValue = loadedList.getSelectedValue();
+				String pallet_id = selectedValue.split(":")[0].trim();
+
+				String order_id = selectedValue.split(":")[2].trim();
+				String cookie_name = selectedValue.split(":")[1].trim();
+
+				fields[ORDER_ID].setText(order_id);
+				fields[ORDER_CUSTOMER].setText(db.getOrderCustomer(order_id));
+				fields[ORDER_ADDRESS].setText(db.getCustomerAddress(order_id));
+				fields[ORDER_COOKIE].setText(cookie_name);
+				fields[ORDER_NBR_OF_PALLETS].setText(db.getOrderNbrOfPallets(order_id, cookie_name));
+				fields[ORDER_DELIVERY].setText(db.getOrderDeliveryDate(order_id));
+
+			}
 		}
 	}
 
@@ -519,7 +532,26 @@ public class DeliverPane extends BasicPane {
          *            The selected list item.
          */
 		public void valueChanged(ListSelectionEvent e) {
-			// implement if needed.
+			if (deliveredList.isSelectionEmpty()){
+				return;
+
+			}
+			if(e.getValueIsAdjusting()){
+				String selectedValue = deliveredList.getSelectedValue();
+				String pallet_id = selectedValue.split(":")[1].trim();
+				pallet_id = pallet_id.split(" ")[0].trim();
+
+				String order_id = db.getPalletOrder(pallet_id);
+				String cookie_name = db.getPalletCookie(pallet_id);
+
+				fields[ORDER_ID].setText(order_id);
+				fields[ORDER_CUSTOMER].setText(db.getOrderCustomer(order_id));
+				fields[ORDER_ADDRESS].setText(db.getCustomerAddress(order_id));
+				fields[ORDER_COOKIE].setText(cookie_name);
+				fields[ORDER_NBR_OF_PALLETS].setText(db.getOrderNbrOfPallets(order_id, cookie_name));
+				fields[ORDER_DELIVERY].setText(db.getOrderDeliveryDate(order_id));
+
+			}
 		}
 	}
 
