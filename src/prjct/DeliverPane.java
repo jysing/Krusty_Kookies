@@ -166,7 +166,7 @@ public class DeliverPane extends BasicPane {
 		JLabel labelHeader = customLabel("<html><center>Print loading orders</center></html>",
 			JLabel.CENTER, Component.CENTER_ALIGNMENT,
 			Font.BOLD, 18);
-		JLabel labelInfo = customLabel("<html><center>Exports the selected loading order to a .csv-file.",
+		JLabel labelInfo = customLabel("<html><center>Exports the selected loading order to a .csv-file.</center></html>",
 			JLabel.CENTER, Component.CENTER_ALIGNMENT,
 			0, 12);
 
