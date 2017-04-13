@@ -592,9 +592,12 @@ public class Database {
 			System.err.println(ex.getMessage());
 		}
 
-		if (avaible >= wanted) toLoad = wanted;
-		else toLoad = avaible;
-
+		if (avaible < wanted) {
+			pallets.clear();
+			return pallets.toArray((new String[pallets.size()]));
+		}
+		else toLoad = wanted;
+		
 		query = "SELECT pallet_id, cookie_name, production_date " +
 				"FROM Pallet " + 
 				"WHERE cookie_name = '" + cookie_name + "' " + 

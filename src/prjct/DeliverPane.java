@@ -362,10 +362,16 @@ public class DeliverPane extends BasicPane {
 				cookie_name.trim();
 				int totInLoaded = 0;
 				int totForOrderID = 0;
+				Boolean fulfilled = false;
 				for(int i = 0; i < loadedListModel.getSize(); i++) {
      				String inLoaded =  loadedListModel.getElementAt(i);
+     				String currOrderID = inLoaded.split("[:]")[2];
      				String inLoadedCookieName = inLoaded.split("[:]")[1];
      				inLoadedCookieName.trim();
+     				if (currOrderID.equals(order_id) && inLoadedCookieName.equals(cookie_name)) {
+     					fulfilled = true;
+     					break;
+     				}
      				if (inLoadedCookieName.equals(cookie_name)) {
      					totInLoaded++;
      					String inLoadedForOrderID = inLoaded.split("[:]")[1];
@@ -373,8 +379,10 @@ public class DeliverPane extends BasicPane {
      					if (inLoadedForOrderID.equals(order_id)) totForOrderID++;
      				}
 				}
-				for (String s : db.load(order_id, cookie_name, totInLoaded, totForOrderID)) {
-					loadedListModel.addElement(s);
+				if (!fulfilled) {
+					for (String s : db.load(order_id, cookie_name, totInLoaded, totForOrderID)) {
+						loadedListModel.addElement(s);
+					}
 				}	
 			}
 		}
