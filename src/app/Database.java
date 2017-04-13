@@ -332,12 +332,11 @@ public class Database {
 		ArrayList<String> pallets = new ArrayList<String>();
 		String query = "SELECT pallet_id, cookie_name " +
 			"FROM PALLET " + 
-			"WHERE production_date BETWEEN " + from_date + " AND " + to_date;
+			"WHERE production_date BETWEEN '" + from_date + "' AND '" + to_date + "'";
 		try{
 			ResultSet rs = sendGetQuery(query);
 			while(rs.next()){
-				pallets.add("derp");
-				System.out.println("getPallet: JAG FUNGERAR INTE!!!");
+				pallets.add(rs.getString("pallet_id") + " : " + rs.getString("cookie_name"));
 			}
 		}catch(SQLException ex){
 			System.err.println(ex.getMessage());

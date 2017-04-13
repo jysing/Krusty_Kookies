@@ -96,12 +96,12 @@ public class ProductionPane extends BasicPane {
 
 		nbrOfPallets = customSpinner(new SpinnerNumberModel(1,1,500,1), 50, 25);
 		JButton produce = customButton("Produce",new ProduceHandler(), 100, 25);
-		JButton deliver = customButton("Deliver",new ProduceHandler(), 100, 25);
+		//JButton deliver = customButton("Deliver",new ProduceHandler(), 100, 25);
 
 		box.add(nbrOfPallets);
 		box.add(Box.createHorizontalStrut(200));
 		box.add(produce);
-		box.add(deliver);
+		//box.add(deliver);
 
 		mainBox.add(Box.createVerticalStrut(50));
 		mainBox.add(dropDown);
@@ -122,39 +122,62 @@ public class ProductionPane extends BasicPane {
 	public JComponent createLeftBottomPanel() {
 		JPanel panel = new JPanel();
 
-		String[] texts = new String[NBR_FIELDS];
-		texts[PALLET_ATTR_0] = "Attr 0";
-		texts[PALLET_ATTR_1] = "Attr 1";
-		texts[PALLET_ATTR_2] = "Attr 2";
-		texts[PALLET_ATTR_3] = "Attr 3";
+		Box mainBox = new Box(BoxLayout.X_AXIS);
+		Box labelBox = new Box(BoxLayout.Y_AXIS);
+		Box attributeBox = new Box(BoxLayout.Y_AXIS);
+
+		for(int i = 0; i < NBR_FIELDS; i++) {
+			JLabel l = customLabel("Attribute 5",
+			JLabel.LEFT, Component.CENTER_ALIGNMENT,
+			0, 12);
+			l.add(labelBox);
+		}
 
 		fields = new JTextField[NBR_FIELDS];
 		for (int i = 0; i < fields.length; i++) {
 			fields[i] = new JTextField(20);
 			fields[i].setEditable(false);
+			attributeBox.add(fields[i]);
 		}
 
-		JPanel left = new JPanel();
-		left.setLayout(new GridLayout(texts.length, 1));
-		for (int i = 0; i < texts.length; i++) {
-			JLabel label = new JLabel(texts[i] + "\n		", JLabel.RIGHT);
-			panel.add(label);
-		}
+//		String[] texts = new String[NBR_FIELDS];
+//		texts[PALLET_ATTR_0] = "Attr 0";
+//		texts[PALLET_ATTR_1] = "Attr 1";
+//		texts[PALLET_ATTR_2] = "Attr 2";
+//		texts[PALLET_ATTR_3] = "Attr 3";
 
-		JPanel right = new JPanel();
-		right.setLayout(new GridLayout(fields.length, 1));
-		for (int i = 0; i < fields.length; i++) {
-			right.add(fields[i]);
-		}
-		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
-		panel.add(left);
-		panel.add(right);
+//		fields = new JTextField[NBR_FIELDS];
+//		for (int i = 0; i < fields.length; i++) {
+//			fields[i] = new JTextField(20);
+//			fields[i].setEditable(false);
+//		}
 
-		JPanel p = new JPanel();
-		p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
-		p.add(panel);
+//		JPanel left = new JPanel();
+//		left.setLayout(new GridLayout(texts.length, 1));
+//		for (int i = 0; i < texts.length; i++) {
+//			JLabel label = new JLabel(texts[i] + "\n		", JLabel.RIGHT);
+//			panel.add(label);
+//		}
 
-		return p;
+//		JPanel right = new JPanel();
+//		right.setLayout(new GridLayout(fields.length, 1));
+//		for (int i = 0; i < fields.length; i++) {
+//			right.add(fields[i]);
+//		}
+//		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+//		panel.add(left);
+//		panel.add(right);
+
+//		JPanel p = new JPanel();
+//		p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
+//		p.add(panel);
+
+		labelBox.setBorder(new LineBorder(Color.BLACK));
+		attributeBox.setBorder(new LineBorder(Color.BLACK));
+		mainBox.add(labelBox);
+		mainBox.add(attributeBox);
+		panel.add(mainBox);
+		return panel;
 	}
 
 	/**
@@ -230,17 +253,6 @@ public class ProductionPane extends BasicPane {
 	}
 
 	/**
-	 * A class that listens for clicks on the deliver-button.
-	 */
-	class DeliverHandler implements ActionListener {
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			
-		}
-	}
-
-	/**
 	 * A class that listens for clicks in the specific pallet list.
 	 */
 	class SpecPalletSelectionListener implements ListSelectionListener {
@@ -276,13 +288,14 @@ public class ProductionPane extends BasicPane {
 			Pallet p;
 			p = db.trackPalletObject(pallet_id);
 			if(e.getValueIsAdjusting()){
-				System.out.println("Laddar in film");
+				//System.out.println("Laddar in film");
 				fields[PALLET_ATTR_0].setText(p.cookie_name);
 				fields[PALLET_ATTR_1].setText(p.location);
 				fields[PALLET_ATTR_2].setText(p.production_date);
 				fields[PALLET_ATTR_3].setText(Integer.toString(p.order_id));
 			}
-			System.out.println("Hämtar film");
+			//entryActions();
+			//System.out.println("Hämtar film");
 		}
 	}
 }

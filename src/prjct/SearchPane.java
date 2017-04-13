@@ -13,6 +13,7 @@ import java.awt.*;
 import java.awt.event.*;
 
 import java.io.*;
+import java.text.SimpleDateFormat;
 
 public class SearchPane extends BasicPane {
 
@@ -28,15 +29,22 @@ public class SearchPane extends BasicPane {
 	 */
 	private JList<String> palletList;
 
-	/**
-	 * Spinner for number of crates to be produced
-	 */
-	private JSpinner nbrOfPallets;
 
 	/**
 	 * Drop down menu containing all cookie types
 	 */
 	private JComboBox dropDown;
+
+	/**
+	 * DateSpinner for time interval
+	 */
+	private JSpinner spinnerFrom;
+
+	/**
+	 * DateSpinner for time interval
+	 */
+	private JSpinner spinnerTo;
+
 
 	/**
 	 * The text fields where the pallet data is shown
@@ -75,21 +83,35 @@ public class SearchPane extends BasicPane {
 
 	public JComponent createLeftTopPanel() {
 		JPanel panel = new JPanel();
+
+		spinnerFrom = new JSpinner(new SpinnerDateModel());
+		spinnerTo = new JSpinner(new SpinnerDateModel());
+
+		spinnerFrom.setEditor(new JSpinner.DateEditor(spinnerFrom, "yyyy/MM/dd"));
+		spinnerTo.setEditor(new JSpinner.DateEditor(spinnerTo, "yyyy/MM/dd"));
+
 		Box mainBox = new Box(BoxLayout.Y_AXIS);
 		Box box = new Box(BoxLayout.X_AXIS);
 
 		dropDown = new JComboBox();
-		nbrOfPallets = customSpinner(new SpinnerNumberModel(1,1,500,1), 50, 25);
-		JButton produce = customButton("Produce",new SearchPane.SearchHandler1(), 100, 25);
 
-		box.add(nbrOfPallets);
-		box.add(Box.createHorizontalStrut(200));
-		box.add(produce);
+		JButton search = customButton("Search",new SearchPane.SearchHandler1(), 100, 25);
+
+		box.add(Box.createHorizontalStrut(10));
+		box.add(spinnerFrom);
+
+		box.add(spinnerTo);
+		box.add(Box.createHorizontalStrut(20));
+		box.add(dropDown);
+		box.add(Box.createHorizontalStrut(20));
+
 
 		mainBox.add(Box.createVerticalStrut(50));
-		mainBox.add(dropDown);
-		mainBox.add(Box.createVerticalStrut(10));
 		mainBox.add(box);
+		mainBox.add(Box.createVerticalStrut(10));
+		mainBox.add(search);
+
+
 
 		panel.add(mainBox);
 		panel.setBorder(new LineBorder(Color.BLACK));
@@ -102,18 +124,19 @@ public class SearchPane extends BasicPane {
 		Box mainBox = new Box(BoxLayout.Y_AXIS);
 		Box box = new Box(BoxLayout.X_AXIS);
 
-		dropDown = new JComboBox();
-		nbrOfPallets = customSpinner(new SpinnerNumberModel(1,1,500,1), 50, 25);
-		JButton produce = customButton("Search",new SearchPane.SearchHandler2(), 100, 25);
+		JButton search = customButton("Search",new SearchPane.SearchHandler2(), 100, 25);
 
-		box.add(nbrOfPallets);
-		box.add(Box.createHorizontalStrut(200));
-		box.add(produce);
+		JTextField searchText = new JTextField();
+		searchText.setEditable(true);
+
+
+		box.add(Box.createHorizontalStrut(5));
+		box.add(searchText);
 
 		mainBox.add(Box.createVerticalStrut(50));
-		mainBox.add(dropDown);
-		mainBox.add(Box.createVerticalStrut(10));
 		mainBox.add(box);
+		mainBox.add(Box.createVerticalStrut(10));
+		mainBox.add(search);
 
 		panel.add(mainBox);
 		panel.setBorder(new LineBorder(Color.BLACK));
@@ -192,6 +215,7 @@ public class SearchPane extends BasicPane {
 	public void entryActions() {
 		clearList();
 		clearFields();
+		updateCookieList();
 	}
 
 	private void clearFields(){
@@ -204,6 +228,14 @@ public class SearchPane extends BasicPane {
 		palletListModel.removeAllElements();
 	}
 
+	private void updateCookieList(){
+		dropDown.removeAllItems();
+		dropDown.addItem("All");
+		for(String s: db.getCookieNames()){
+			dropDown.addItem(s);
+		}
+	}
+
 
 	/**
 	 * A class that listens for clicks on the produce-button.
@@ -212,11 +244,16 @@ public class SearchPane extends BasicPane {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			int number = (Integer) nbrOfPallets.getValue();
-			String cookie = (String) dropDown.getSelectedItem();
-			if(number > 0 && cookie != null){
-				db.producePallets(cookie, number);
+			System.out.println("Search by date interval");
+
+			String from = new SimpleDateFormat("yyyy-MM-dd").format(spinnerFrom.getValue());
+			String to = new SimpleDateFormat("yyyy-MM-dd").format(spinnerTo.getValue());
+			System.out.println(from + " : " + to);
+			String[] skit = db.getPallets(from, to);
+			for(String s: skit){
+				palletListModel.addElement(s);
 			}
+
 		}
 	}
 
@@ -224,11 +261,7 @@ public class SearchPane extends BasicPane {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			int number = (Integer) nbrOfPallets.getValue();
-			String cookie = (String) dropDown.getSelectedItem();
-			if(number > 0 && cookie != null){
-				db.producePallets(cookie, number);
-			}
+			System.out.println("Search by pallet_id");
 		}
 	}
 
@@ -249,6 +282,7 @@ public class SearchPane extends BasicPane {
 				return;
 			}
 			String pallet_id = palletList.getSelectedValue();
+			pallet_id.split("(?:[0-9]|[0-9])");
 			Pallet p;
 			p = db.trackPalletObject(pallet_id);
 			if(e.getValueIsAdjusting()){
@@ -256,7 +290,7 @@ public class SearchPane extends BasicPane {
 				fields[PALLET_ATTR_1].setText(p.location);
 				fields[PALLET_ATTR_2].setText(p.production_date);
 			}
-
+			
 		}
 	}
 }
