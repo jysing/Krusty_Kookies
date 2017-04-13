@@ -527,7 +527,7 @@ public class Database {
 		try{
 			ResultSet rs = sendGetQuery(query);
 			while(rs.next()){
-				pallets.add(rs.getString("order_id") + ": " + rs.getString("cookie_name"));
+				pallets.add(rs.getString("order_id") + " : " + rs.getString("cookie_name"));
 			}
 		}catch(SQLException ex){
 			System.err.println(ex.getMessage());
@@ -543,7 +543,7 @@ public class Database {
 	public String[] getDeliveredPallets() {
 		ArrayList<String> pallets = new ArrayList<String>();
 		String query = "SELECT pallet_id, delivery_date " +
-				"FROM Pallet JOIN Order_Bill USING order_id " + 
+				"FROM Pallet JOIN Order_Bill USING (order_id)" +
 				"WHERE location = 'delivered'";
 		try{
 			ResultSet rs = sendGetQuery(query);
