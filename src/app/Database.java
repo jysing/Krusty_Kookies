@@ -741,7 +741,6 @@ public class Database {
 			ResultSet rs = sendGetQuery(query);
 			while(rs.next()){
 				if(rs.getString("order_id").equals(order_id) && rs.getString("cookie_name").equals(cookie_name));
-					System.out.println(rs.getString("order_id") +":"+ rs.getString("cookie_name"));
 					return false;
 			}
 		}catch(SQLException ex){
