@@ -323,11 +323,14 @@ public class Database {
 	 * @param to_date end date of interval
 	 * @return list of pallets
 	 */
-	public String[] getPallets(String from_date, String to_date) {
+	public String[] getPallets(String from_date, String to_date, String cookie_name) {
 		ArrayList<String> pallets = new ArrayList<String>();
 		String query = "SELECT pallet_id, cookie_name " +
 			"FROM PALLET " + 
 			"WHERE production_date BETWEEN '" + from_date + "' AND '" + to_date + "'";
+		if(cookie_name.equals("All")) {
+			query += " AND cookie_name = '" + cookie_name + "'";
+		}
 		try{
 			ResultSet rs = sendGetQuery(query);
 			while(rs.next()){

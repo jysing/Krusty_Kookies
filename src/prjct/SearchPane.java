@@ -250,6 +250,7 @@ public class SearchPane extends BasicPane {
 			String to = new SimpleDateFormat("yyyy-MM-dd").format(spinnerTo.getValue());
 			System.out.println(from + " : " + to);
 			String[] skit = db.getPallets(from, to);
+			palletListModel.removeAllElements();
 			for(String s: skit){
 				palletListModel.addElement(s);
 			}
@@ -281,16 +282,19 @@ public class SearchPane extends BasicPane {
 			if (palletList.isSelectionEmpty()){
 				return;
 			}
-			String pallet_id = palletList.getSelectedValue();
-			pallet_id.split("(?:[0-9]|[0-9])");
-			Pallet p;
-			p = db.trackPalletObject(pallet_id);
 			if(e.getValueIsAdjusting()){
+			String pallet_id = palletList.getSelectedValue();
+			pallet_id = pallet_id.split(" : ")[0];
+			System.out.println(pallet_id);
+			/*Pallet p;
+			p = db.trackPalletObject(pallet_id);
+
 				fields[PALLET_ATTR_0].setText(p.cookie_name);
 				fields[PALLET_ATTR_1].setText(p.location);
 				fields[PALLET_ATTR_2].setText(p.production_date);
+
+			*/
 			}
-			
 		}
 	}
 }
