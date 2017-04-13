@@ -222,7 +222,6 @@ public class DeliverPane extends BasicPane {
 		orderBillsListModel.removeAllElements();
 		for (String s: db.getOrderItems()) {
             orderBillsListModel.addElement(s);
-            setForeground(Color.green);
 		}
 	}
 

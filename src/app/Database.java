@@ -514,7 +514,6 @@ public class Database {
 	 * @return list of pallets in freezer
 	 */
 	public String[] getOrderItems() {
-		System.out.println("here");
 		ArrayList<String> pallets = new ArrayList<String>();
 		String query = "SELECT order_id " +
 				"FROM OrderItems ";
