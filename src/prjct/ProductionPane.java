@@ -72,7 +72,6 @@ public class ProductionPane extends BasicPane {
 	 */
 	private static final int NBR_FIELDS = 4;
 
-
 	/**
 	 *
 	 * @param db
@@ -116,7 +115,7 @@ public class ProductionPane extends BasicPane {
 	/**
 	 * Create the left bottom panel.
 	 *
-	 * @return An empty panel.
+	 * @return the left bottom panel.
 	 */
 	public JComponent createLeftBottomPanel() {
 		JPanel panel = new JPanel();
@@ -125,11 +124,17 @@ public class ProductionPane extends BasicPane {
 		Box labelBox = new Box(BoxLayout.Y_AXIS);
 		Box attributeBox = new Box(BoxLayout.Y_AXIS);
 
+		String[] labels = new String[NBR_FIELDS];
+		labels[0] = "Cookie Type";
+		labels[1] = "Location";
+		labels[2] = "Production date";
+		labels[3] = "Blocked";
+
 		for(int i = 0; i < NBR_FIELDS; i++) {
-			JLabel l = customLabel("Attribute 5",
-			JLabel.LEFT, Component.CENTER_ALIGNMENT,
-			0, 12);
-			l.add(labelBox);
+			JLabel l = customLabel(labels[i],
+			JLabel.LEFT, Component.RIGHT_ALIGNMENT,
+			Font.BOLD, 14);
+			labelBox.add(l);
 		}
 
 		fields = new JTextField[NBR_FIELDS];
@@ -139,40 +144,6 @@ public class ProductionPane extends BasicPane {
 			attributeBox.add(fields[i]);
 		}
 
-//		String[] texts = new String[NBR_FIELDS];
-//		texts[PALLET_ATTR_0] = "Attr 0";
-//		texts[PALLET_ATTR_1] = "Attr 1";
-//		texts[PALLET_ATTR_2] = "Attr 2";
-//		texts[PALLET_ATTR_3] = "Attr 3";
-
-//		fields = new JTextField[NBR_FIELDS];
-//		for (int i = 0; i < fields.length; i++) {
-//			fields[i] = new JTextField(20);
-//			fields[i].setEditable(false);
-//		}
-
-//		JPanel left = new JPanel();
-//		left.setLayout(new GridLayout(texts.length, 1));
-//		for (int i = 0; i < texts.length; i++) {
-//			JLabel label = new JLabel(texts[i] + "\n		", JLabel.RIGHT);
-//			panel.add(label);
-//		}
-
-//		JPanel right = new JPanel();
-//		right.setLayout(new GridLayout(fields.length, 1));
-//		for (int i = 0; i < fields.length; i++) {
-//			right.add(fields[i]);
-//		}
-//		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
-//		panel.add(left);
-//		panel.add(right);
-
-//		JPanel p = new JPanel();
-//		p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
-//		p.add(panel);
-
-		labelBox.setBorder(new LineBorder(Color.BLACK));
-		attributeBox.setBorder(new LineBorder(Color.BLACK));
 		mainBox.add(labelBox);
 		mainBox.add(attributeBox);
 		panel.add(mainBox);
@@ -186,6 +157,20 @@ public class ProductionPane extends BasicPane {
 	 */
 	public JComponent createMiddlePanel() {
 		JPanel panel = new JPanel();
+
+		Box mainBox = new Box(BoxLayout.Y_AXIS);
+		Box labelBox = new Box(BoxLayout.X_AXIS);
+		Box listBox = new Box(BoxLayout.X_AXIS);
+
+		JLabel leftLabel = customLabel("Selected",
+			JLabel.CENTER, Component.CENTER_ALIGNMENT,
+			Font.BOLD, 16);
+		JLabel rightLabel = customLabel("All",
+			JLabel.CENTER, Component.CENTER_ALIGNMENT,
+			Font.BOLD, 16);
+
+		labelBox.add(leftLabel);
+		labelBox.add(rightLabel);
 
 		specPalletListModel = new DefaultListModel<String>();
 
@@ -201,9 +186,21 @@ public class ProductionPane extends BasicPane {
 		allPalletList.addListSelectionListener(new AllPalletSelectionListener());
 		JScrollPane p2 = new JScrollPane(allPalletList);
 
+		mainBox.add(labelBox);
+		JPanel p0 = new JPanel();
+
 		panel.setLayout(new GridLayout(1, 2));
 		panel.add(p1);
 		panel.add(p2);
+
+//		listBox.add(p1);
+//		listBox.add(p2);
+
+		mainBox.add(listBox);
+
+//		panel.add(p0);
+		panel.setBorder(new LineBorder(Color.BLACK));
+
 		return panel;
 	}
 
