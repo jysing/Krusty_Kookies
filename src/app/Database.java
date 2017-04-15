@@ -88,6 +88,11 @@ public class Database {
 		return rs;
 	}
 
+	/**
+	 * Finds and returns a list of all cookies types in the database
+	 *
+	 * @return List of all cookie types
+	 */
 	public String[] getCookieNames(){
 		ArrayList<String> cookies = new ArrayList<>();
 		String query = "SELECT cookie_name " +
@@ -353,6 +358,12 @@ public class Database {
 		return pallet;
 	}
 
+	/**
+	 *  Retrieve information if a specific pallet is blocked
+	 *
+	 * @param pallet_id ID to search for
+	 * @return Blocked status
+	 */
 	public String getPalletBlocked(String pallet_id){
 		String pallet = "Not Blocked";
 		String query = "SELECT is_blocked " +
@@ -372,6 +383,12 @@ public class Database {
 		return pallet;
 	}
 
+	/**
+	 *  Retrieve information of customer linked to a specific pallet
+	 *
+	 * @param pallet_id ID to search for
+	 * @return Pallets customer
+	 */
 	public String getPalletCustomer(String pallet_id){
 		String pallet = "";
 		String query = "SELECT customer_name " +
@@ -389,6 +406,12 @@ public class Database {
 		return pallet;
 	}
 
+	/**
+	 *  Retrieve information of order id linked to a specific pallet
+	 *
+	 * @param pallet_id ID to search for
+	 * @return Pallets order id
+	 */
 	public String getPalletOrder(String pallet_id){
 		String pallet = "";
 		String query = "SELECT Pallet.order_id " +
@@ -406,6 +429,12 @@ public class Database {
 		return pallet;
 	}
 
+	/**
+	 *  Retrieve information of delivery date of a specific pallet
+	 *
+	 * @param pallet_id ID to search for
+	 * @return Pallets delivery date
+	 */
 	public String getPalletDelivery(String pallet_id){
 		String pallet = "";
 		String query = "SELECT delivery_date " +
@@ -426,7 +455,7 @@ public class Database {
 
 	/**
 	 * Returns a list of pallets that were produced in a time interval.
-	 * TODO:
+	 *
 	 * @param from_date start date of interval
 	 * @param to_date end date of interval
 	 * @return list of pallets
@@ -473,14 +502,15 @@ public class Database {
 	}
 
 	/**
-	 * 	
+	 * 	Retrieves a list of all delivered påallets from the database
+	 *
 	 * @return List of all delivered pallets
 	 */
 	public String[] getDeliveredPallets() {
 		ArrayList<String> pallets = new ArrayList<>();
 		String query = "SELECT order_id, cookie_name, delivery_date " +
 				"FROM Pallet INNER JOIN Order_Bill USING (order_id)" +
-				"WHERE location = 'Delivered'";
+				"WHERE location = 'Delivered' and is_blocked IS NOT 1";
 		try{
 			ResultSet rs = sendGetQuery(query);
 			while(rs.next()){
@@ -494,8 +524,13 @@ public class Database {
 	}
 
 	/**
-	 * 	
-	 * @return List of all delivered pallets
+	 * Checks wether an order item can be loaded unto the truck and temporarily binds it to an specific order.
+	 *
+	 * @param order_id Order items to verify loading capability
+	 * @param cookie_name cookie type
+	 * @param inLoading Number of pallets of a specific cookie type currently in the loading area
+	 * @param totForOrderID Total for the whole order
+	 * @return List of pallets ready to be loaded
 	 */
 	public String[] load(String order_id, String cookie_name, int inLoading, int totForOrderID) {
 		ArrayList<String> pallets = new ArrayList<>();
@@ -552,9 +587,12 @@ public class Database {
 		}
 		return pallets.toArray((new String[pallets.size()]));
 	}
+
 	/**
+	 * Returns the customer of a order.
 	 *
-	 * @return List of all existing order items
+	 * @param order_id ID to search for
+	 * @return customer
 	 */
 	public String getOrderCustomer(String order_id) {
 		String query = "SELECT customer_name" +
@@ -571,8 +609,10 @@ public class Database {
 	}
 
 	/**
+	 * Returns the customer address of a order.
 	 *
-	 * @return List of all existing order items
+	 * @param order_id ID to search for
+	 * @return customer address
 	 */
 	public String getCustomerAddress(String order_id) {
 		String query = "SELECT address, country" +
@@ -589,30 +629,11 @@ public class Database {
 	}
 
 	/**
+	 * Returns the # of pallets in a order item.
 	 *
-	 * @return List of all existing order items
-	 */
-	public String[] getOrderCookies(String order_id) {
-
-		ArrayList<String> cookies = new ArrayList<>();
-		String query = "SELECT cookie_name " +
-				"FROM OrderItems " +
-				"WHERE order_id = '"+order_id+"'";
-		try{
-			ResultSet rs = sendGetQuery(query);
-			while(rs.next()){
-				cookies.add(rs.getString("cookie_name"));
-			}
-		}catch(SQLException ex){
-			System.err.println(ex.getMessage());
-			cookies.clear();
-		}
-		return cookies.toArray((new String[cookies.size()]));
-	}
-
-	/**
-	 *
-	 * @return List of all existing order items
+	 * @param order_id ID to search for
+	 * @param cookie_name Cookie type
+	 * @return Nbr of Pallets in order item
 	 */
 	public String getOrderNbrOfPallets(String order_id, String cookie_name) {
 		String query = "SELECT nbrPallet " +
@@ -628,8 +649,10 @@ public class Database {
 	}
 
 	/**
+	 * Returns the delivery date of a order.
 	 *
-	 * @return List of all existing order items
+	 * @param order_id ID to search for
+	 * @return delivery date
 	 */
 	public String getOrderDeliveryDate(String order_id) {
 		String query = "SELECT delivery_date " +
@@ -645,6 +668,14 @@ public class Database {
 		}
 	}
 
+	/**
+	 *
+	 * Updates a pallets location to delivered and connects it to an order id
+	 *
+	 * @param pallet_id Pallet to be updated
+	 * @param order_id ID to connect the pallet to
+	 * @return if the connection was successful
+	 */
 	public boolean setPalletDelivered(String pallet_id, String order_id) {
 		String query = "UPDATE Pallet " +
 				"SET location = 'Delivered', order_id = '" + order_id + "' WHERE pallet_id = '"+ pallet_id+"'";
@@ -658,6 +689,12 @@ public class Database {
 		return true;
 	}
 
+	/**
+	 * Finds out if there's pallet connected to an order item.
+	 * @param order_id Order Id to search for
+	 * @param cookie_name Cookie type
+	 * @return true if there's a match, otherwise false
+	 */
 	public boolean connectedToPallet(String order_id, String cookie_name) {
 		String query = "SELECT order_id, cookie_name " +
 				"FROM Pallet " +
