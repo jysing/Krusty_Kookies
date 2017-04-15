@@ -12,7 +12,7 @@ import java.awt.event.*;
  * CrustyGUI is the user interface to the guest database. It sets up the main
  * window and connects to the database.
  */
-public class CrustyGUI {
+class CrustyGUI {
 
 	/**
 	 * db is the database object.
@@ -27,9 +27,9 @@ public class CrustyGUI {
 	/**
 	 * Create a GUI object and connect to the database.
 	 *
-	 * @param db
+	 * @param db Database
 	 */
-	public CrustyGUI(Database db) {
+	CrustyGUI(Database db) {
 		this.db = db;
 
 		JFrame frame = new JFrame("Crusty Cookies");
@@ -109,8 +109,7 @@ public class CrustyGUI {
 		 * Called when the user exits the application. Closes the connection to
 		 * the database.
 		 *
-		 * @param e
-		 *				The window event (not used).
+		 * @param e The window event (not used).
 		 */
 		public void windowClosing(WindowEvent e) {
 			db.closeConnection();

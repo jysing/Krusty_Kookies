@@ -81,9 +81,9 @@ public class ProductionPane extends BasicPane {
 
 	/**
 	 *
-	 * @param db
+	 * @param db Database
 	 */
-	public ProductionPane(Database db) {
+	ProductionPane(Database db) {
 		super(db);
 	}
 
@@ -238,8 +238,8 @@ public class ProductionPane extends BasicPane {
      * Clears all text fields.
      */
 	private void clearFields(){
-		for (int i = 0; i < fields.length; i++){
-			fields[i].setText("");
+		for (JTextField f: fields) {
+			f.setText("");
 		}
 	}
 
@@ -248,7 +248,7 @@ public class ProductionPane extends BasicPane {
      */
 	private void updateAllPalletList() {
         allPalletListModel.removeAllElements();
-		for (String s: db.getAllPalletsInFreezer()){
+		for (String s: db.getAllPalletsInFreezer("")){
             allPalletListModel.addElement(s);
 		}
 	}
@@ -280,7 +280,7 @@ public class ProductionPane extends BasicPane {
 	 */
 	class ProduceHandler implements ActionListener {
 
-		@Override
+
 		/**
          * Called when the user clicks the Produce button. Produces a
          * pallet of the specified cookie type.
@@ -288,6 +288,7 @@ public class ProductionPane extends BasicPane {
          * @param e
          *            The event object (not used).
          */
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			int number = (Integer) nbrOfPallets.getValue();
 			String cookie = (String) dropDown.getSelectedItem();
@@ -359,12 +360,7 @@ public class ProductionPane extends BasicPane {
 
 	class DropDownListener implements ItemListener {
 		@Override
-		// This method is called when a new item has been selected in dropDown.
 		public void itemStateChanged(ItemEvent evt) {
-			JComboBox cb = (JComboBox) evt.getSource();
-
-			Object item = evt.getItem();
-
 			if (evt.getStateChange() == ItemEvent.SELECTED) updateSpecPalletList();
 		}
 	}

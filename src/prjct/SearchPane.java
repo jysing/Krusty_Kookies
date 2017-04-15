@@ -104,9 +104,9 @@ public class SearchPane extends BasicPane {
 
 	/**
 	 *
-	 * @param db
+	 * @param db Database
 	 */
-	public SearchPane(Database db) {
+	SearchPane(Database db) {
 		super(db);
 	}
 
@@ -320,8 +320,8 @@ public class SearchPane extends BasicPane {
      * Clears all text fields.
      */
 	private void clearFields(){
-		for (int i = 0; i < fields.length; i++){
-			fields[i].setText("");
+		for (JTextField f: fields) {
+			f.setText("");
 		}
 	}
 
@@ -348,14 +348,14 @@ public class SearchPane extends BasicPane {
 	 */
 	class SearchHandlerDate implements ActionListener {
 
-		@Override
+
 		/**
          * Called when the user clicks the upper Search button. Displays
          * pallets matching the search criteria.
          * 
-         * @param e
-         *            The event object (not used).
+         * @param e The event object (not used).
          */
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			String from = new SimpleDateFormat("yyyy-MM-dd").format(spinnerFrom.getValue());
 			String to = new SimpleDateFormat("yyyy-MM-dd").format(spinnerTo.getValue());
@@ -374,7 +374,7 @@ public class SearchPane extends BasicPane {
 	 */
 	class SearchHandlerId implements ActionListener {
 
-		@Override
+
 		/**
          * Called when the user clicks the lower Search button. Displays
          * pallets matching the search criteria.
@@ -382,6 +382,7 @@ public class SearchPane extends BasicPane {
          * @param e
          *            The event object (not used).
          */
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			if(searchText.getValue() != null){
 				String result = db.getPallet(searchText.getText());
@@ -401,8 +402,7 @@ public class SearchPane extends BasicPane {
 		 * Called when the user selects a pallet in the all pallet list. Fetches
 		 * pallet information from the database and displays them in the info box.
 		 *
-		 * @param e
-		 *            The selected list item.
+		 * @param e The selected list item.
 		 */
 		public void valueChanged(ListSelectionEvent e) {
 			if (palletList.isSelectionEmpty()){

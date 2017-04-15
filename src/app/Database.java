@@ -108,22 +108,20 @@ public class Database {
 
 	/**
 	 * List of all existing orders.
-	 * TODO: Test
 	 *
 	 * @param from_date start date of interval
 	 * @param to_date end date of interval
 	 * @return list of Order_Bill
 	 */
 	public String[] getOrderBills(String from_date, String to_date) {
-		ArrayList<String> bills = new ArrayList<String>();
+		ArrayList<String> bills = new ArrayList<>();
 		String query = "SELECT order_id " +
 						"FROM Order_Bill " +
 						"WHERE delivery_date BETWEEN " + from_date + " AND " + to_date;
 		try {
 			ResultSet rs = sendGetQuery(query);
 			while(rs.next()){
-				bills.add(rs.getString("order_id")); //Alternativt konvertera till int
-				System.out.println("Order_Bill: " + rs.getString("date"));
+				bills.add(rs.getString("order_id"));
 			}
 		} catch (SQLException ex){
 				System.err.println("SQL error: " + ex.getMessage());
@@ -134,39 +132,17 @@ public class Database {
 
 	}
 
-
 	/**
 	 * 	List of all existing pallets in location freezer.
-	 * TODO: Concaterna cookie_name med pallet_id
-	 * @return list of pallets in freezer
-	 */
-	public String[] getAllPalletsInFreezer() {
-		ArrayList<String> pallets = new ArrayList<String>();
-		String query = "SELECT pallet_id, cookie_name " +
-				"FROM Pallet " +
-				"WHERE is_blocked IS NOT 1 AND location = 'Freezer'";
-		try{
-			ResultSet rs = sendGetQuery(query);
-			while(rs.next()){
-				pallets.add(rs.getString("pallet_id") + " : " + rs.getString("cookie_name"));
-			}
-		}catch(SQLException ex){
-			System.err.println(ex.getMessage());
-			pallets.clear();
-		}
-		return pallets.toArray((new String[pallets.size()]));
-	}
-
-	/**
-	 * 	List of all existing pallets in location freezer.
-	 * TODO: Concaterna cookie_name med pallet_id
+	 *
 	 * @return list of pallets in freezer
 	 */
 	public String[] getAllPalletsInFreezer(String cookie_name) {
 		ArrayList<String> pallets = new ArrayList<>();
 		String query = "SELECT pallet_id, cookie_name " +
 				"FROM Pallet " +
-				"WHERE is_blocked IS NOT 1 AND location = 'Freezer' AND cookie_name = '" + cookie_name + "'";
+				"WHERE is_blocked IS NOT 1 AND location = 'Freezer'";
+		if(!cookie_name.equals("")) query += " AND cookie_name = '" + cookie_name + "'";
 		try{
 			ResultSet rs = sendGetQuery(query);
 			while(rs.next()){
@@ -239,7 +215,6 @@ public class Database {
 	 * @param to_date end date of interval
 	 */
 	public boolean blockCookieType(String cookie_name, String from_date, String to_date) {
-		ArrayList<String> pallets = new ArrayList<String>();
 		String query = "UPDATE Pallet " +
     		"set is_blocked = CASE " + 
     		"WHEN cookie_name = '" + cookie_name + "' " + 
@@ -249,7 +224,6 @@ public class Database {
     		"ELSE is_blocked END";
 		try{
 			int nbrUpdatedLines = sendPutQuery(query);
-			System.out.print("blocked");
 			if (nbrUpdatedLines > 0) return true;
 		}catch(SQLException ex){
 			System.err.println(ex.getMessage());
@@ -264,7 +238,7 @@ public class Database {
 	 * @return list of blocked pallets
 	 */
 	public String[] getAllBlockedPallets(String cookie_name) {
-		ArrayList<String> pallets = new ArrayList<String>();
+		ArrayList<String> pallets = new ArrayList<>();
 		String query = "SELECT pallet_id, cookie_name, production_date " +
 			"FROM PALLET " + 
 			"WHERE is_blocked = 1";
@@ -285,30 +259,11 @@ public class Database {
 		return pallets.toArray((new String[pallets.size()]));
 	}
 
-    /**
-     * Tracks a pallet and resturns a Pallet Object
-	 * TODO: remove and replace with methods beneath getPalletLocation and getPalletProdDate
-	 *
-     */
-    public Pallet trackPalletObject(String pallet_id){
-        Pallet p;
-        String query = "SELECT * " +
-                "FROM PALLET " +
-                "WHERE pallet_id = " + pallet_id;
-        try{
-            ResultSet rs = sendGetQuery(query);
-            p = new Pallet(rs);
-        }catch(SQLException ex){
-            System.err.println(ex.getMessage());
-            p = null;
-        }
-        return p;
-    }
-
 	/**
+	 * Finds and returns a String with a pallets id and it's cookie type
 	 *
-	 * @param pallet_id
-	 * @return
+	 * @param pallet_id ID to search for
+	 * @return pallets id and cookie type
 	 */
 	public String getPallet(String pallet_id){
     	String pallet = "";
@@ -330,8 +285,9 @@ public class Database {
 
 	/**
 	 * Returns location of a specific pallet with pallet id pallet_id
-	 * @param pallet_id
-	 * @return
+	 *
+	 * @param pallet_id ID to search for
+	 * @return cookie type
 	 */
 	public String getPalletCookie(String pallet_id){
 		String pallet = "";
@@ -352,8 +308,9 @@ public class Database {
 
 	/**
 	 * Returns production date of a specific pallet with pallet id pallet_id
-	 * @param pallet_id
-	 * @return
+	 *
+	 * @param pallet_id ID to search for
+	 * @return pallets production  date
 	 */
 	public String getPalletProdDate(String pallet_id){
 
@@ -375,8 +332,9 @@ public class Database {
 
 	/**
 	 * Returns location of a specific pallet with pallet id pallet_id
-	 * @param pallet_id
-	 * @return
+	 *
+	 * @param pallet_id ID to search for
+	 * @return pallets location
 	 */
 	public String getPalletLocation(String pallet_id){
 		String pallet = "";
@@ -474,7 +432,7 @@ public class Database {
 	 * @return list of pallets
 	 */
 	public String[] getPallets(String from_date, String to_date, String cookie_name) {
-		ArrayList<String> pallets = new ArrayList<String>();
+		ArrayList<String> pallets = new ArrayList<>();
 		String query = "SELECT pallet_id, cookie_name " +
 			"FROM PALLET " + 
 			"WHERE production_date BETWEEN '" + from_date + "' AND '" + to_date + "'";
@@ -494,11 +452,12 @@ public class Database {
 	}
 
 	/**
-	 * 	
+	 * 	Returns a list of order items
+	 *
 	 * @return List of all existing order items
 	 */
 	public String[] getOrderItems() {
-		ArrayList<String> pallets = new ArrayList<String>();
+		ArrayList<String> pallets = new ArrayList<>();
 		String query = "SELECT order_id, cookie_name " +
 				"FROM OrderItems ";
 		try{
@@ -539,11 +498,11 @@ public class Database {
 	 * @return List of all delivered pallets
 	 */
 	public String[] load(String order_id, String cookie_name, int inLoading, int totForOrderID) {
-		ArrayList<String> pallets = new ArrayList<String>();
+		ArrayList<String> pallets = new ArrayList<>();
 		int wanted = 0;
-		int avaible = 0;
-		int toLoad = 0;
-		
+		int available = 0;
+		int toLoad;
+
 		String query = "SELECT nbrPallet " +
 				"FROM OrderItems " + 
 				"WHERE order_id = '" + order_id + "' AND cookie_name = '" + cookie_name + "'";
@@ -556,20 +515,20 @@ public class Database {
 			System.err.println(ex.getMessage());
 		}
 
-		query = "SELECT COUNT() AS avaible " +
+		query = "SELECT COUNT() AS available " +
 				"FROM Pallet " +
 				"WHERE is_blocked IS NOT 1 AND location = 'Freezer' " + 
 				"AND cookie_name = '" + cookie_name + "'";
 		try{
 			ResultSet rs = sendGetQuery(query);
 			while(rs.next()){
-				avaible = rs.getInt("avaible") - inLoading;
+				available = rs.getInt("available") - inLoading;
 			}
 		}catch(SQLException ex){
 			System.err.println(ex.getMessage());
 		}
 
-		if (avaible < wanted) {
+		if (available < wanted) {
 			pallets.clear();
 			return pallets.toArray((new String[pallets.size()]));
 		}
@@ -604,14 +563,11 @@ public class Database {
 
 		try{
 			ResultSet rs = sendGetQuery(query);
-			while(rs.next()){
-				return (rs.getString("customer_name"));
-			}
+			return (rs.getString("customer_name"));
 		}catch(SQLException ex){
 			System.err.println(ex.getMessage());
 			return "";
 		}
-		return "";
 	}
 
 	/**
@@ -625,14 +581,11 @@ public class Database {
 				" WHERE order_id =  '" + order_id + "'";
 		try{
 			ResultSet rs = sendGetQuery(query);
-			while(rs.next()){
-				return rs.getString("address") + " " + rs.getString("country");
-			}
+			return rs.getString("address") + " " + rs.getString("country");
 		}catch(SQLException ex){
 			System.err.println(ex.getMessage());
 			return "";
 		}
-		return "";
 	}
 
 	/**
@@ -667,14 +620,11 @@ public class Database {
 				"WHERE order_id = '"+order_id+"' AND cookie_name = '" + cookie_name + "'";
 		try{
 			ResultSet rs = sendGetQuery(query);
-			while(rs.next()){
-				return (rs.getString("nbrPallet"));
-			}
+			return (rs.getString("nbrPallet"));
 		}catch(SQLException ex){
 			System.err.println(ex.getMessage());
 			return "";
 		}
-		return "";
 	}
 
 	/**
@@ -687,14 +637,12 @@ public class Database {
 				"WHERE order_id = '"+order_id+"'";
 		try{
 			ResultSet rs = sendGetQuery(query);
-			while(rs.next()){
-				return (rs.getString("delivery_date"));
-			}
+			return (rs.getString("delivery_date"));
+
 		}catch(SQLException ex){
 			System.err.println(ex.getMessage());
 			return "";
 		}
-		return "";
 	}
 
 	public boolean setPalletDelivered(String pallet_id, String order_id) {
@@ -716,9 +664,8 @@ public class Database {
 				"WHERE order_id = '" + order_id + "' ";
 		try{
 			ResultSet rs = sendGetQuery(query);
-			while(rs.next()){
-				if(rs.getString("order_id").equals(order_id) && rs.getString("cookie_name").equals(cookie_name));
-					return false;
+			if(rs.getString("order_id").equals(order_id) && rs.getString("cookie_name").equals(cookie_name)){
+				return false;
 			}
 		}catch(SQLException ex){
 			System.err.println(ex.getMessage());

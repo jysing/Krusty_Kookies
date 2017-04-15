@@ -10,7 +10,7 @@ import java.util.LinkedList;
  * order (csv-file) has for columns; customer, address, cookie type and
  * number of pallets.
  */
-public class CSVExporter {
+class CSVExporter {
 
 	/**
 	 * A list containing loading orders.
@@ -26,7 +26,7 @@ public class CSVExporter {
 	 * 
 	 * @param loadingOrders, saveLocation
 	 */
-	public CSVExporter(LinkedList<String[]> loadingOrders, String saveLocation) {
+	CSVExporter(LinkedList<String[]> loadingOrders, String saveLocation) {
 		this.loadingOrders = loadingOrders;
 		generateCsvFile(saveLocation);
 	}
@@ -34,7 +34,7 @@ public class CSVExporter {
 	/**
 	 * Generates a csv-file.
 	 */
-	public void generateCsvFile(String sFileName) {
+	private void generateCsvFile(String sFileName) {
 		String sep = ";";
 		
 		try {
@@ -48,16 +48,13 @@ public class CSVExporter {
 			writer.append(sep);
 			writer.append("No of pallets");
 			writer.append("\n");
-
-			for(int i = 0; i < loadingOrders.size(); i++) {
-				String[] row = loadingOrders.get(i);
-
+			for (String[] s: loadingOrders) {
 				for(int j = 0; j < NBR_COLUMNS; j++) {
-					String item = row[j];
+					String item = s[j];
 					writer.append(item);
 					writer.append(sep);
 				}
-				writer.append("\n");			
+				writer.append("\n");
 			}
 			writer.flush();
 			writer.close();

@@ -1,26 +1,17 @@
 package src.prjct;
 
 import src.app.Database;
-import src.app.Pallet;
 
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.border.*;
-import javax.swing.JComponent.*;
-import javax.swing.filechooser.*;
 
 import java.awt.*;
 import java.awt.event.*;
 
-import java.io.*;
-
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-
 import javax.swing.JSpinner;
 import javax.swing.SpinnerDateModel;
 
-import java.util.*;
 import java.text.*;
 
 /**
@@ -34,16 +25,6 @@ public class BlockPane extends BasicPane {
      * The list model for the specific pallet list.
      */
     private DefaultListModel<String> blockedPalletListModel;
-
-    /**
-     * The specific pallet list.
-     */
-    private JList<String> blockedPalletList;
-
-	/**
-	 * Spinner for number of crates to be produced
-	 */
-	private JSpinner nbrOfPallets;
 
 	/**
 	 * Drop down menu containing all cookie types
@@ -61,40 +42,10 @@ public class BlockPane extends BasicPane {
 	private JSpinner spinnerTo;
 
 	/**
-	 * The text fields where the pallet data is shown
-	 */
-	private JTextField[] fields;
-
-	/**
-	 * The number of the pallet attribute 0 field
-	 */
-	private static final int PALLET_ATTR_0 = 0;
-
-	/**
-	 * The number of the pallet attribute 1 field
-	 */
-	private static final int PALLET_ATTR_1 = 1;
-
-	/**
-	 * The number of the pallet attribute 2 field
-	 */
-	private static final int PALLET_ATTR_2 = 2;
-
-	/**
-	 * The number of the pallet attribute 3 field
-	 */
-	private static final int PALLET_ATTR_3 = 3;
-
-	/**
-	 * The total number of fields
-	 */
-	private static final int NBR_FIELDS = 4;
-
-	/**
 	 *
-	 * @param db
+	 * @param db Database
 	 */
-	public BlockPane(Database db) {
+	BlockPane(Database db) {
 		super(db);
 	}
 
@@ -215,9 +166,9 @@ public class BlockPane extends BasicPane {
 	public JComponent createMiddlePanel() {
 		JPanel panel = new JPanel();
 
-		blockedPalletListModel = new DefaultListModel<String>();
+		blockedPalletListModel = new DefaultListModel<>();
 
-		blockedPalletList = new JList<String>(blockedPalletListModel);
+		JList<String> blockedPalletList = new JList<>(blockedPalletListModel);
 		blockedPalletList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		blockedPalletList.addListSelectionListener(new blockedPalletSelectionListener());
 		JScrollPane p1 = new JScrollPane(blockedPalletList);
@@ -232,14 +183,14 @@ public class BlockPane extends BasicPane {
 	 * A class that listens for clicks on the Block button.
 	 */
 	class BlockHandler implements ActionListener {
-		@Override
+
 		/**
          * Called when the user clicks the Block button. Blocks
          * pallets matching the search criteria.
          * 
-         * @param e
-         *            The event object (not used).
+         * @param e The event object (not used).
          */
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			String from = new SimpleDateFormat("yyyy-MM-dd").format(spinnerFrom.getValue());
 			String to = new SimpleDateFormat("yyyy-MM-dd").format(spinnerTo.getValue());
@@ -270,11 +221,7 @@ public class BlockPane extends BasicPane {
 		@Override
 		// This method is called only if a new item has been selected in dropDown.
   		public void itemStateChanged(ItemEvent evt) {
-    		JComboBox cb = (JComboBox) evt.getSource();
-
-    		Object item = evt.getItem();
-
-    		if (evt.getStateChange() == ItemEvent.SELECTED) updateBlockedPalletList();
+     		if (evt.getStateChange() == ItemEvent.SELECTED) updateBlockedPalletList();
     	}
     }
 }

@@ -1,12 +1,10 @@
 package src.prjct;
 
 import src.app.Database;
-import src.app.Pallet;
 
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.border.*;
-import javax.swing.JComponent.*;
 import javax.swing.filechooser.*;
 
 import java.awt.*;
@@ -14,11 +12,8 @@ import java.awt.event.*;
 
 import java.io.*;
 
-import javax.swing.JSpinner;
-import javax.swing.SpinnerDateModel;
 
 import java.util.*;
-import java.text.*;
 
 /**
  * The GUI pane where the user can load and deliver pallets that have an attached
@@ -27,11 +22,6 @@ import java.text.*;
  * pallets, respectively.
  */
 public class DeliverPane extends BasicPane {
-
-	/**
-	 * The file chooser object.
-	 */
-	private JFileChooser fileChooser;
 
 	/**
      * The list model for the specific pallet list.
@@ -62,26 +52,6 @@ public class DeliverPane extends BasicPane {
      * The specific pallet list.
      */
     private JList<String> deliveredList;
-
-	/**
-	 * Spinner for number of crates to be produced
-	 */
-	private JSpinner nbrOfPallets;
-
-	/**
-	 * Drop down menu containing all cookie types
-	 */
-	private JComboBox dropDown;
-
-	/**
-	 * DateSpinner for time interval
-	 */
-	private JSpinner spinnerFrom;
-
-	/**
-	 * DateSpinner for time interval
-	 */
-	private JSpinner spinnerTo;
 
 	/**
 	 * The text fields where the order item data is shown
@@ -125,9 +95,9 @@ public class DeliverPane extends BasicPane {
 
 	/**
 	 *
-	 * @param db
+	 * @param db Database
 	 */
-	public DeliverPane(Database db) {
+	DeliverPane(Database db) {
 		super(db);
 	}
 
@@ -254,15 +224,15 @@ public class DeliverPane extends BasicPane {
 		JScrollPane p1 = new JScrollPane(orderBillsList);
 
 
-		loadedListModel = new DefaultListModel<String>();
+		loadedListModel = new DefaultListModel<>();
 
-		loadedList = new JList<String>(loadedListModel);
+		loadedList = new JList<>(loadedListModel);
 		loadedList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		loadedList.addListSelectionListener(new loadedListSelectionListener());
 
 		JScrollPane p2 = new JScrollPane(loadedList);
 
-		deliveredListModel = new DefaultListModel<String>();
+		deliveredListModel = new DefaultListModel<>();
 
 
 		deliveredList = new JList<>(deliveredListModel);
@@ -315,7 +285,7 @@ public class DeliverPane extends BasicPane {
 	 * A class that listens for clicks on the Load button.
 	 */
 	class LoadHandler implements ActionListener {
-		@Override
+
 		/**
          * Called when the user clicks the Load button. Loads an order item
          * to a truck.
@@ -323,13 +293,13 @@ public class DeliverPane extends BasicPane {
          * @param e
          *            The event object (not used).
          */
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			String str = orderBillsList.getSelectedValue();
 			if (str != null) {
-				String order_id = str.split("[:]")[0];
-				String cookie_name = str.split("[:]")[1];
-				order_id.trim();
-				cookie_name.trim();
+				String order_id = str.split("[:]")[0].trim();
+				String cookie_name = str.split("[:]")[1].trim();
+
 				int totInLoaded = 0;
 				int totForOrderID = 0;
 				Boolean fulfilled = false;
@@ -339,17 +309,16 @@ public class DeliverPane extends BasicPane {
      					fulfilled = true;
      					break;
      				}
-     				String currOrderID = inLoaded.split("[:]")[2];
-     				String inLoadedCookieName = inLoaded.split("[:]")[1];
-     				inLoadedCookieName.trim();
+     				String currOrderID = inLoaded.split("[:]")[2].trim();
+     				String inLoadedCookieName = inLoaded.split("[:]")[1].trim();
+
      				if (currOrderID.equals(order_id) && inLoadedCookieName.equals(cookie_name)) {
      					fulfilled = true;
      					break;
      				}
      				if (inLoadedCookieName.equals(cookie_name)) {
      					totInLoaded++;
-     					String inLoadedForOrderID = inLoaded.split("[:]")[1];
-     					inLoadedForOrderID.trim();
+     					String inLoadedForOrderID = inLoaded.split("[:]")[1].trim();
      					if (inLoadedForOrderID.equals(order_id)) totForOrderID++;
      				}
 				}
@@ -366,22 +335,21 @@ public class DeliverPane extends BasicPane {
 	 * A class that listens for clicks on the Deliver button.
 	 */
 	class DeliverHandler implements ActionListener {
-		@Override
+
 		/**
          * Called when the user clicks the Deliver button. Marks an order
          * item as delivered. Also opens up a file browser for saving the 
          * loading order as an csv-file.
          * 
-         * @param e
-         *            The event object (not used).
+         * @param e The event object (not used).
          */
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			String filePath;
 			do{
-				filePath = null;
-				File selectedFile = null;
+				File selectedFile;
 				try {
-					fileChooser = new JFileChooser();
+					JFileChooser fileChooser = new JFileChooser();
 					fileChooser.setAcceptAllFileFilterUsed(false);
 					fileChooser.addChoosableFileFilter(new FileNameExtensionFilter(".csv","csv"));
 					fileChooser.setPreferredSize(new Dimension(700,500));
@@ -412,18 +380,17 @@ public class DeliverPane extends BasicPane {
 							orders.add(row);
 						}
 					}
-					CSVExporter print = new CSVExporter(orders, filePath);
+					new CSVExporter(orders, filePath);
 				}
 				catch (NullPointerException ex) {
 					ex.printStackTrace();
 					filePath = null;
-					selectedFile = null;
 				}
 
 			}
 			while(filePath == null);
 
-			entryActions(); //rensar listan
+			entryActions();
 
 		}
 	}
@@ -476,7 +443,6 @@ public class DeliverPane extends BasicPane {
 			}
 			if(e.getValueIsAdjusting()){
 				String selectedValue = loadedList.getSelectedValue();
-				String pallet_id = selectedValue.split(":")[0].trim();
 
 				String order_id = selectedValue.split(":")[2].trim();
 				String cookie_name = selectedValue.split(":")[1].trim();
