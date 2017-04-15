@@ -9,10 +9,10 @@
 Krusty Kookies is an open source CMS (Cookie Management System) developed by CoolButton Inc. 
 The CMS is developed for our customer Crusty Cookies by demand from the course EDA216 at LTH.
 
-# 3. **A section with notes about requirements that you fulfill or don’t fulfill.**
+# 3.
 We fulfill all requirements given by the customer through the written order. No further contact has been made with the customer since receiving the order. 
 
-# 4. **An outline of your system (which database manager you use, which programs you have written, how the programs communicate with the database, etc.).**
+# 4.
 The CMS uses the DBMS  **SQLite** and the software is written in **Java**. **Jupyter Notebook** was used to create and test SQL-commands.
 
 # 5.
@@ -20,7 +20,7 @@ E/R-diagram:
 ![alt text](https://github.com/jysing/Krusty_Kookies/blob/master/UML.png "UML-notation of databse structure")
 
 
-# 6. **Relations. Indicate primary keys, possibly secondary keys, and foreign keys. You must show that the relations are normalized according to your chosen normal form (if a relation "obviously" is in BCNF you may say so, provided that you justify your statement). If a relation is in a lower normal form than BCNF, you must justify this choice.**
+# 6. 
 > **Primary Key - Bold**
 >
 >*Foreign Key - Italic*
