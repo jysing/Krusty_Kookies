@@ -358,6 +358,9 @@ public class ProductionPane extends BasicPane {
 		}
 	}
 
+	/**
+	 * A class that listens for updates in the dropdown list.
+	 */
 	class DropDownListener implements ItemListener {
 		@Override
 		public void itemStateChanged(ItemEvent evt) {

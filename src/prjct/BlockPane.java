@@ -217,6 +217,9 @@ public class BlockPane extends BasicPane {
 		}
 	}
 
+	/**
+	 * A class that listens for updates in the dropdown list.
+	 */
 	class DropDownListener implements ItemListener {
 		@Override
 		// This method is called only if a new item has been selected in dropDown.

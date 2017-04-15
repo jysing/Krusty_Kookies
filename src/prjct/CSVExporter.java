@@ -24,7 +24,8 @@ class CSVExporter {
 	
 	/**
 	 * 
-	 * @param loadingOrders, saveLocation
+	 * @param loadingOrders
+	 * @param saveLocation
 	 */
 	CSVExporter(LinkedList<String[]> loadingOrders, String saveLocation) {
 		this.loadingOrders = loadingOrders;
