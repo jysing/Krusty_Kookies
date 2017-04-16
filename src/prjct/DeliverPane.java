@@ -194,7 +194,7 @@ public class DeliverPane extends BasicPane {
 			JLabel.CENTER, Component.CENTER_ALIGNMENT,
 			Font.BOLD, 16);
 
-		JLabel rightLabel = customLabel("Delivered pallets",
+		JLabel rightLabel = customLabel("Delivered order items",
 			JLabel.CENTER, Component.CENTER_ALIGNMENT,
 			Font.BOLD, 16);
 
