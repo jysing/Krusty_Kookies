@@ -696,13 +696,15 @@ public class Database {
 	 * @return true if there's a match, otherwise false
 	 */
 	public boolean connectedToPallet(String order_id, String cookie_name) {
-		String query = "SELECT order_id, cookie_name " +
+		String query = "SELECT cookie_name, order_id " +
 				"FROM Pallet " +
 				"WHERE order_id = '" + order_id + "' ";
 		try{
 			ResultSet rs = sendGetQuery(query);
-			if(rs.getString("order_id").equals(order_id) && rs.getString("cookie_name").equals(cookie_name)){
-				return false;
+			while(rs.next()){
+				if(rs.getString("order_id").equals(order_id) && rs.getString("cookie_name").equals(cookie_name)){
+					return false;
+				}
 			}
 		}catch(SQLException ex){
 			System.err.println(ex.getMessage());
